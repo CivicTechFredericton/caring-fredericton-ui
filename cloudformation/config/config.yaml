@@ -1,0 +1,8 @@
+#Must be CloudFormation stack compatible (Alphanumeric plus hyphens)
+project_code: react-sk
+region: us-east-1
+
+domain: bluespurs.com
+stack_tags:
+  CLIENT: Blue Spurs
+  PROJECT: React Starter Kit

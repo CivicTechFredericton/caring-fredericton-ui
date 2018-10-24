@@ -1,0 +1,6 @@
+{
+  "COGNITO_POOL_DETAILS": {
+    "UserPoolId": "TODO_GET_ID",
+    "ClientId": "TODO_GET_ID"
+  }
+}

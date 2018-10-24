@@ -1,0 +1,16 @@
+:global {
+  $roboto-font-path: '~roboto-fontface/fonts';
+  @import '~roboto-fontface/css/roboto/sass/roboto-fontface-black.scss';
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+#app {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}

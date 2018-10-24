@@ -1,0 +1,85 @@
+---
+{% set environment = sceptre_user_data.environment -%}
+{% set project_code = sceptre_user_data.project_code -%}
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  OriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: {{ project_code }}-{{ environment }}-frontend
+
+  CloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases: {{ sceptre_user_data.aliases }}
+        Comment: {{ project_code }}-{{ environment }}-frontend
+        CustomErrorResponses:
+        - ErrorCode: 403
+          ResponseCode: 200
+          ResponsePagePath: "/index.html"
+          ErrorCachingMinTTL: 300
+
+        DefaultCacheBehavior:
+          AllowedMethods: [ DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT ]
+          DefaultTTL: 300
+          ForwardedValues:
+            Cookies:
+              Forward: none
+            QueryString: true
+          TargetOriginId: DefaultOrigin
+          ViewerProtocolPolicy: redirect-to-https
+
+        DefaultRootObject: index.html
+        Enabled: true
+        Logging:
+          Bucket: !GetAtt LoggingBucket.DomainName
+
+        Origins:
+        - Id: DefaultOrigin
+          DomainName: !GetAtt Bucket.DomainName
+          S3OriginConfig:
+            OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${OriginAccessIdentity}
+
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: {{ sceptre_user_data.certificate_arn }}
+          MinimumProtocolVersion: TLSv1.1_2016
+          SslSupportMethod: sni-only
+      Tags:
+      {% for key, value in sceptre_user_data.tags.iteritems() %}
+        - Key: "{{ key }}"
+          Value: "{{ value }}"
+      {% endfor %}
+
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: {{ project_code }}-{{ environment }}-frontend
+
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref Bucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: !Sub ${Bucket.Arn}/*
+            Principal:
+              AWS: !Sub arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${OriginAccessIdentity}
+
+  LoggingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: {{ project_code }}-{{ environment }}-frontend-logging
+      VersioningConfiguration:
+        Status: Enabled
+
+Outputs:
+  CloudFront:
+    Value: !Ref CloudFront
+  CloudFrontDomainName:
+    Value: !GetAtt CloudFront.DomainName

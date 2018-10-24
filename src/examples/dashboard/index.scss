@@ -1,0 +1,14 @@
+.dashboardWrapper {
+  padding: 1em;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.dashboardWrapper select {
+  min-height: 25px;
+}
+
+
+.dashboardWrapper h3 {
+  margin: 0;
+}
