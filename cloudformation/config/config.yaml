@@ -1,8 +1,8 @@
 #Must be CloudFormation stack compatible (Alphanumeric plus hyphens)
-project_code: react-sk
+project_code: caring-fred
 region: us-east-1
 
-domain: bluespurs.com
+domain: caringfredericton.com
 stack_tags:
-  CLIENT: Blue Spurs
-  PROJECT: React Starter Kit
+  CLIENT: Civic Tech Fredericton
+  PROJECT: Caring Calendar

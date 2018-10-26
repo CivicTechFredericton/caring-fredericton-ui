@@ -48,7 +48,7 @@ Resources:
           MinimumProtocolVersion: TLSv1.1_2016
           SslSupportMethod: sni-only
       Tags:
-      {% for key, value in sceptre_user_data.tags.iteritems() %}
+      {% for key, value in sceptre_user_data.tags.items() %}
         - Key: "{{ key }}"
           Value: "{{ value }}"
       {% endfor %}
