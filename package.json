@@ -1,7 +1,7 @@
 {
-  "name": "react-starter-kit",
+  "name": "caring-calendar-ui",
   "version": "1.0.0",
-  "description": "React Starter Kit",
+  "description": "Caring Calendar React Project",
   "main": "src/index.jsx",
   "scripts": {
     "start": "webpack-dev-server -d --env.target dev --env.config local",
@@ -47,8 +47,8 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@storybook/addon-knobs": "4.0.0-rc.6",
-    "@storybook/react": "4.0.0-rc.6",
+    "@storybook/addon-knobs": "4.0.0",
+    "@storybook/react": "4.0.0",
     "@babel/core": "7.1.2",
     "@babel/plugin-proposal-class-properties": "7.1.0",
     "@babel/plugin-proposal-json-strings": "7.0.0",
@@ -76,9 +76,9 @@
     "enzyme-adapter-react-16": "1.6.0",
     "enzyme-matchers": "7.0.0",
     "es-abstract": "1.12.0",
-    "eslint": "5.7.0",
+    "eslint": "5.8.0",
     "eslint-loader": "2.1.1",
-    "eslint-plugin-jest": "21.26.1",
+    "eslint-plugin-jest": "21.26.2",
     "eslint-plugin-react": "7.11.1",
     "file-loader": "2.0.0",
     "html-webpack-plugin": "3.2.0",
@@ -102,7 +102,7 @@
     "webpack-merge": "4.1.4"
   },
   "dependencies": {
-    "@material-ui/core": "3.3.1",
+    "@material-ui/core": "3.3.2",
     "amazon-cognito-identity-js": "3.0.3",
     "@babel/plugin-transform-object-assign": "7.0.0",
     "@babel/preset-stage-3": "7.0.0",
@@ -119,10 +119,10 @@
     "normalizr": "3.3.0",
     "react": "16.6.0",
     "react-dom": "16.6.0",
-    "react-i18next": "8.1.2",
+    "react-i18next": "8.3.5",
     "react-immutable-proptypes": "2.1.0",
     "react-immutable-render-mixin": "0.9.7",
-    "react-redux": "5.0.7",
+    "react-redux": "5.1.0",
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "redux": "4.0.1",
