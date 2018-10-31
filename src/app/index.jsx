@@ -10,6 +10,7 @@ import Dashboard from 'examples/dashboard';
 import { Route, Switch } from 'react-router-dom';
 import SecureRoute from 'routes/secure-route';
 import styles from './index.scss';
+import Home from 'components/Home';
 
 const App = () => {
   return (<div className={ styles.appWrapper }>
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="/:username/verify" component={ Verify }/>
       <Route path="/register" component={ Register }/>
       <Route path="/upload" component={ UploadDemo }/>
+      <Route path="/home" component={ Home }/>
       <SecureRoute path="/change-password" component={ ChangePassword }/>
       <SecureRoute component={ Dashboard } />
     </Switch>

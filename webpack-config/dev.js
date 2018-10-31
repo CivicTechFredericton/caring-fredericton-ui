@@ -18,9 +18,15 @@ module.exports = {
 			{
 				test: /\.(css|scss)$/,
 				use: [
-					'style-loader',
-					'css-loader?modules&localIdentName=[name]__[local]___[hash:base64:5]',
-					'sass-loader'
+					{
+						loader: 'style-loader', // creates style nodes from JS strings
+					  },
+					  {
+						loader: 'css-loader', // translates CSS into CommonJS
+					  },
+					  {
+						loader: 'sass-loader', // compiles Sass to CSS
+					  },
 				]
 			}
 		]
