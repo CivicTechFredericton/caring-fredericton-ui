@@ -1,23 +1,61 @@
 import React from 'react';
+require('./index.scss');
+// import history from 'routes/history';
 import PropTypes from 'prop-types';
-import styles from './index.scss';
-import history from 'routes/history';
-import logoSrc from './imgs/logo.png';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
-const LoggedInControls = ({ t, user, logout }) => {
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+};
+
+// const LoggedInControls = ({ t, user, logout }) => {
+//   return (
+//     <div>
+
+//     </div>
+//   )
+// };
+
+const Header = (props) => {
+ const { user, t, logout,  classes } = props;
+ // const { classes } = props;
   return (
-    <div>
-      <input type="button" value={ t('Change Password')} onClick={() => history.push('/change-password')} />
-      <input type="button" value={ t('logout') } onClick={() => logout(user)}/>
+    <div className={classes.root}>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <Typography variant="h6" color="inherit">
+            Caring Calendar
+        </Typography>
+      <Button className={classes.button} onClick={() => logout(user)}>{t('logout')}</Button>
+        </Toolbar>
+      </AppBar>
     </div>
   )
 };
 
-const Header = (props) => {
-  const { user, t } = props;
+{/* <Button type="Primary" value={t('Change Password')} onClick={() => history.push('/change-password')} />
+<Button type="Primary" value={t('logout')} onClick={() => logout(user)} /> */}
 
-  return (<div className={ styles.headerBar }>
-    <div className={ styles.leftControls }>
+// LoggedInControls.propTypes = Header.propTypes = {
+Header.propTypes = {
+  /* information about the user; containing their name and list of roles  */
+  user: PropTypes.shape({}),
+  classes: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired,
+  logout: PropTypes.func,
+}
+export default withStyles(styles)(Header);
+//export default Header;
+
+
+{/* <div className="headerBar">
+    <div className="leftControls">
       <h4>
         {
           user ?
@@ -27,20 +65,11 @@ const Header = (props) => {
       </h4>
     </div>
 
-    <div className={ styles.centerControls } >
+    <div className="centerControls" >
      <img src={ logoSrc } />
     </div>
 
-    <div className={ styles.rightControls }>
+    <div className="rightControls">
       { user ? <LoggedInControls {...props} /> :null }
     </div>
-  </div>)
-};
-
-LoggedInControls.propTypes = Header.propTypes = {
-  /* information about the user; containing their name and list of roles  */
-  user: PropTypes.shape({ }),
-  t: PropTypes.func.isRequired
-}
-
-export default Header;
+  </div> */}

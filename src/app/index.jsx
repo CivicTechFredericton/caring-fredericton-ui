@@ -6,11 +6,12 @@ import UploadDemo from 'examples/upload-demo';
 import Verify from 'auth/verify';
 import Header from 'common/header';
 import ChangePassword from 'auth/change-password';
-import Dashboard from 'examples/dashboard';
+// import Dashboard from 'examples/dashboard';
 import { Route, Switch } from 'react-router-dom';
 import SecureRoute from 'routes/secure-route';
 import styles from './index.scss';
 import Home from 'components/Home';
+import Registration from 'components/Registration';
 
 const App = () => {
   return (<div className={ styles.appWrapper }>
@@ -23,8 +24,9 @@ const App = () => {
       <Route path="/register" component={ Register }/>
       <Route path="/upload" component={ UploadDemo }/>
       <Route path="/home" component={ Home }/>
+      <Route path="/registration" component={ Registration }/>
       <SecureRoute path="/change-password" component={ ChangePassword }/>
-      <SecureRoute component={ Dashboard } />
+      <SecureRoute component={ Home } />
     </Switch>
   </div>);
 };
