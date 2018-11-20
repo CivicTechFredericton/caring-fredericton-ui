@@ -12,4 +12,3 @@ const mapDispatch = {
 };
 
 export default hocs({ i18n: 'header', router: true, redux: { mapState, mapDispatch } })(Header);
-//export default hocs({ i18n: 'header', router: true})(Header);
