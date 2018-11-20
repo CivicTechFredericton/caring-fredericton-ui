@@ -7,5 +7,8 @@
   "password_required": "Password is required",
   "confirm_password_required": "Must confirm password",
   "password_mismatch": "Password does not match",
-  "register": "Register"
+  "register": "Register",
+  "orgName": "Organization Name",
+  "email":"Email",
+  "phoneNumber": "Phone Number"
 }

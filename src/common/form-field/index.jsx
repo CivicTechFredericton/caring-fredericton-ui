@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './index.scss';
 import PropTypes from 'prop-types';
 import hocs from 'common/common-hocs';
+import { TextField } from '@material-ui/core';
 
 const UploadField = ({ onChange = e => e }) => {
   const finalOnChange = e => {
@@ -42,7 +43,7 @@ const FormField = (props) => {
       {
         type === 'file' ?
           <UploadField { ...input } /> :
-          <input {...input} type={ type } />
+          <TextField InputProps={input} type={ type } />
       }
       {
         touched && error ?

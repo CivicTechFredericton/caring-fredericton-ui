@@ -1,46 +1,46 @@
 import React from 'react';
+require('./index.scss');
+// import history from 'routes/history';
 import PropTypes from 'prop-types';
-import styles from './index.scss';
-import history from 'routes/history';
-import logoSrc from './imgs/logo.png';
+import { withStyles } from '@material-ui/core/styles';
+import { AppBar, Toolbar, Button, Typography, Grid } from '@material-ui/core';
 
-const LoggedInControls = ({ t, user, logout }) => {
+
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+};
+
+const Header = (props) => {
+  const { user, t, logout, classes } = props;
+  // const { classes } = props;
   return (
-    <div>
-      <input type="button" value={ t('Change Password')} onClick={() => history.push('/change-password')} />
-      <input type="button" value={ t('logout') } onClick={() => logout(user)}/>
+    <div className={classes.root}>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <Grid container direction="row" justify="space-between" alignItems="center">
+           <Grid item>
+            <Typography variant="h6" color="inherit">
+              Caring Calendar
+            </Typography>
+            </Grid>
+            <Grid item>
+            <Button className={classes.button} onClick={() => logout(user)}>{t('logout')}</Button>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      </AppBar>
     </div>
   )
 };
 
-const Header = (props) => {
-  const { user, t } = props;
 
-  return (<div className={ styles.headerBar }>
-    <div className={ styles.leftControls }>
-      <h4>
-        {
-          user ?
-          t('header:welcome', { username: user.username }) :
-          t('header:welcome_new_user')
-        }
-      </h4>
-    </div>
-
-    <div className={ styles.centerControls } >
-     <img src={ logoSrc } />
-    </div>
-
-    <div className={ styles.rightControls }>
-      { user ? <LoggedInControls {...props} /> :null }
-    </div>
-  </div>)
-};
-
-LoggedInControls.propTypes = Header.propTypes = {
+Header.propTypes = {
   /* information about the user; containing their name and list of roles  */
-  user: PropTypes.shape({ }),
-  t: PropTypes.func.isRequired
+  user: PropTypes.shape({}),
+  classes: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired,
+  logout: PropTypes.func,
 }
-
-export default Header;
+export default withStyles(styles)(Header);

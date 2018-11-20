@@ -14,8 +14,24 @@ import { currentUser } from 'auth/cognito-redux/api';
 import { fromJS } from 'immutable';
 import './index.scss';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+// import { blue, grey} from '@material-ui/core/colors'
 
-const theme = createMuiTheme();
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#63ccff',
+      main: '#039be5',
+      dark: '#006db3',
+      contrastText: '#000000',
+    },
+    secondary: {
+      light: '#ffb04c',
+      main: '#f57f17',
+      dark: '#bc5100',
+      contrastText: '#000000',
+    },
+  },
+});
 
 /*
   Since we need to wait for the cognito chunk to load;
