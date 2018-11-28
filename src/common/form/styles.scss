@@ -1,4 +1,6 @@
 .form {
+
+  
   fieldset {
     margin-bottom: 10px;
   }
@@ -49,4 +51,8 @@
   justify-content: space-between;
   width: 15vw;
   margin-bottom: 1em;
+}
+
+.formError {
+  width: 450px;
 }

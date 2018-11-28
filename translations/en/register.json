@@ -1,6 +1,5 @@
 {
   "email": "Email",
-  "password": "Password",
   "username_invalid": "Must be a valid email address",
   "confirm_password": "Confirm Password",
   "username_required": "Username is required",
@@ -9,6 +8,11 @@
   "password_mismatch": "Password does not match",
   "register": "Register",
   "orgName": "Organization Name",
-  "email":"Email",
-  "phoneNumber": "Phone Number"
+  "phoneNumber": "Phone Number",
+  "address": "Address",
+  "postalCode": "Postal Code",
+  "name": "Name",
+  "password": "Caring Calendar Password",
+  "confirmPassword": "Confirm Password"
+
 }
