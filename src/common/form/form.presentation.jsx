@@ -4,6 +4,7 @@ import LoadingSpinner from 'common/loading-spinner';
 import styles from './styles';
 import AutobindComponent from 'common/autobind-component';
 import classnames from 'classnames';
+import { Grid, Button} from '@material-ui/core';
 
 const FormError = ({ error, t, formValues }) => {
   if(error) {
@@ -35,7 +36,13 @@ class Form extends AutobindComponent {
       { [styles.submitting]: submitting }
     );
 
-    return (<div className={ finalFormClassName }>
+    return (
+      <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center">
+    <div className={ finalFormClassName }>
       { header ? (<h1>{ header }</h1>) : null }
       <form onSubmit={ handleSubmit(onSubmit) }>
         { submitting ? (<div className={ styles.spinner }><LoadingSpinner /></div>) : null }
@@ -46,16 +53,24 @@ class Form extends AutobindComponent {
         }
         {
           submitLabel ?
-          (<input className={ styles.submitButton } type="submit" value={ submitLabel } disabled={ !valid || submitting } />) :
+          (<Grid item>
+              <Button color="primary"  type="submit"  disabled={ !valid || submitting }>submitLabel</Button>
+          </Grid>) :
           null
         }
         {
           error ?
-          (<FormError { ...this.props } />) :
+          (
+            <div className="formError">
+          <FormError { ...this.props } />
+          </div>
+           ) :
           null
         }
       </form>
-    </div>);
+    </div>
+    </Grid>
+    );
   }
 }
 

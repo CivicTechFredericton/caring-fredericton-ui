@@ -13,6 +13,4 @@ const mapState = state => ({
   formValues: selectFormValues(state)
 });
 
-
-// export default hocs({ form: "registration", i18n: 'header', router: true, redux: { mapState, mapDispatch } })(Registration);
 export default hocs({ form, i18n: 'register', router: false, redux: { mapState } })(Registration);

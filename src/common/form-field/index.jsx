@@ -4,6 +4,18 @@ import PropTypes from 'prop-types';
 import hocs from 'common/common-hocs';
 import { TextField } from '@material-ui/core';
 
+// const styles = () => createStyles({
+//   formField: {
+//     marginBottom: 20
+//   },
+//   error: {
+//       color: 'red'
+//   },
+//   warning: {
+//       color: 'orange'
+//   }
+// });
+
 const UploadField = ({ onChange = e => e }) => {
   const finalOnChange = e => {
     const file = e.target.files[0];
@@ -34,6 +46,7 @@ const FormField = (props) => {
   const { label, input, type, meta: { error, warning, touched }, t } = props;
 
   return (
+    
     <div className={ styles.formField }>
       {
         label ?
@@ -52,7 +65,7 @@ const FormField = (props) => {
       }
       {
         touched && warning ?
-          (<span className={ styles.warning }>{ t(warning) }</span>) :
+          (<span className={styles.warning }>{ t(warning) }</span>) :
           null
       }
     </div>
