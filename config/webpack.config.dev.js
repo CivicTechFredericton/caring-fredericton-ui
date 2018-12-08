@@ -340,6 +340,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
+			scripts: ["https://fonts.googleapis.com/css?family=Roboto:300,400,500"],
+			env: process.env,
+			title: 'Caring Calendar',
+			baseHref: '/',
     }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:

@@ -429,6 +429,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
+			scripts: ["https://fonts.googleapis.com/css?family=Roboto:300,400,500"],
+			env: process.env,
+			title: 'Caring Calendar',
+			baseHref: '/',
       minify: {
         removeComments: true,
         collapseWhitespace: true,

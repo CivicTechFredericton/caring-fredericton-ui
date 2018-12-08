@@ -1,0 +1,7 @@
+{
+  "COGNITO_POOL_DETAILS": {
+    "UserPoolId": "ca-central-1_0uywur7Gr",
+    "ClientId": "53hnmnp1cmrsopppu0hr8fb00r"
+  },
+  "API_URL": "http://localhost:5000"
+}

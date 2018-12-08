@@ -1,0 +1,15 @@
+{
+  "lbl_register_now": "Don't have an account? Register now!",
+  "lbl_forgot_password": "Forgot Password?",
+  "username": "Username",
+  "password": "Password",
+  "username_required": "Username is required",
+  "password_required": "Password is required",
+  "email": "Email",
+  "new_password": "New Password",
+  "new_password_required": "New Password is required",
+  "mfa_code": "MFA Code",
+  "mfa_code_required": "MFA Code is required",
+  "login": "Login",
+  "additional_information": "Additional Required Information"
+}
