@@ -1,8 +1,0 @@
-#Must be CloudFormation stack compatible (Alphanumeric plus hyphens)
-project_code: caring-fred
-region: us-east-1
-
-domain: caringfredericton.com
-stack_tags:
-  CLIENT: Civic Tech Fredericton
-  PROJECT: Caring Calendar

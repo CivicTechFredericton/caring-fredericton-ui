@@ -1,16 +1,14 @@
-:global {
-  $roboto-font-path: '~roboto-fontface/fonts';
-  @import '~roboto-fontface/css/roboto/sass/roboto-fontface-black.scss';
-}
-
-html, body {
-  padding: 0;
+body {
   margin: 0;
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#app {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
