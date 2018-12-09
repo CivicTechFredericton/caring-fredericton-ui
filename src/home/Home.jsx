@@ -1,26 +1,32 @@
-import React, { Component } from 'react';
-import logo from '../logo.svg';
-import './Home.scss';
+import React from 'react';
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
 
-class Home extends Component {
-  render() {
-    return (
-      <div className="Home">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-      </div>
-    );
-  }
+import '../style/react-big-calendar.css';
+
+
+const localizer = BigCalendar.momentLocalizer(moment);
+const myEventsList = [];
+
+class Home extends React.Component {
+
+    render() {
+        return (
+            <div style={{display: "inline-block"}}>
+                <div style={{width:230,display: "inline-block"}}>
+                  filter
+                </div>
+                <div style={{display: "inline-block"}}>
+                <BigCalendar
+                     style={{ height: 500, width: 850}}
+                    localizer={localizer}
+                    events={myEventsList}
+                    startAccessor="start"
+                    endAccessor="end" />
+                </div>
+            </div>
+        )
+    }
 }
 
 export default Home;
