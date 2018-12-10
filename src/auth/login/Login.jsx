@@ -1,9 +1,22 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
+import FormField from '../../components/common/formField';
+import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-const Login = () => (
-  <div>
-    <h1>Any place in your app!</h1>
+const styles = () => createStyles({
+  button: {
+    margin: 25,
+  }
+});
+
+const Login = (props) => (
+  <Grid container
+        direction="column"
+        justify="flex-start"
+       alignItems="center"
+    >
+    <h1>Login</h1>
     <Formik
       initialValues={{ email: '', password: '' }}
       validate={values => {
@@ -26,17 +39,35 @@ const Login = () => (
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field type="email" name="email" />
-          <ErrorMessage name="email" component="div" />
-          <Field type="password" name="password" />
-          <ErrorMessage name="password" component="div" />
-          <button type="submit" disabled={isSubmitting}>
+          <Field className={props.classes.field}
+                 type="email" 
+                 name="email" 
+                 label="User Name" 
+                 component={FormField} 
+                 placeholder="Email" />
+          <Field className={props.classes.field}
+                 type="password" 
+                 name="password" 
+                 label= "Password" 
+                 component={FormField} 
+                 placeholder="Password"/>
+          <Button className={props.classes.button} 
+                  variant="contained" 
+                  color="primary" 
+                  type="submit" 
+                  disabled={isSubmitting}>
             Submit
-          </button>
+          </Button>
         </Form>
       )}
     </Formik>
-  </div>
+  </Grid>
 );
 
-export default Login;
+Login.propTypes = {
+  classes: PropTypes.any
+};
+
+export default withStyles(styles)(Login);
+
+
