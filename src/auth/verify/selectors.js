@@ -5,6 +5,7 @@ const formValuesSelector = getFormValues(FORM_NAME);
 
 export const selectFormValues = state => {
   return formValuesSelector(state);
-}
+};
 
-export const selectUserName = (state, props) => decodeURIComponent(props.match.params.username)
+export const selectUserName = (state, props) =>
+  decodeURIComponent(props.match.params.username);

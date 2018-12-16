@@ -13,41 +13,44 @@ module.exports = {
   output: {
     path: PATHS.build,
     publicPath: '/',
-    filename: '[name].[hash].js'
+    filename: '[name].[hash].js',
   },
   module: {
     rules: [
       {
-        test: /\.(scss|css|sass)?$/,
-        use:  [
+        test: /\.(s?css|sass)?$/,
+        use: [
           MiniCssExtractPlugin.loader,
           'css-loader?modules&localIdentName=[name]__[local]___[hash:base64:5]',
-          'sass-loader'
-        ]
-      }
-    ]
+          'sass-loader',
+        ],
+      },
+    ],
   },
-	devtool: 'source-map',
+  devtool: 'source-map',
   plugins: [
-    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify("production") }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
     new CleanPlugin([PATHS.build], {
-      root: process.cwd() // because Windows
+      root: process.cwd(), // because Windows
     }),
     new MiniCssExtractPlugin({
       filename: 'styles/[name].[hash].css',
       chunkFilename: 'styles/[id].[hash]css',
-      allChunks: true
+      allChunks: true,
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
-      debug: false
-    })
+      debug: false,
+    }),
   ],
 
   optimization: {
-    splitChunks: { // CommonsChunkPlugin()
+    splitChunks: {
+      // CommonsChunkPlugin()
       name: 'vendor',
-      minChunks: 2
+      minChunks: 2,
       //minChunks: ({ resource }) => /node_modules/.test(resource)
     },
     minimizer: [
@@ -55,19 +58,19 @@ module.exports = {
         uglifyOptions: {
           mangle: {
             ie8: true,
-            keep_fnames: true
+            keep_fnames: true,
           },
           compress: {
             ie8: true,
-            warnings: false
+            warnings: false,
           },
           output: {
             beautify: false,
-            comments: false
-          }
+            comments: false,
+          },
         },
         sourceMap: true,
-      })
-    ]
-  }
+      }),
+    ],
+  },
 };

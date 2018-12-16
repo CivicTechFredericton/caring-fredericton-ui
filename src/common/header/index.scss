@@ -5,11 +5,13 @@
   align-items: center;
   min-height: 45px;
   height: 45px;
-  box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
   padding: 0.5em;
   margin-bottom: 2vh;
 
-  .leftControls, .centerControls, .rightControls {
+  .leftControls,
+  .centerControls,
+  .rightControls {
     display: flex;
     height: 100%;
     align-items: center;
@@ -18,13 +20,13 @@
 
   .leftControls {
     justify-content: flex-start;
-    img:hover{
+    img:hover {
       cursor: pointer;
     }
   }
 
   .centerControls {
-      justify-content: center;
+    justify-content: center;
   }
 
   .rightControls {

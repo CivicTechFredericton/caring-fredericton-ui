@@ -38,30 +38,26 @@ const theme = createMuiTheme({
   we need to wait for the store to build
 */
 const asyncStore = currentUser().then(user => {
-  return createStore(fromJS({ cognito: { user } }))
+  return createStore(fromJS({ cognito: { user } }));
 });
 
-const renderApp = (Component) => {
-
+const renderApp = Component => {
   asyncStore.then(store => {
     ReactDOM.render(
-      (<AppContainer>
-          <Provider store={store}>
-            <I18nextProvider i18n={i18n}>
-            
-              <ConnectedRouter history={history}>
+      <AppContainer>
+        <Provider store={store}>
+          <I18nextProvider i18n={i18n}>
+            <ConnectedRouter history={history}>
               <MuiThemeProvider theme={theme}>
                 <Component />
-                </MuiThemeProvider>
-              </ConnectedRouter>
-              
-            </I18nextProvider>
-          </Provider>
-      </AppContainer>),
+              </MuiThemeProvider>
+            </ConnectedRouter>
+          </I18nextProvider>
+        </Provider>
+      </AppContainer>,
       document.getElementById('app')
     );
-  })
-
+  });
 };
 
 renderApp(App);
@@ -75,5 +71,5 @@ if (module.hot) {
 
 window.__APP_INFORMATION = {
   version: VERSION,
-  release: RELEASE
+  release: RELEASE,
 };

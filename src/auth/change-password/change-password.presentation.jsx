@@ -10,28 +10,41 @@ import Form from 'common/form';
 import FormField from 'common/form-field';
 
 class ChangePassword extends AutobindComponent {
-
   render() {
     const { t } = this.props;
 
     return (
       <div className={styles.changePasswordPage}>
-        <Form form={FORM_NAME} onSubmit={changePassword} header={t('changePassword:Change Password')} submitLabel={t('changePassword:Change Password')} >
+        <Form
+          form={FORM_NAME}
+          onSubmit={changePassword}
+          header={t('changePassword:Change Password')}
+          submitLabel={t('changePassword:Change Password')}
+        >
           <Field
-            required={true} component={FormField} type="password"
-            name="oldPassword" label={t('changePassword:Old Password')}
+            required={true}
+            component={FormField}
+            type='password'
+            name='oldPassword'
+            label={t('changePassword:Old Password')}
           />
           <Field
-            required={true} component={FormField} type="password"
-            name="newPassword" label={t('changePassword:New Password')}
+            required={true}
+            component={FormField}
+            type='password'
+            name='newPassword'
+            label={t('changePassword:New Password')}
           />
           <Field
-            required={true} component={FormField} type="password"
-            name="confirmPassword" label={t('changePassword:Confirm Password')}
+            required={true}
+            component={FormField}
+            type='password'
+            name='confirmPassword'
+            label={t('changePassword:Confirm Password')}
           />
         </Form>
       </div>
-    )
+    );
   }
 }
 
@@ -40,8 +53,8 @@ ChangePassword.propTypes = {
   submitting: PropTypes.bool,
   valid: PropTypes.bool,
   error: PropTypes.shape({
-    code: PropTypes.oneOf(Object.values(ERRORS))
-  })
-}
+    code: PropTypes.oneOf(Object.values(ERRORS)),
+  }),
+};
 
 export default ChangePassword;

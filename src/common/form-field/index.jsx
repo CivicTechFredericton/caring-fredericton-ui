@@ -30,44 +30,40 @@ const UploadField = ({ onChange = e => e }) => {
 
     reader.onerror = error => {
       // @TODO Replace with a nice error message?
-      alert('Failed to upload file :(', error)
+      alert('Failed to upload file :(', error);
     };
-
   };
 
-  return (<input type='file' onChange={ finalOnChange } />)
+  return <input type='file' onChange={finalOnChange} />;
 };
 
 UploadField.propTypes = {
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };
 
-const FormField = (props) => {
-  const { label, input, type, meta: { error, warning, touched }, t } = props;
+const FormField = props => {
+  const {
+    label,
+    input,
+    type,
+    meta: { error, warning, touched },
+    t,
+  } = props;
 
   return (
-    
-    <div className={ styles.formField }>
-      {
-        label ?
-          (<label>{ label }</label>) :
-          null
-      }
-      {
-        type === 'file' ?
-          <UploadField { ...input } /> :
-          <TextField InputProps={input} type={ type } />
-      }
-      {
-        touched && error ?
-          (<span className={ styles.error }>{ t(error) }</span>) :
-          null
-      }
-      {
-        touched && warning ?
-          (<span className={styles.warning }>{ t(warning) }</span>) :
-          null
-      }
+    <div className={styles.formField}>
+      {label ? <label>{label}</label> : null}
+      {type === 'file' ? (
+        <UploadField {...input} />
+      ) : (
+        <TextField InputProps={input} type={type} />
+      )}
+      {touched && error ? (
+        <span className={styles.error}>{t(error)}</span>
+      ) : null}
+      {touched && warning ? (
+        <span className={styles.warning}>{t(warning)}</span>
+      ) : null}
     </div>
   );
 };
@@ -78,9 +74,9 @@ FormField.propTypes = {
   type: PropTypes.string,
   meta: PropTypes.shape({
     error: PropTypes.node,
-    warning: PropTypes.node
+    warning: PropTypes.node,
   }),
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
 };
 
 export default hocs({ i18n: [] })(FormField);

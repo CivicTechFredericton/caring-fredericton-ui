@@ -7,7 +7,7 @@ const selectReducer = state => state.get(REDUCER_NAME);
 export const selectUser = createSelector(
   [selectReducer],
   reducer => reducer.get('user', null)
-)
+);
 
 const selectLoginErrors = createSelector(
   [selectReducer],
@@ -17,14 +17,14 @@ const selectLoginErrors = createSelector(
 export const selectNewPasswordRequired = createSelector(
   [selectLoginErrors],
   errors => errors.get('newPasswordRequired')
-)
+);
 
 export const selectAttributesRequired = createSelector(
   [selectLoginErrors],
   errors => errors.get('attributesRequired')
-)
+);
 
 export const selectMFARequired = createSelector(
   [selectLoginErrors],
   errors => errors.get('mfaRequired')
-)
+);

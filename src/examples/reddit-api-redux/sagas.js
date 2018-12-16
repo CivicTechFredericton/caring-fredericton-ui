@@ -6,23 +6,25 @@ import { selectPosts } from './selectors';
 
 const onFetchSubreddits = () => {
   return fetchTopSubrredits();
-}
+};
 
 const onUploadExample = ({ payload }) => {
   return uploadExample(payload.toJS());
-}
+};
 
 function* onFetchPosts({ payload }) {
   // These lines prevent posts from being fetched again if we already have any
   // post for the subreddit we're looking at. This reduces API calls
   const posts = yield select(selectPosts);
-  const existingPost = posts.find(post => post.get('subreddit') === payload.name);
+  const existingPost = posts.find(
+    post => post.get('subreddit') === payload.name
+  );
 
   return existingPost ? {} : yield fetchRedditPosts(payload);
 }
 
-export default function* () {
+export default function*() {
   yield takeLatestRoutine(actions.fetchSubReddits, onFetchSubreddits);
   yield takeLatestRoutine(actions.fetchPosts, onFetchPosts);
-  yield takeLatestRoutine(actions.uploadExample, onUploadExample)
+  yield takeLatestRoutine(actions.uploadExample, onUploadExample);
 }

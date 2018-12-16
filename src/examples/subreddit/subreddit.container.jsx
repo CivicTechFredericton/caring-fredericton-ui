@@ -4,11 +4,13 @@ import { selectCurrentPosts } from './selectors';
 import SubReddit from './subreddit.presentation';
 
 const mapState = (state, props) => ({
-  posts: selectCurrentPosts(state, props)
+  posts: selectCurrentPosts(state, props),
 });
 
 const mapDispatch = {
-  fetchPosts: fetchPosts.trigger
+  fetchPosts: fetchPosts.trigger,
 };
 
-export default hocs({ i18n: 'examples', redux: { mapState, mapDispatch } })(SubReddit);
+export default hocs({ i18n: 'examples', redux: { mapState, mapDispatch } })(
+  SubReddit
+);

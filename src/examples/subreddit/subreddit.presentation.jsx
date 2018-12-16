@@ -6,7 +6,6 @@ import styles from './index.scss';
 import Post from 'examples/post';
 
 class SubReddit extends AutobindComponent {
-
   componentWillMount() {
     const { match, fetchPosts } = this.props;
 
@@ -16,7 +15,10 @@ class SubReddit extends AutobindComponent {
   componentWillReceiveProps(nextProps) {
     const { fetchPosts, match } = this.props;
 
-    if(nextProps.match.params.srName && nextProps.match.params.srName !== match.params.srName ) {
+    if (
+      nextProps.match.params.srName &&
+      nextProps.match.params.srName !== match.params.srName
+    ) {
       fetchPosts({ name: nextProps.match.params.srName });
     }
   }
@@ -25,31 +27,30 @@ class SubReddit extends AutobindComponent {
     const { match, t, posts } = this.props;
 
     return (
-      <div className={ styles.subredditWrapper }>
-        <div className={ styles.header }>
-          <span>{t('currently_viewing', { name: `${ match.params.srName}` })}</span>
+      <div className={styles.subredditWrapper}>
+        <div className={styles.header}>
+          <span>
+            {t('currently_viewing', { name: `${match.params.srName}` })}
+          </span>
         </div>
-        <div className={ styles.postWrapper }>
-          {
-            posts && posts.map(post => (<Post key={ post.get('name') } { ...post.toJS() } />))
-          }
-          {
-            !posts && (<div>{ t('loading') }</div>)
-          }
+        <div className={styles.postWrapper}>
+          {posts &&
+            posts.map(post => <Post key={post.get('name')} {...post.toJS()} />)}
+          {!posts && <div>{t('loading')}</div>}
         </div>
       </div>
-    )
+    );
   }
 }
 
 SubReddit.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      srName: PropTypes.string.isRequired
-    }).isRequired
+      srName: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   fetchPosts: PropTypes.func.isRequired,
-  posts: IPropTypes.list
+  posts: IPropTypes.list,
 };
 
 export default SubReddit;

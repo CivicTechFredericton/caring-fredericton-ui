@@ -4,72 +4,76 @@ import LoadingSpinner from 'common/loading-spinner';
 import styles from './styles';
 import AutobindComponent from 'common/autobind-component';
 import classnames from 'classnames';
-import { Grid, Button} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 
 const FormError = ({ error, t, formValues }) => {
-  if(error) {
+  if (error) {
     const errorValues = formValues ? formValues.toJS() : {};
 
     const finalErrorValues = {
       ...errorValues,
-      message: error.message
+      message: error.message,
     };
 
-    return (<div className={ styles.errors }>
-      <div className={ styles.error }>
-      { t(`errors:${error.code}`, { ...finalErrorValues }) }
+    return (
+      <div className={styles.errors}>
+        <div className={styles.error}>
+          {t(`errors:${error.code}`, { ...finalErrorValues })}
+        </div>
       </div>
-    </div>);
+    );
   }
 
   return null;
 };
 
 class Form extends AutobindComponent {
-
-
   render() {
-    const { onSubmit, header, submitting, valid, children, submitLabel, handleSubmit, error } = this.props;
+    const {
+      onSubmit,
+      header,
+      submitting,
+      valid,
+      children,
+      submitLabel,
+      handleSubmit,
+      error,
+    } = this.props;
 
-    const finalFormClassName = classnames(
-      styles.form,
-      { [styles.submitting]: submitting }
-    );
+    const finalFormClassName = classnames(styles.form, {
+      [styles.submitting]: submitting,
+    });
 
     return (
-      <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center">
-    <div className={ finalFormClassName }>
-      { header ? (<h1>{ header }</h1>) : null }
-      <form onSubmit={ handleSubmit(onSubmit) }>
-        { submitting ? (<div className={ styles.spinner }><LoadingSpinner /></div>) : null }
-        {
-          children instanceof Function ?
-          children(this.props) :
-          children
-        }
-        {
-          submitLabel ?
-          (<Grid item>
-              <Button color="primary"  type="submit"  disabled={ !valid || submitting }>submitLabel</Button>
-          </Grid>) :
-          null
-        }
-        {
-          error ?
-          (
-            <div className="formError">
-          <FormError { ...this.props } />
-          </div>
-           ) :
-          null
-        }
-      </form>
-    </div>
-    </Grid>
+      <Grid container direction='column' justify='center' alignItems='center'>
+        <div className={finalFormClassName}>
+          {header ? <h1>{header}</h1> : null}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {submitting ? (
+              <div className={styles.spinner}>
+                <LoadingSpinner />
+              </div>
+            ) : null}
+            {children instanceof Function ? children(this.props) : children}
+            {submitLabel ? (
+              <Grid item>
+                <Button
+                  color='primary'
+                  type='submit'
+                  disabled={!valid || submitting}
+                >
+                  submitLabel
+                </Button>
+              </Grid>
+            ) : null}
+            {error ? (
+              <div className='formError'>
+                <FormError {...this.props} />
+              </div>
+            ) : null}
+          </form>
+        </div>
+      </Grid>
     );
   }
 }
@@ -82,15 +86,15 @@ FormError.propTypes = Form.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
-    PropTypes.func
+    PropTypes.func,
   ]),
   form: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   formValues: PropTypes.any,
   error: PropTypes.shape({
     code: PropTypes.string,
-    message: PropTypes.string
-  })
+    message: PropTypes.string,
+  }),
 };
 
 export default Form;

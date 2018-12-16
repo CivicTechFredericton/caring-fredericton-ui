@@ -3,8 +3,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-  .verifyError, .verifyWarn {
+
+  .verifyError,
+  .verifyWarn {
     border-radius: 3px;
     padding: 0.25em;
     font-weight: bold;

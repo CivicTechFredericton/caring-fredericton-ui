@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'class-autobind';
-import { shouldComponentUpdate }  from 'react-immutable-render-mixin';
+import { shouldComponentUpdate } from 'react-immutable-render-mixin';
 /*
   Simple helper component which will autobind all functions on a component
   This is necessary becasue the reference to "this" can be lost in React components
@@ -29,7 +29,8 @@ class AutobindComponent extends React.Component {
     // is updated. This handles certain cases where should update isn't correct
     const { location } = this.props;
 
-    const locationChanged = location && location.pathname !== nextProps.location.pathname;
+    const locationChanged =
+      location && location.pathname !== nextProps.location.pathname;
 
     return locationChanged || this.shouldUpdate(nextProps, nextState);
   }
@@ -38,13 +39,13 @@ class AutobindComponent extends React.Component {
 // we are default the translation function
 // so we don't have to define it in tests
 AutobindComponent.defaultProps = {
-  t: e => e
-}
+  t: e => e,
+};
 
 AutobindComponent.propTypes = {
   location: PropTypes.shape({
-    pathname: PropTypes.string
-  })
-}
+    pathname: PropTypes.string,
+  }),
+};
 
 export default AutobindComponent;

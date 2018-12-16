@@ -7,5 +7,5 @@ export const ERRORS = {
   MFARequired: 'MFARequired',
   InvalidPasswordException: 'InvalidPasswordException',
   UserNotFoundException: 'UserNotFoundException',
-  UsernameExistsException: 'UsernameExistsException'
+  UsernameExistsException: 'UsernameExistsException',
 };

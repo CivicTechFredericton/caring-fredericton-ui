@@ -11,35 +11,44 @@ import { FORM_NAME } from './constants';
 import validate from './validate';
 
 const VerifyError = ({ error, t, formValues }) => {
-
-  if(error) {
-    return (<div className={ styles.verifyError }>
-      { t(`verify:${error.code}`, { username: formValues.get('username'), message: error.message }) }
-    </div>);
+  if (error) {
+    return (
+      <div className={styles.verifyError}>
+        {t(`verify:${error.code}`, {
+          username: formValues.get('username'),
+          message: error.message,
+        })}
+      </div>
+    );
   }
 
   return null;
-}
-
+};
 
 class Verify extends AutobindComponent {
-
   render() {
     const { t, initialValues } = this.props;
 
     return (
-      <div className={ styles.verifyPage }>
+      <div className={styles.verifyPage}>
         <Form
-          initialValues={ initialValues } onSubmit={ verify } validate={ validate }
-          header={ 'Verify' } submitLabel={ 'Verify' } form={ FORM_NAME } >
+          initialValues={initialValues}
+          onSubmit={verify}
+          validate={validate}
+          header={'Verify'}
+          submitLabel={'Verify'}
+          form={FORM_NAME}
+        >
           <Field
-            required={ true } component={ FormField }
-            type="text" name="code" label={ t('verify:code') }
+            required={true}
+            component={FormField}
+            type='text'
+            name='code'
+            label={t('verify:code')}
           />
         </Form>
-
       </div>
-    )
+    );
   }
 }
 
@@ -48,10 +57,10 @@ VerifyError.propTypes = Verify.propTypes = {
   submitting: PropTypes.bool,
   valid: PropTypes.bool,
   error: PropTypes.shape({
-    code: PropTypes.oneOf(Object.values(ERRORS))
+    code: PropTypes.oneOf(Object.values(ERRORS)),
   }),
   handleSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.object
-}
+  initialValues: PropTypes.object,
+};
 
 export default Verify;

@@ -1,7 +1,7 @@
-export default (values) => {
+export default values => {
   const errors = {};
 
-  if(!values.get('code')) {
+  if (!values.get('code')) {
     errors.code = 'verify:code_required';
   }
 

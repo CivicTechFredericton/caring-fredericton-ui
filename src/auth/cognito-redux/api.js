@@ -20,27 +20,31 @@ const getPool = () => {
 
     return _pool;
   });
-}
+};
 
 export const currentUser = () => {
   return getPool().then(pool => pool.getCurrentUser());
 };
 
 export const getCurrentUserSession = () => {
-  return currentUser().then((user) => {
+  return currentUser().then(user => {
     return new Promise((resolve, reject) => {
       user.getSession((err, session) => {
-        if(err) {
+        if (err) {
           reject(err);
         }
 
         resolve(session);
       });
     });
-  })
+  });
 };
 
-const _requiredAttributePresent = (attribute, userAttributes, newAttributes) => {
+const _requiredAttributePresent = (
+  attribute,
+  userAttributes,
+  newAttributes
+) => {
   if (userAttributes && userAttributes[attribute] !== '') {
     return true;
   }
@@ -50,87 +54,87 @@ const _requiredAttributePresent = (attribute, userAttributes, newAttributes) => 
   }
 
   return false;
-}
+};
 
 export const signUp = ({ username, password }) => {
   return new Promise((resolve, reject) => {
-    Promise.all([getPool(), CognitoSDK]).then(([pool, { CognitoUserAttribute }]) => {
-      const dataEmail = {
-        Name: 'email',
-        Value: username
-      };
+    Promise.all([getPool(), CognitoSDK]).then(
+      ([pool, { CognitoUserAttribute }]) => {
+        const dataEmail = {
+          Name: 'email',
+          Value: username,
+        };
 
-      const attributes = [new CognitoUserAttribute(dataEmail)];
+        const attributes = [new CognitoUserAttribute(dataEmail)];
 
-      pool.signUp(username, password, attributes, null, (err, result) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(result);
-      });
-    })
+        pool.signUp(username, password, attributes, null, (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(result);
+        });
+      }
+    );
   });
-}
+};
 
-
-export const verifyUser = (payload) => {
-
+export const verifyUser = payload => {
   return new Promise((resolve, reject) => {
     Promise.all([getPool(), CognitoSDK]).then(([pool, { CognitoUser }]) => {
       const cognitoUser = new CognitoUser({
         Pool: pool,
-        Username: payload.username
+        Username: payload.username,
       });
 
       cognitoUser.confirmRegistration(payload.code, true, (err, result) => {
         if (err) {
           return reject(err);
         }
-        return resolve(result)
+        return resolve(result);
       });
-    })
+    });
   });
-}
+};
 
-export const setUserPassword = (payload) => {
+export const setUserPassword = payload => {
   return new Promise((resolve, reject) => {
     Promise.all([getPool(), CognitoSDK]).then(([pool, { CognitoUser }]) => {
       const cognitoUser = new CognitoUser({
         Pool: pool,
-        Username: payload.username
+        Username: payload.username,
       });
 
       cognitoUser.confirmPassword(payload.verificationCode, payload.password, {
         onSuccess() {
-          resolve()
+          resolve();
         },
         onFailure(err) {
-          reject(err)
-        }
+          reject(err);
+        },
       });
     });
   });
-}
+};
 
-export const forgotUserPassword = (payload) => {
+export const forgotUserPassword = payload => {
   return new Promise((resolve, reject) => {
     Promise.all([getPool(), CognitoSDK]).then(([pool, { CognitoUser }]) => {
       const cognitoUser = new CognitoUser({
         Pool: pool,
-        Username: payload.username
+        Username: payload.username,
       });
 
       cognitoUser.forgotPassword({
-        onSuccess: function () {
+        onSuccess: function() {
           resolve(payload.username);
         },
         onFailure: function(err) {
           reject(err);
-        }
+        },
       });
     });
   });
-}
+};
 
 /**
  * Changes the current user's password.
@@ -138,11 +142,10 @@ export const forgotUserPassword = (payload) => {
  * @param {string} newPassword The desired new password
  */
 export const changeUserPassword = ({ oldPassword, newPassword }) => {
-
   return new Promise((resolve, reject) => {
     currentUser().then(currentUser => {
       // get session otherwise the .changePassword call will fail
-      currentUser.getSession((err) => {
+      currentUser.getSession(err => {
         if (err) {
           return reject(err);
         }
@@ -155,7 +158,7 @@ export const changeUserPassword = ({ oldPassword, newPassword }) => {
       });
     });
   });
-}
+};
 
 class CognitoAuthorizer {
   constructor(props) {
@@ -163,7 +166,6 @@ class CognitoAuthorizer {
 
     this._user = this._getUser();
     this._details = this._getDetails();
-
 
     this._promise = new Promise((resolve, reject) => {
       this._resolve = resolve;
@@ -176,46 +178,43 @@ class CognitoAuthorizer {
   _getUser() {
     const { username, session } = this.props;
 
-    return Promise.all([getPool(), CognitoSDK]).then(([pool, { CognitoUser }]) => {
-      const user = new CognitoUser({
-        Pool: pool,
-        Username: username
-      })
+    return Promise.all([getPool(), CognitoSDK]).then(
+      ([pool, { CognitoUser }]) => {
+        const user = new CognitoUser({
+          Pool: pool,
+          Username: username,
+        });
 
-      if (session) {
-        user.Session = session;
+        if (session) {
+          user.Session = session;
+        }
+
+        return user;
       }
-
-      return user;
-    });
+    );
   }
 
   _getDetails() {
     const { username, password } = this.props;
 
     return CognitoSDK.then(({ AuthenticationDetails }) => {
-
       return new AuthenticationDetails({
         Username: username,
-        Password: password
-      }
-      )
+        Password: password,
+      });
     });
   }
 
   authorize() {
     const { mfaCode } = this.props;
 
-    return Promise.all([this._user, this._details])
-      .then(([user, details]) => {
+    return Promise.all([this._user, this._details]).then(([user, details]) => {
+      mfaCode
+        ? user.sendMFACode(mfaCode, this)
+        : user.authenticateUser(details, this);
 
-        mfaCode ?
-          user.sendMFACode(mfaCode, this) :
-          user.authenticateUser(details, this);
-
-        return this._promise;
-      })
-
+      return this._promise;
+    });
   }
 
   onSuccess() {
@@ -239,17 +238,21 @@ class CognitoAuthorizer {
       if (missingAttributes.length > 0) {
         return this._reject({
           code: ERRORS.AttributesRequired,
-          attributesRequired: missingAttributes
+          attributesRequired: missingAttributes,
         });
       }
 
-      this._user.then(user => user.completeNewPasswordChallenge(newPassword, attributesData, this))
+      this._user.then(user =>
+        user.completeNewPasswordChallenge(newPassword, attributesData, this)
+      );
 
       return;
     }
 
     return this._reject({
-      code: ERRORS.NewPasswordRequired, userAttributes, requiredAttributes
+      code: ERRORS.NewPasswordRequired,
+      userAttributes,
+      requiredAttributes,
     });
   }
 
@@ -260,10 +263,12 @@ class CognitoAuthorizer {
       this._user.then(user => user.sendMFACode(mfaCode));
     }
 
-    return this._user.then(user => this._reject({
-      code: ERRORS.MFARequired,
-      session: user.Session
-    }));
+    return this._user.then(user =>
+      this._reject({
+        code: ERRORS.MFARequired,
+        session: user.Session,
+      })
+    );
   }
 
   customChallenge(e) {
@@ -271,7 +276,7 @@ class CognitoAuthorizer {
   }
 }
 
-export const authorize = (props) => {
+export const authorize = props => {
   const authorizer = new CognitoAuthorizer(props);
 
   return authorizer.authorize();

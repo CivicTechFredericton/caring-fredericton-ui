@@ -1,6 +1,4 @@
 .form {
-
-  
   fieldset {
     margin-bottom: 10px;
   }
@@ -12,7 +10,8 @@
   .errors {
     margin-top: 10px;
 
-    .error, .warn {
+    .error,
+    .warn {
       border-radius: 3px;
       padding: 0.25em;
       font-weight: bold;
@@ -42,7 +41,7 @@
     height: 100%;
     width: 100%;
     position: absolute;
-    align-items:center;
+    align-items: center;
   }
 
   position: relative;

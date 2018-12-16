@@ -14,21 +14,23 @@ import Home from 'components/Home';
 import Registration from 'components/Registration';
 
 const App = () => {
-  return (<div className={ styles.appWrapper }>
-    <Header />
-    <Switch>
-      <Route path="/login" component={ Login }/>
-      <Route path="/forgot-password" component={ ForgotPassword }/>
-      <Route path="/:username/set-password" component={ SetPassword }/>
-      <Route path="/:username/verify" component={ Verify }/>
-      <Route path="/register" component={ Register }/>
-      <Route path="/upload" component={ UploadDemo }/>
-      <Route path="/home" component={ Home }/>
-      <Route path="/registration" component={ Registration }/>
-      <SecureRoute path="/change-password" component={ ChangePassword }/>
-      <SecureRoute component={ Home } />
-    </Switch>
-  </div>);
+  return (
+    <div className={styles.appWrapper}>
+      <Header />
+      <Switch>
+        <Route path='/login' component={Login} />
+        <Route path='/forgot-password' component={ForgotPassword} />
+        <Route path='/:username/set-password' component={SetPassword} />
+        <Route path='/:username/verify' component={Verify} />
+        <Route path='/register' component={Register} />
+        <Route path='/upload' component={UploadDemo} />
+        <Route path='/home' component={Home} />
+        <Route path='/registration' component={Registration} />
+        <SecureRoute path='/change-password' component={ChangePassword} />
+        <SecureRoute component={Home} />
+      </Switch>
+    </div>
+  );
 };
 
 export default App;

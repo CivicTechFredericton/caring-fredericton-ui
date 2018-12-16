@@ -6,19 +6,19 @@ const fetchPostsSpy = jest.fn();
 
 const fakeMatch = {
   params: {
-    srName: 'fake'
-  }
+    srName: 'fake',
+  },
 };
 
 describe('Subreddit', () => {
   beforeEach(() => {
-    fetchPostsSpy.mockReset()
+    fetchPostsSpy.mockReset();
   });
 
   it('should fetch posts on updates', () => {
-    const wrapper = shallow(<Subreddit
-      fetchPosts={ fetchPostsSpy } match={ fakeMatch }
-    />);
+    const wrapper = shallow(
+      <Subreddit fetchPosts={fetchPostsSpy} match={fakeMatch} />
+    );
 
     wrapper.setProps({ match: { params: { srName: 'fake2' } } });
     wrapper.update();
@@ -28,9 +28,7 @@ describe('Subreddit', () => {
   });
 
   it('should fetch posts for the current subrredit on mount', () => {
-    shallow(<Subreddit
-      fetchPosts={ fetchPostsSpy } match={ fakeMatch }
-    />);
+    shallow(<Subreddit fetchPosts={fetchPostsSpy} match={fakeMatch} />);
 
     expect(fetchPostsSpy.mock.calls.length).toEqual(1);
     expect(fetchPostsSpy.mock.calls[0][0]).toEqual({ name: 'fake' });

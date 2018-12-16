@@ -15,5 +15,5 @@ const reducers = Map(
 export default combineReducers({
   router: routerReducer,
   form: reduxFormReducer,
-  ...reducers
+  ...reducers,
 });

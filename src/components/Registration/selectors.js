@@ -5,4 +5,4 @@ const formValuesSelector = getFormValues(FORM_NAME);
 
 export const selectFormValues = state => {
   return formValuesSelector(state);
-}
+};

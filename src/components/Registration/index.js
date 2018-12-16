@@ -6,11 +6,16 @@ import { FORM_NAME } from './constants';
 
 const form = {
   form: FORM_NAME,
-  validate
+  validate,
 };
 
 const mapState = state => ({
-  formValues: selectFormValues(state)
+  formValues: selectFormValues(state),
 });
 
-export default hocs({ form, i18n: 'register', router: false, redux: { mapState } })(Registration);
+export default hocs({
+  form,
+  i18n: 'register',
+  router: false,
+  redux: { mapState },
+})(Registration);

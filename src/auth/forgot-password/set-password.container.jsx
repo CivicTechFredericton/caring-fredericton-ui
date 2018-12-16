@@ -4,11 +4,11 @@ import { selectUserName } from './selectors';
 
 const mapState = (state, props) => ({
   initialValues: {
-    username: selectUserName(state, props)
-  }
+    username: selectUserName(state, props),
+  },
 });
 
 export default hocs({
   i18n: 'forgotPassword',
-  redux: {mapState}
+  redux: { mapState },
 })(SetPassword);
