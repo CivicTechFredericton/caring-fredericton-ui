@@ -4,18 +4,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, withStyles, createStyles, Grid, TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-const styles = () => createStyles({
-  button: {
-    margin: 25,
-  }
-});
+const styles = () =>
+  createStyles({
+    button: {
+      margin: 25,
+    },
+  });
 
-const Login = (props) => (
-  <Grid container
-        direction="column"
-        justify="flex-start"
-       alignItems="center"
-    >
+const Login = props => (
+  <Grid container direction='column' justify='flex-start' alignItems='center'>
     <h1>Login</h1>
     <Formik
       initialValues={{ email: '', password: '' }}
@@ -88,9 +85,7 @@ const Login = (props) => (
 );
 
 Login.propTypes = {
-  classes: PropTypes.any
+  classes: PropTypes.any,
 };
 
 export default withStyles(styles)(Login);
-
-

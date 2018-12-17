@@ -8,11 +8,11 @@ import { Route, Switch } from 'react-router-dom';
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         <Header />
         <Switch>
-        <Route path="/login" component={Login} />
-          <Route path="/" component={Home} /> 
+          <Route path='/login' component={Login} />
+          <Route path='/' component={Home} />
         </Switch>
       </div>
     );
