@@ -58,17 +58,20 @@ const Login = props => (
                  margin="normal"
                  variant="outlined"
                  component={TextField} 
-                 placeholder="Email" />
+                 placeholder="Email" 
+                 />
           <ErrorMessage name="email" />      
-          <Field className={props.classes.textField}
-                autoComplete="current-password"
+          <Field 
+                 className={props.classes.textField}
+                 autoComplete="current-password"
                  type="password" 
                  name="password" 
                  label= "Password"
                  margin="normal"
                  variant="outlined"
                  component={TextField} 
-                 placeholder="Password"/>
+                 placeholder="Password"
+                 />
            <ErrorMessage name="password" />
           <Button className={props.classes.button} 
                   variant="contained" 

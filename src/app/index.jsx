@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './index.scss';
 import Home from '../home';
+import Registration from '../registration';
 import Header from '../components/header';
 import Login from '../auth/login';
 import { Route, Switch } from 'react-router-dom';
@@ -12,6 +13,7 @@ class App extends Component {
         <Header />
         <Switch>
           <Route path='/login' component={Login} />
+          <Route path='/registration' component={Registration} />
           <Route path='/' component={Home} />
         </Switch>
       </div>
