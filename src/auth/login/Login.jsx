@@ -4,18 +4,15 @@ import FormField from '../../components/common/formField';
 import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-const styles = () => createStyles({
-  button: {
-    margin: 25,
-  }
-});
+const styles = () =>
+  createStyles({
+    button: {
+      margin: 25,
+    },
+  });
 
-const Login = (props) => (
-  <Grid container
-        direction="column"
-        justify="flex-start"
-       alignItems="center"
-    >
+const Login = props => (
+  <Grid container direction='column' justify='flex-start' alignItems='center'>
     <h1>Login</h1>
     <Formik
       initialValues={{ email: '', password: '' }}
@@ -39,23 +36,29 @@ const Login = (props) => (
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field className={props.classes.field}
-                 type="email" 
-                 name="email" 
-                 label="User Name" 
-                 component={FormField} 
-                 placeholder="Email" />
-          <Field className={props.classes.field}
-                 type="password" 
-                 name="password" 
-                 label= "Password" 
-                 component={FormField} 
-                 placeholder="Password"/>
-          <Button className={props.classes.button} 
-                  variant="contained" 
-                  color="primary" 
-                  type="submit" 
-                  disabled={isSubmitting}>
+          <Field
+            className={props.classes.field}
+            type='email'
+            name='email'
+            label='User Name'
+            component={FormField}
+            placeholder='Email'
+          />
+          <Field
+            className={props.classes.field}
+            type='password'
+            name='password'
+            label='Password'
+            component={FormField}
+            placeholder='Password'
+          />
+          <Button
+            className={props.classes.button}
+            variant='contained'
+            color='primary'
+            type='submit'
+            disabled={isSubmitting}
+          >
             Submit
           </Button>
         </Form>
@@ -65,9 +68,7 @@ const Login = (props) => (
 );
 
 Login.propTypes = {
-  classes: PropTypes.any
+  classes: PropTypes.any,
 };
 
 export default withStyles(styles)(Login);
-
-
