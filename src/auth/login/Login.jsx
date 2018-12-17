@@ -1,7 +1,7 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import FormField from '../../components/common/formField';
-import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+// import FormField from '../../components/common/formField';
+import { Button, withStyles, createStyles, Grid, TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 const styles = () => createStyles({
@@ -27,7 +27,16 @@ const Login = (props) => (
           !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
         ) {
           errors.email = 'Invalid email address';
+        } else {
+          errors.email = '';
         }
+        
+        if (!values.password) {
+          errors.password = 'Required';
+        } else {
+          errors.password = '';
+        }
+
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
@@ -39,18 +48,31 @@ const Login = (props) => (
     >
       {({ isSubmitting }) => (
         <Form>
-          <Field className={props.classes.field}
+          <Grid
+          container
+          direction="column"
+          justify="flex-start"
+          alignItems="center"
+          >
+          <Field className={props.classes.textField}
                  type="email" 
                  name="email" 
-                 label="User Name" 
-                 component={FormField} 
+                 label="User Name"
+                 margin="normal"
+                 variant="outlined"
+                 component={TextField} 
                  placeholder="Email" />
-          <Field className={props.classes.field}
+          <ErrorMessage name="email" />      
+          <Field className={props.classes.textField}
+                autoComplete="current-password"
                  type="password" 
                  name="password" 
-                 label= "Password" 
-                 component={FormField} 
+                 label= "Password"
+                 margin="normal"
+                 variant="outlined"
+                 component={TextField} 
                  placeholder="Password"/>
+           <ErrorMessage name="password" />
           <Button className={props.classes.button} 
                   variant="contained" 
                   color="primary" 
@@ -58,6 +80,7 @@ const Login = (props) => (
                   disabled={isSubmitting}>
             Submit
           </Button>
+          </Grid>
         </Form>
       )}
     </Formik>
