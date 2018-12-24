@@ -20,7 +20,7 @@ const getPool = () => {
 
     return _pool;
   });
-}
+};
 
 export const currentUser = () => {
   return getPool().then(pool => pool.getCurrentUser());
@@ -50,7 +50,7 @@ const _requiredAttributePresent = (attribute, userAttributes, newAttributes) => 
   }
 
   return false;
-}
+};
 
 export const signUp = ({ username, password }) => {
   return new Promise((resolve, reject) => {
@@ -70,11 +70,10 @@ export const signUp = ({ username, password }) => {
       });
     })
   });
-}
+};
 
 
 export const verifyUser = (payload) => {
-
   return new Promise((resolve, reject) => {
     Promise.all([getPool(), CognitoSDK]).then(([pool, { CognitoUser }]) => {
       const cognitoUser = new CognitoUser({
@@ -90,7 +89,7 @@ export const verifyUser = (payload) => {
       });
     })
   });
-}
+};
 
 export const setUserPassword = (payload) => {
   return new Promise((resolve, reject) => {
@@ -110,7 +109,7 @@ export const setUserPassword = (payload) => {
       });
     });
   });
-}
+};
 
 export const forgotUserPassword = (payload) => {
   return new Promise((resolve, reject) => {
@@ -130,7 +129,7 @@ export const forgotUserPassword = (payload) => {
       });
     });
   });
-}
+};
 
 /**
  * Changes the current user's password.
@@ -138,7 +137,6 @@ export const forgotUserPassword = (payload) => {
  * @param {string} newPassword The desired new password
  */
 export const changeUserPassword = ({ oldPassword, newPassword }) => {
-
   return new Promise((resolve, reject) => {
     currentUser().then(currentUser => {
       // get session otherwise the .changePassword call will fail
@@ -155,7 +153,7 @@ export const changeUserPassword = ({ oldPassword, newPassword }) => {
       });
     });
   });
-}
+};
 
 class CognitoAuthorizer {
   constructor(props) {
@@ -180,7 +178,7 @@ class CognitoAuthorizer {
       const user = new CognitoUser({
         Pool: pool,
         Username: username
-      })
+      });
 
       if (session) {
         user.Session = session;
@@ -243,7 +241,7 @@ class CognitoAuthorizer {
         });
       }
 
-      this._user.then(user => user.completeNewPasswordChallenge(newPassword, attributesData, this))
+      this._user.then(user => user.completeNewPasswordChallenge(newPassword, attributesData, this));
 
       return;
     }

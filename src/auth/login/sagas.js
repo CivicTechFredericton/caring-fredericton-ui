@@ -14,7 +14,7 @@ function* onMFARequired({ payload }) {
 }
 
 function onLoginSuccess() {
-  history.push('/dashboard');
+  history.push('/');
 }
 
 export default function* () {

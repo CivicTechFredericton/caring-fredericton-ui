@@ -13,10 +13,10 @@ function* handleAction(myAction, {payload}) {
 }
 
 export default function* () {
-  yield takeLatestRoutine(login, handleAction.bind(this, authorize))
-  yield takeLatestRoutine(register, handleAction.bind(this, signUp))
-  yield takeLatestRoutine(verify, handleAction.bind(this, verifyUser))
-  yield takeLatestRoutine(changePassword, handleAction.bind(this, changeUserPassword))
-  yield takeLatestRoutine(forgotPassword, handleAction.bind(this, forgotUserPassword))
-  yield takeLatestRoutine(setPassword, handleAction.bind(this, setUserPassword))
+  yield takeLatestRoutine(login, handleAction.bind(this, authorize));
+  yield takeLatestRoutine(register, handleAction.bind(this, signUp));
+  yield takeLatestRoutine(verify, handleAction.bind(this, verifyUser));
+  yield takeLatestRoutine(changePassword, handleAction.bind(this, changeUserPassword));
+  yield takeLatestRoutine(forgotPassword, handleAction.bind(this, forgotUserPassword));
+  yield takeLatestRoutine(setPassword, handleAction.bind(this, setUserPassword));
 }

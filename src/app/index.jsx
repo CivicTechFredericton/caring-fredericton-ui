@@ -6,7 +6,6 @@ import UploadDemo from 'examples/upload-demo';
 import Verify from 'auth/verify';
 import Header from 'common/header';
 import ChangePassword from 'auth/change-password';
-// import Dashboard from 'examples/dashboard';
 import { Route, Switch } from 'react-router-dom';
 import SecureRoute from 'routes/secure-route';
 import styles from './index.scss';
@@ -18,15 +17,15 @@ const App = () => {
     <Header />
     <Switch>
       <Route path="/login" component={ Login }/>
-      <Route path="/forgot-password" component={ ForgotPassword }/>
-      <Route path="/:username/set-password" component={ SetPassword }/>
-      <Route path="/:username/verify" component={ Verify }/>
       <Route path="/register" component={ Register }/>
-      <Route path="/upload" component={ UploadDemo }/>
-      <Route path="/home" component={ Home }/>
-      <Route path="/registration" component={ Registration }/>
+      <Route path="/forgot-password" component={ ForgotPassword }/>
+      <SecureRoute path="/:username/set-password" component={ SetPassword }/>
+      <SecureRoute path="/:username/verify" component={ Verify }/>
+      <SecureRoute path="/upload" component={ UploadDemo }/>
+      <SecureRoute path="/home" component={ Home }/>
+      <SecureRoute path="/registration" component={ Registration }/>
       <SecureRoute path="/change-password" component={ ChangePassword }/>
-      <SecureRoute component={ Home } />
+      <SecureRoute path="/" component={ Home } />
     </Switch>
   </div>);
 };

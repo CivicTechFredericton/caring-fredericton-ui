@@ -31,7 +31,7 @@ export default handleActions({
       }
     ),
     [LOGOUT]: (state, { payload }) => {
-      payload.signOut()
+      payload.signOut();
       return state.remove('user')
     }
 }, Map())

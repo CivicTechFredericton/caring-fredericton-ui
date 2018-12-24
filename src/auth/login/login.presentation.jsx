@@ -67,12 +67,16 @@ class Login extends AutobindComponent {
             ])
           }
         </Form>
+        <p>
           <Link to={{
             pathname: '/register'
           }}>{ t('login:lbl_register_now') }</Link>
+        </p>
+        <p>
           <Link to={{
             pathname: '/forgot-password'
           }}>{ t('login:lbl_forgot_password') }</Link>
+        </p>
       </div>
       )
   }

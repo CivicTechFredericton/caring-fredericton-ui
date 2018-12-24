@@ -54,7 +54,7 @@ class Form extends AutobindComponent {
         {
           submitLabel ?
           (<Grid item>
-              <Button color="primary"  type="submit"  disabled={ !valid || submitting }>submitLabel</Button>
+              <Button color="primary"  type="submit"  disabled={ !valid || submitting }>{submitLabel}</Button>
           </Grid>) :
           null
         }
