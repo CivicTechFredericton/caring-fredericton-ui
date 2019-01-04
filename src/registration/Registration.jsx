@@ -133,6 +133,32 @@ class Registration extends React.Component {
                       required={true}
                       component={TextField}
                       type='text'
+                      name='address'
+                      label={t('city', 'City')}
+                      margin='normal'
+                      variant='outlined'
+                      placeholder={t('city', 'City')}
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid className={classes.field} item>
+                    <Field
+                      required={true}
+                      component={TextField}
+                      type='text'
+                      name='address'
+                      label={t('province', 'Province')}
+                      margin='normal'
+                      variant='outlined'
+                      placeholder={t('province', 'Province')}
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid className={classes.field} item>
+                    <Field
+                      required={true}
+                      component={TextField}
+                      type='text'
                       name='postalCode'
                       label={t('postalCode', 'Postal Code')}
                       margin='normal'
