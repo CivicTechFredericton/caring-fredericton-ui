@@ -11,7 +11,9 @@
   "phoneNumber": "Phone Number",
   "address": "Address",
   "postalCode": "Postal Code",
-  "name": "Name",
+  "firstName": "First Name",
+  "lastName": "Last Name",
   "password": "Caring Calendar Password",
-  "confirmPassword": "Confirm Password"
+  "confirmPassword": "Confirm Password",
+  "submit": "Submit"
 }

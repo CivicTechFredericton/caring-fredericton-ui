@@ -175,6 +175,12 @@ module.exports = {
       // Disable require.ensure as it's not a standard language feature.
       { parser: { requireEnsure: false } },
 
+      // {
+      //   test: /\.json$/,
+      //   enforce: 'pre',
+      //   loader: 'json-loader'
+      // },
+
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
       {
