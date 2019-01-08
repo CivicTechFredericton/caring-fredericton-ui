@@ -1,5 +1,8 @@
-import i18next from 'i18next';
-import i18nextXHRBackend from 'i18next-xhr-backend';
+// import i18next from 'i18next';
+// import i18nextXHRBackend from 'i18next-xhr-backend';
+import i18n from 'i18next';
+// import LanguageDetector from 'i18next-browser-languagedetector';
+import Backend from 'i18next-xhr-backend';
 
 // this registers all files in the translations folder
 // and make them available in the build. this does NOT
@@ -7,11 +10,11 @@ import i18nextXHRBackend from 'i18next-xhr-backend';
 require.context('../../translations', true, /\.json/);
 
 export const getCurrentLanguage = () => {
-  return i18next.language;
+  return i18n.language;
 };
 
 export const changeLanguage = nextLang => {
-  return i18next.changeLanguage(nextLang);
+  return i18n.changeLanguage(nextLang);
 };
 
 /**
@@ -24,12 +27,29 @@ export const changeLanguage = nextLang => {
   the correct namespaces along with your containers and you should be good
   to go.
 **/
-export default i18next.use(i18nextXHRBackend).init({
-  lng: 'en',
-  whitelist: ['en'],
-  ns: 'common',
-  backend: {
-    loadPath: 'translations/{{lng}}/{{ns}}.json',
-    addPath: 'translations/{{lng}}/{{ns}}.json',
-  },
-});
+
+i18n
+  .use(Backend)
+  // .use(LanguageDetector)
+  .init({
+    fallbackLng: 'en',
+    lng: 'en',
+    whitelist: ['en'],
+    ns: 'common',
+    backend: {
+      loadPath: '../../translations/{{lng}}/{{ns}}.json',
+      addPath: '../../translations/{{lng}}/{{ns}}.json',
+    },
+  });
+
+// const i18n = i18next.use(i18nextXHRBackend).init({
+//   lng: 'en',
+//   whitelist: ['en'],
+//   ns: 'common',
+//   backend: {
+//     loadPath: 'translations/{{lng}}/{{ns}}.json',
+//     addPath: 'translations/{{lng}}/{{ns}}.json',
+//   },
+// });
+
+export default i18n;

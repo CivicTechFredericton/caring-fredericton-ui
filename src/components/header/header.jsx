@@ -24,12 +24,12 @@ const Header = props => {
           >
             <Grid item>
               <Typography variant='h6' color='inherit'>
-                Caring Calendar
+                {t('headerTitle', 'Caring Calendar')}
               </Typography>
             </Grid>
             <Grid item>
               <Button className={classes.button} onClick={() => signOut()}>
-                {t('logout')}
+                {t('logout', 'Log Out')}
               </Button>
             </Grid>
           </Grid>
@@ -40,10 +40,8 @@ const Header = props => {
 };
 
 Header.propTypes = {
-  /* information about the user; containing their name and list of roles  */
-  user: PropTypes.shape({}),
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
-  logout: PropTypes.func,
 };
+
 export default withStyles(styles)(Header);

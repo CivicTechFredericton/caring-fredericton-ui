@@ -1,16 +1,4 @@
 import Registration from './Registration';
-import hocs from 'common/common-hocs';
-import validate from './validate';
-import { selectFormValues } from './selectors';
-import { FORM_NAME } from './constants';
+import { withNamespaces } from 'react-i18next';
 
-const form = {
-  form: FORM_NAME,
-  validate
-};
-
-const mapState = state => ({
-  formValues: selectFormValues(state)
-});
-
-export default hocs({ form, i18n: 'register', router: false, redux: { mapState } })(Registration);
+export default withNamespaces(['register', 'common'])(Registration);
