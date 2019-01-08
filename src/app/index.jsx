@@ -4,6 +4,7 @@ import Home from '../home';
 import Registration from '../registration';
 import Header from '../components/header';
 import Login from '../auth/login';
+import Event from '../event';
 import { Route, Switch } from 'react-router-dom';
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
         <Switch>
           <Route path='/login' component={Login} />
           <Route path='/registration' component={Registration} />
+          <Route path='/event' component={Event} />
           <Route path='/' component={Home} />
         </Switch>
       </div>
