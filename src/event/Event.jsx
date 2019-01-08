@@ -5,7 +5,6 @@ import {
   Grid,
   withStyles,
   createStyles,
-  Typography,
   TextField,
   Button,
 } from '@material-ui/core';
@@ -20,7 +19,7 @@ const styles = () =>
     },
   });
 
-class Registration extends React.Component {
+class Event extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -35,7 +34,7 @@ class Registration extends React.Component {
           justify='flex-start'
           alignItems='center'
         >
-          <h1>{t('register', 'Register')}</h1>
+          <h1>{t('addevent', 'Add Event')}</h1>
           <Formik
             initialValues={{ email: '', adminEmail: '' }}
             validate={values => {
@@ -46,14 +45,6 @@ class Registration extends React.Component {
                 !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
               ) {
                 errors.email = t('invalidEmail', 'Invalid email address');
-              }
-
-              if (!values.adminEmail) {
-                errors.adminEmail = t('required', 'Required');
-              } else if (
-                !/^[A-ZadminEmailZ0-9.-]+\.[A-Z]{2,}$/i.test(values.adminEmail)
-              ) {
-                errors.adminEmail = t('invalidEmail', 'Invalid email address');
               }
 
               return errors;
@@ -73,9 +64,45 @@ class Registration extends React.Component {
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <Typography>
-                    {t('caringOrg', 'Please Enter Organization Details')}
-                  </Typography>
+                  <Grid className={classes.field} item>
+                    <Field
+                      required={true}
+                      component={TextField}
+                      type='text'
+                      name='fullName'
+                      label={t('fullName', 'Full Name')}
+                      margin='normal'
+                      variant='outlined'
+                      placeholder={t('fullName', 'Full Name')}
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid className={classes.field} item>
+                    <Field
+                      required={true}
+                      component={TextField}
+                      type='text'
+                      name='phoneNumber'
+                      label={t('phoneNumber', 'Phone Number')}
+                      margin='normal'
+                      variant='outlined'
+                      placeholder={t('phoneNumber', 'Phone Number')}
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid className={classes.field} item>
+                    <Field
+                      required={true}
+                      component={TextField}
+                      type='text'
+                      name='nonProfit'
+                      label={t('nonProfit', 'Non Profit')}
+                      margin='normal'
+                      variant='outlined'
+                      placeholder={t('nonProfit', 'Non Profit')}
+                      className={classes.textField}
+                    />
+                  </Grid>
                   <Grid className={classes.field} item>
                     <Field
                       required={true}
@@ -102,113 +129,6 @@ class Registration extends React.Component {
                       className={classes.textField}
                     />
                   </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='phoneNumber'
-                      label={t('phoneNumber', 'Phone Number')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('phoneNumber', 'Phone Number')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='address'
-                      label={t('address', 'Address')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('address', 'Address')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='city'
-                      label={t('city', 'City')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('city', 'City')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='province'
-                      label={t('province', 'Province')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('province', 'Province')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='postalCode'
-                      label={t('postalCode', 'Postal Code')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('postalCode', 'Postal Code')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Typography>
-                    {t('caringAdmin', 'Caring Calendar Administrator')}
-                  </Typography>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='adminFirstName'
-                      label={t('firstName', 'First Name')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('firstName', 'First Name')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='adminLastName'
-                      label={t('lastName', 'Last Name')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('lastName', 'Last Name')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='adminEmail'
-                      label={t('email', 'Email')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('email', 'Email')}
-                      className={classes.textField}
-                    />
-                  </Grid>
                   <Button
                     className={classes.button}
                     variant='contained'
@@ -228,9 +148,9 @@ class Registration extends React.Component {
   }
 }
 
-Registration.propTypes = {
+Event.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
 };
 
-export default withStyles(styles)(Registration);
+export default withStyles(styles)(Event);
