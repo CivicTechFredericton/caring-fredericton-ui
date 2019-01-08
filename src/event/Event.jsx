@@ -68,6 +68,35 @@ class Event extends React.Component {
                     <Field
                       required={true}
                       component={TextField}
+                      type='date'
+                      name='startDate'
+                      label={t('startDate', 'Start Date')}
+                      margin='normal'
+                      variant='outlined'
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid className={classes.field} item>
+                    <Field
+                      component={TextField}
+                      type='date'
+                      name='endDate'
+                      label={t('endDate', 'End Date')}
+                      margin='normal'
+                      variant='outlined'
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid className={classes.field} item>
+                    <Field
+                      required={true}
+                      component={TextField}
                       type='text'
                       name='fullName'
                       label={t('fullName', 'Full Name')}
