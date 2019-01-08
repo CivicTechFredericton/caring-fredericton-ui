@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './index.scss';
-import Home from '../home';
 import Registration from '../registration';
 import Header from '../components/header';
 import Login from '../auth/login';
 import Event from '../event';
 import { Route, Switch } from 'react-router-dom';
+import Home from '../home';
 
 class App extends Component {
   render() {
