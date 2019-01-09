@@ -6,9 +6,9 @@ import {
   withStyles,
   createStyles,
   Typography,
-  TextField,
   Button,
 } from '@material-ui/core';
+import { TextField } from 'formik-material-ui';
 
 const styles = () =>
   createStyles({
