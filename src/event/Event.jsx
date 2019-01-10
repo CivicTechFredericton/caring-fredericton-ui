@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
+import { SimpleEmailRegex } from 'Utils/regex';
 
 const styles = () =>
   createStyles({
@@ -41,9 +42,7 @@ class Event extends React.Component {
               let errors = {};
               if (!values.email) {
                 errors.email = t('required', 'Required');
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
+              } else if (!SimpleEmailRegex.test(values.email)) {
                 errors.email = t('invalidEmail', 'Invalid email address');
               }
 
