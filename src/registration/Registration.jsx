@@ -9,6 +9,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
+import { SimpleEmailRegex } from '/src/utils/regex';
 
 const styles = () =>
   createStyles({
@@ -42,17 +43,13 @@ class Registration extends React.Component {
               let errors = {};
               if (!values.email) {
                 errors.email = t('required', 'Required');
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
+              } else if (!SimpleEmailRegex.test(values.email)) {
                 errors.email = t('invalidEmail', 'Invalid email address');
               }
 
               if (!values.adminEmail) {
                 errors.adminEmail = t('required', 'Required');
-              } else if (
-                !/^[A-ZadminEmailZ0-9.-]+\.[A-Z]{2,}$/i.test(values.adminEmail)
-              ) {
+              } else if (!SimpleEmailRegex.test(values.adminEmail)) {
                 errors.adminEmail = t('invalidEmail', 'Invalid email address');
               }
 

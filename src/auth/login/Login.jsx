@@ -4,6 +4,7 @@ import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 import { authenticateUser, getCurrentUser } from '../../api/cognito';
+import { SimpleEmailRegex } from '/src/utils/regex';
 
 const styles = () =>
   createStyles({
@@ -26,9 +27,7 @@ const Login = props => {
           let errors = {};
           if (!values.email) {
             errors.email = props.t('required', 'Required');
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
+          } else if (!SimpleEmailRegex.test(values.email)) {
             errors.email = errors.email = props.t(
               'invalidEmail',
               'Invalid email address'
