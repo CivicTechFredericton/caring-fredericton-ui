@@ -9,7 +9,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
-import { SimpleEmailRegex } from '/src/utils/regex';
+import { SimpleEmailRegex } from 'Utils/regex';
 
 const styles = () =>
   createStyles({

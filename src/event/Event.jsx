@@ -8,7 +8,7 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
-import { SimpleEmailRegex } from '/src/utils/regex';
+import { SimpleEmailRegex } from 'Utils/regex';
 
 const styles = () =>
   createStyles({

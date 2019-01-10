@@ -4,7 +4,7 @@ import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 import { authenticateUser, getCurrentUser } from '../../api/cognito';
-import { SimpleEmailRegex } from '/src/utils/regex';
+import { SimpleEmailRegex } from 'Utils/regex';
 
 const styles = () =>
   createStyles({
