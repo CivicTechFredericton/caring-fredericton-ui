@@ -1,3 +1,4 @@
-import Login from './login.container';
+import Login from './Login';
+import { withNamespaces } from 'react-i18next';
 
-export default Login;
+export default withNamespaces('common')(Login);
