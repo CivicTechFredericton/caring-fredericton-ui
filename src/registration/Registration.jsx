@@ -14,10 +14,11 @@ import { SimpleEmailRegex } from 'Utils/regex';
 const styles = () =>
   createStyles({
     root: {
-      paddingTop: 35,
+      paddingTop: 15,
     },
     field: {
-      paddingBottom: 15,
+      paddingBottom: 5,
+      width: 200,
     },
   });
 

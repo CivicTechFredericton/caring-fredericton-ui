@@ -7,6 +7,7 @@ import { signOut } from '../../api/cognito';
 const styles = {
   root: {
     flexGrow: 1,
+    height: '10vh',
   },
 };
 

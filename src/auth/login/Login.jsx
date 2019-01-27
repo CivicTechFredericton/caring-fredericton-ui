@@ -6,17 +6,35 @@ import PropTypes from 'prop-types';
 import { authenticateUser, getCurrentUser } from '../../api/cognito';
 import { SimpleEmailRegex } from 'Utils/regex';
 
-const styles = () =>
-  createStyles({
-    button: {
-      margin: 25,
-    },
-  });
+const styles = createStyles(theme => ({
+  button: {
+    marginTop: 25,
+    color: 'white',
+  },
+  loginDiv: {
+    border: 'solid',
+    borderRadius: '20px',
+    padding: '3%',
+    borderColor: theme.palette.primary.main,
+    width: '30%',
+  },
+  textField: {
+    width: '100%',
+  },
+  title: {
+    color: theme.palette.primary.dark,
+  },
+}));
 
 const Login = props => {
   return (
-    <Grid container direction='column' justify='flex-start' alignItems='center'>
-      <h1>Login</h1>
+    <Grid
+      container
+      direction='column'
+      justify='center'
+      alignItems='center'
+      style={{ height: '90vh' }}
+    >
       <Formik
         initialValues={{
           email: '',
@@ -55,46 +73,50 @@ const Login = props => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form>
-            <Grid
-              container
-              direction='column'
-              justify='flex-start'
-              alignItems='center'
-            >
-              <Field
-                required
-                className={props.classes.textField}
-                type='email'
-                name='email'
-                label={props.t('userName', 'User Name')}
-                margin='normal'
-                variant='outlined'
-                component={TextField}
-                placeholder={props.t('userName', 'User Name')}
-              />
-              <Field
-                className={props.classes.textField}
-                autoComplete='current-password'
-                type='password'
-                name='password'
-                label={props.t('password', 'Password') + ' *'}
-                margin='normal'
-                variant='outlined'
-                component={TextField}
-                placeholder={props.t('password', 'Password') + ' *'}
-              />
-              <Button
-                className={props.classes.button}
-                variant='contained'
-                color='primary'
-                type='submit'
-                disabled={isSubmitting}
+          <div className={props.classes.loginDiv}>
+            <h3 className={props.classes.title}>Log in into your account</h3>
+            <Form borderColor='primary'>
+              <Grid
+                container
+                direction='column'
+                justify='flex-start'
+                alignItems='center'
               >
-                {props.t('submit', 'Submit')}
-              </Button>
-            </Grid>
-          </Form>
+                <Field
+                  required
+                  className={props.classes.textField}
+                  type='email'
+                  name='email'
+                  label={props.t('userName', 'User Name')}
+                  margin='normal'
+                  variant='outlined'
+                  component={TextField}
+                  placeholder={props.t('userName', 'User Name')}
+                />
+                <Field
+                  className={props.classes.textField}
+                  autoComplete='current-password'
+                  type='password'
+                  name='password'
+                  label={props.t('password', 'Password') + ' *'}
+                  margin='normal'
+                  variant='outlined'
+                  component={TextField}
+                  placeholder={props.t('password', 'Password') + ' *'}
+                />
+
+                <Button
+                  className={props.classes.button}
+                  variant='contained'
+                  color='secondary'
+                  type='submit'
+                  disabled={isSubmitting}
+                >
+                  {props.t('submit', 'Login')}
+                </Button>
+              </Grid>
+            </Form>
+          </div>
         )}
       </Formik>
     </Grid>
@@ -106,4 +128,4 @@ Login.propTypes = {
   t: PropTypes.any,
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles, { withTheme: true })(Login);
