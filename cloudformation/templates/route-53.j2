@@ -1,0 +1,15 @@
+---
+{% set environment = sceptre_user_data.environment -%}
+{% set project_code = sceptre_user_data.project_code -%}
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  Route53CloudFront:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        DNSName: {{ sceptre_user_data.cloudfront.target }}
+        # This value is static for CloudFront
+        HostedZoneId: Z2FDTNDATAQYW2
+      HostedZoneName: {{ sceptre_user_data.cloudfront.domain_name.partition('.')[2] }}.
+      Name: {{ sceptre_user_data.cloudfront.domain_name }}
+      Type: A
