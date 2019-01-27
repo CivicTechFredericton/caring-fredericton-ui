@@ -1,22 +1,22 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
-import {
-  Grid,
-  withStyles,
-  createStyles,
-  TextField,
-  Button,
-} from '@material-ui/core';
-import { SimpleEmailRegex } from 'Utils/regex';
+import { Grid, withStyles, createStyles, Button } from '@material-ui/core';
+import { TextField } from 'formik-material-ui';
 
 const styles = () =>
   createStyles({
     root: {
-      paddingTop: 35,
+      paddingTop: 25,
     },
     field: {
-      paddingBottom: 15,
+      paddingBottom: 5,
+    },
+    textField: {
+      width: 350,
+    },
+    spacer: {
+      paddingRight: 20,
     },
   });
 
@@ -35,15 +35,17 @@ class Event extends React.Component {
           justify='flex-start'
           alignItems='center'
         >
-          <h1>{t('addevent', 'Add Event')}</h1>
+          <h2>{t('addEvent', 'Add Event')}</h2>
           <Formik
-            initialValues={{ email: '', adminEmail: '' }}
+            initialValues={{ eventCategory: '', eventName: '' }}
             validate={values => {
               let errors = {};
-              if (!values.email) {
-                errors.email = t('required', 'Required');
-              } else if (!SimpleEmailRegex.test(values.email)) {
-                errors.email = t('invalidEmail', 'Invalid email address');
+              if (!values.eventCategory) {
+                errors.eventCategory = t('required', 'Required');
+              }
+
+              if (!values.eventName) {
+                errors.eventName = t('required', 'Required');
               }
 
               return errors;
@@ -59,114 +61,116 @@ class Event extends React.Component {
               <Form>
                 <Grid
                   container
-                  direction='column'
+                  direction='row'
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='date'
-                      name='startDate'
-                      label={t('startDate', 'Start Date')}
-                      margin='normal'
-                      variant='outlined'
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
+                  <Grid className={classes.spacer} item>
+                    <Grid className={classes.field} item>
+                      <Field
+                        component={TextField}
+                        type='text'
+                        name='eventCategory'
+                        label={t('eventCategory', 'Event Category')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('eventCategory', 'Event Category')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        component={TextField}
+                        type='text'
+                        name='eventName'
+                        label={t('eventName', 'Event Name')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('eventName', 'Event Name')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        multiline
+                        rows='6'
+                        component={TextField}
+                        type='text'
+                        name='eventDescription'
+                        label={t('eventDescription', 'Event Description')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('eventDescription', 'Event Description')}
+                        className={classes.textField}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      component={TextField}
-                      type='date'
-                      name='endDate'
-                      label={t('endDate', 'End Date')}
-                      margin='normal'
-                      variant='outlined'
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
+                  <Grid item>
+                    <Grid className={classes.field} item>
+                      <Field
+                        component={TextField}
+                        type='date'
+                        name='eventDate'
+                        label={t('date', 'Date')}
+                        margin='normal'
+                        variant='outlined'
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        component={TextField}
+                        type='time'
+                        name='startTime'
+                        label={t('startTime', 'Start Time')}
+                        margin='normal'
+                        variant='outlined'
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        component={TextField}
+                        type='time'
+                        name='endTime'
+                        label={t('endTime', 'End Time')}
+                        margin='normal'
+                        variant='outlined'
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        component={TextField}
+                        type='text'
+                        name='repeat'
+                        label={t('repeat', 'Repeat')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('repeat', 'Repeat')}
+                        className={classes.textField}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='fullName'
-                      label={t('fullName', 'Full Name')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('fullName', 'Full Name')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='phoneNumber'
-                      label={t('phoneNumber', 'Phone Number')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('phoneNumber', 'Phone Number')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='nonProfit'
-                      label={t('nonProfit', 'Non Profit')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('nonProfit', 'Non Profit')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='orgName'
-                      label={t('orgName', 'Organization Name')}
-                      className={classes.textField}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('orgName', 'Organization Name')}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='email'
-                      label={t('email', 'Email')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('email', 'Email')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Button
-                    className={classes.button}
-                    variant='contained'
-                    color='primary'
-                    type='submit'
-                    disabled={isSubmitting}
-                  >
-                    {t('submit', 'Submit')}
-                  </Button>
                 </Grid>
+                <Button
+                  className={classes.button}
+                  variant='contained'
+                  color='primary'
+                  type='submit'
+                  disabled={isSubmitting}
+                >
+                  {t('submit', 'Submit')}
+                </Button>
               </Form>
             )}
           </Formik>
