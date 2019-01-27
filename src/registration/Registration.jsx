@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { SimpleEmailRegex } from 'Utils/regex';
+import { registerOrganization } from '../api/endpoints';
 
 const styles = () =>
   createStyles({
@@ -57,10 +58,14 @@ class Registration extends React.Component {
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
+              console.log(values);
+              setSubmitting(true);
+              const response = registerOrganization(values);
+              console.log('response: ', response);
+              console.log(JSON.stringify(response));
+              response
+                .then(setSubmitting(false))
+                .then(vals => console.log(vals));
             }}
           >
             {({ isSubmitting }) => (
