@@ -8,33 +8,41 @@ import Filter from './filter';
 import '../style/react-big-calendar.css';
 
 const localizer = BigCalendar.momentLocalizer(moment);
-const myEventsList = [
-  {
-    title: 'Bake Sale',
-    allDay: false,
-    start: new Date(2019, 0, 27, 12, 0), // 10.00 AM
-    end: new Date(2019, 0, 27, 16, 0), // 2.00 PM
-  },
-  {
-    title: 'Lunch',
-    allDay: false,
-    start: new Date('2019', '0', '28', '12', '0'), // 10.00 AM
-    end: new Date(2019, 0, 28, 15, 0), // 2.00 PM
-  },
-];
 
 const events = {
   objects: [
     {
-      id: 'string',
-      name: 'string',
-      owner: 'string',
-      description: 'string',
-      categories: ['string'],
-      start_date: 'string',
-      end_date: 'string',
-      start_time: 'string',
-      end_time: 'string',
+      id: '1',
+      name: 'Supper',
+      owner: 'United Church',
+      description: 'Supper in Fredericton',
+      categories: ['meals'],
+      start_date: '2019-01-29',
+      end_date: '2019-01-29',
+      start_time: '16:00',
+      end_time: '18:00',
+    },
+    {
+      id: '2',
+      name: 'Programing Class',
+      owner: 'United Church',
+      description: 'JavaScript for Beginners',
+      categories: ['education'],
+      start_date: '2019-01-27',
+      end_date: '2019-01-27',
+      start_time: '12:00:00',
+      end_time: '16:00:00',
+    },
+    {
+      id: '3',
+      name: 'Lunch',
+      owner: 'United Church',
+      description: 'Lunch in Fredericton',
+      categories: ['meals'],
+      start_date: '2019-01-28',
+      end_date: '2019-01-28',
+      start_time: '11:00:00',
+      end_time: '14:00:00',
     },
   ],
 };
@@ -49,11 +57,25 @@ const styles = () =>
     },
   });
 
-// const ThemeContext = React.createContext('light');
-
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      events: [],
+    };
+  }
   componentDidMount() {
-    console.log(events);
+    let input = [];
+
+    events.objects.map(result => {
+      input.push({
+        title: result.name,
+        allDay: false,
+        start: new Date(result.start_date + 'T' + result.start_time),
+        end: new Date(result.end_date + 'T' + result.end_time),
+      });
+    });
+    this.setState({ events: input });
   }
   render() {
     const { classes } = this.props;
@@ -73,8 +95,8 @@ class Home extends React.Component {
           <BigCalendar
             style={{ height: 500, width: 800 }}
             localizer={localizer}
-            step={30}
-            events={myEventsList}
+            step={60}
+            events={this.state.events}
             defaultView='week'
             views={['month', 'week']}
             startAccessor='start'
