@@ -66,7 +66,7 @@ class Registration extends React.Component {
         >
           <h2 className={classes.title}>{t('register', 'Registration')}</h2>
           <Formik
-            initialValues={{ eventCategory: '', eventName: '' }}
+            initialValues={{ eventCategory: '', name: '' }}
             validate={values => {
               let errors = {};
               if (!values.email) {
