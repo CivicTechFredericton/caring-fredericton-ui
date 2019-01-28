@@ -4,21 +4,26 @@ import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 
-const styles = () =>
-  createStyles({
-    root: {
-      paddingTop: 25,
-    },
-    field: {
-      paddingBottom: 5,
-    },
-    textField: {
-      width: 350,
-    },
-    spacer: {
-      paddingRight: 20,
-    },
-  });
+const styles = createStyles(theme => ({
+  root: {
+    paddingTop: 25,
+  },
+  field: {
+    paddingBottom: 5,
+  },
+  textField: {
+    width: 350,
+  },
+  spacer: {
+    paddingRight: 20,
+  },
+  button: {
+    marginTop: 30,
+  },
+  title: {
+    color: theme.palette.primary.dark,
+  },
+}));
 
 class Event extends React.Component {
   constructor(props) {
@@ -35,7 +40,7 @@ class Event extends React.Component {
           justify='flex-start'
           alignItems='center'
         >
-          <h2>{t('addEvent', 'Add Event')}</h2>
+          <h2 className={classes.title}>{t('addEvent', 'Event')}</h2>
           <Formik
             initialValues={{ categories: '', eventName: '' }}
             validate={values => {
@@ -169,7 +174,7 @@ class Event extends React.Component {
                   type='submit'
                   disabled={isSubmitting}
                 >
-                  {t('submit', 'Submit')}
+                  {t('submit', 'Add')}
                 </Button>
               </Form>
             )}
@@ -185,4 +190,4 @@ Event.propTypes = {
   classes: PropTypes.object,
 };
 
-export default withStyles(styles)(Event);
+export default withStyles(styles, { withTheme: true })(Event);
