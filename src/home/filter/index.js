@@ -1,3 +1,4 @@
 import Filter from './Filter';
+import { withNamespaces } from 'react-i18next';
 
-export default Filter;
+export default withNamespaces(['filter', 'common'])(Filter);
