@@ -7,41 +7,48 @@ import { signOut } from '../../api/cognito';
 const styles = {
   root: {
     flexGrow: 1,
+    height: '10vh',
   },
 };
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-const Header = props => {
-  const { t, classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position='static' color='primary'>
-        <Toolbar>
-          <Grid
-            container
-            direction='row'
-            justify='space-between'
-            alignItems='center'
-          >
-            <Grid item>
-              <Typography variant='h6' color='inherit'>
-                {t('headerTitle', 'Caring Calendar')}
-              </Typography>
+  render() {
+    const { t, classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position='static' color='primary'>
+          <Toolbar>
+            <Grid
+              container
+              direction='row'
+              justify='space-between'
+              alignItems='center'
+            >
+              <Grid item>
+                <Typography variant='h6' color='inherit'>
+                  {t('headerTitle', 'Caring Calendar')}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Button className={classes.button} onClick={() => signOut()}>
+                  {t('logout', 'Log Out')}
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Button className={classes.button} onClick={() => signOut()}>
-                {t('logout', 'Log Out')}
-              </Button>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-};
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
+  history: PropTypes.any,
 };
 
 export default withStyles(styles)(Header);
