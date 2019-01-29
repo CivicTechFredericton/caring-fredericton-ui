@@ -42,15 +42,15 @@ class Event extends React.Component {
         >
           <h2 className={classes.title}>{t('addEvent', 'Event')}</h2>
           <Formik
-            initialValues={{ eventCategory: '', eventName: '' }}
+            initialValues={{ categories: '', eventName: '' }}
             validate={values => {
               let errors = {};
-              if (!values.eventCategory) {
-                errors.eventCategory = t('required', 'Required');
+              if (!values.categories) {
+                errors.categories = t('required', 'Required');
               }
 
-              if (!values.eventName) {
-                errors.eventName = t('required', 'Required');
+              if (!values.name) {
+                errors.name = t('required', 'Required');
               }
 
               return errors;
@@ -75,7 +75,7 @@ class Event extends React.Component {
                       <Field
                         component={TextField}
                         type='text'
-                        name='eventCategory'
+                        name='categories'
                         label={t('eventCategory', 'Event Category')}
                         margin='normal'
                         variant='outlined'
@@ -87,7 +87,7 @@ class Event extends React.Component {
                       <Field
                         component={TextField}
                         type='text'
-                        name='eventName'
+                        name='name'
                         label={t('eventName', 'Event Name')}
                         margin='normal'
                         variant='outlined'
@@ -101,7 +101,7 @@ class Event extends React.Component {
                         rows='6'
                         component={TextField}
                         type='text'
-                        name='eventDescription'
+                        name='description'
                         label={t('eventDescription', 'Event Description')}
                         margin='normal'
                         variant='outlined'
@@ -115,7 +115,7 @@ class Event extends React.Component {
                       <Field
                         component={TextField}
                         type='date'
-                        name='eventDate'
+                        name='start_date'
                         label={t('date', 'Date')}
                         margin='normal'
                         variant='outlined'
@@ -129,7 +129,7 @@ class Event extends React.Component {
                       <Field
                         component={TextField}
                         type='time'
-                        name='startTime'
+                        name='start_time'
                         label={t('startTime', 'Start Time')}
                         margin='normal'
                         variant='outlined'
@@ -143,7 +143,7 @@ class Event extends React.Component {
                       <Field
                         component={TextField}
                         type='time'
-                        name='endTime'
+                        name='end_time'
                         label={t('endTime', 'End Time')}
                         margin='normal'
                         variant='outlined'

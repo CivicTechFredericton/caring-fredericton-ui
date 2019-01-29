@@ -7,6 +7,7 @@ import {
   // Typography
 } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const styles = () =>
   createStyles({
@@ -17,19 +18,43 @@ const styles = () =>
 
 class Filter extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, t } = this.props;
     const filterConfig = [
       {
-        id: 'one',
-        label: 'one',
+        id: 'meals',
+        label: t('meals', 'Meals'),
       },
       {
-        id: 'two',
-        label: 'two',
+        id: 'laundry',
+        label: t('laundry', 'Laundry'),
       },
       {
-        id: 'three',
-        label: 'three',
+        id: 'social',
+        label: t('social', 'Social'),
+      },
+      {
+        id: 'showers',
+        label: t('showers', 'Showers'),
+      },
+      {
+        id: 'education',
+        label: t('education', 'Education'),
+      },
+      {
+        id: 'health',
+        label: t('health', 'Health'),
+      },
+      {
+        id: 'hairCuts',
+        label: t('hairCuts', 'Hair Cuts'),
+      },
+      {
+        id: 'taxes',
+        label: t('taxes', 'Taxes'),
+      },
+      {
+        id: 'faith',
+        label: t('faith', 'Faith'),
       },
     ];
 
@@ -43,11 +68,16 @@ class Filter extends React.Component {
       >
         {filterConfig.map(result => {
           return (
-            <Checkbox
+            <FormControlLabel
               key={result.id}
-              checked={true}
-              onChange={() => {}}
-              value={result.id}
+              control={
+                <Checkbox
+                  checked={true}
+                  onChange={() => {}}
+                  value={result.id}
+                />
+              }
+              label={result.label}
             />
           );
         })}
@@ -58,6 +88,7 @@ class Filter extends React.Component {
 
 Filter.propTypes = {
   classes: PropTypes.object,
+  t: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Filter);
