@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { authenticateUser } from '../../api/cognito';
 import { SimpleEmailRegex } from 'Utils/regex';
 
+import logo from '../../logo.png';
+
 const styles = createStyles(theme => ({
   button: {
     marginTop: 25,
@@ -14,7 +16,8 @@ const styles = createStyles(theme => ({
   loginDiv: {
     border: 'solid',
     borderRadius: '20px',
-    padding: '3%',
+    borderWidth: '7px',
+    padding: '2%',
     borderColor: theme.palette.primary.main,
     width: '35%',
   },
@@ -29,6 +32,9 @@ const styles = createStyles(theme => ({
   },
   error: {
     color: theme.palette.secondary.dark,
+  },
+  image: {
+    width: '100px',
   },
 }));
 
@@ -93,9 +99,10 @@ class Login extends React.Component {
         >
           {({ isSubmitting }) => (
             <div className={this.props.classes.loginDiv}>
-              <h3 className={this.props.classes.title}>
-                Log in into your account
-              </h3>
+              <div>
+                <img className={this.props.classes.image} src={logo} />
+                <h2 className={this.props.classes.title}>Caring Calendar</h2>
+              </div>
               <Form>
                 <Grid
                   container
