@@ -1,25 +1,53 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
-import {
-  Grid,
-  withStyles,
-  createStyles,
-  Typography,
-  Button,
-} from '@material-ui/core';
+import { Grid, withStyles, createStyles, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { SimpleEmailRegex } from 'Utils/regex';
+import { registerOrganization } from '../api/endpoints';
 
-const styles = () =>
-  createStyles({
-    root: {
-      paddingTop: 35,
-    },
-    field: {
-      paddingBottom: 15,
-    },
-  });
+const styles = createStyles(theme => ({
+  root: {
+    paddingTop: 15,
+  },
+  field: {
+    paddingBottom: 5,
+  },
+  textField: {
+    width: '100%',
+  },
+  mainGrid: {
+    width: '100%',
+  },
+  mainGrid2: {
+    paddingRight: 50,
+    paddingLeft: 50,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  spacer: {
+    paddingRight: 20,
+    paddingLeft: 20,
+    height: '60vh',
+    borderRight: '3px solid ',
+    borderRightColor: theme.palette.primary.dark,
+  },
+  button: {
+    marginTop: 10,
+    color: 'white',
+  },
+  title: {
+    color: theme.palette.primary.dark,
+  },
+  columnTitle: {
+    marginTop: 3,
+    color: theme.palette.primary.dark,
+  },
+  lastColumn: {
+    height: '60vh',
+    paddingLeft: 20,
+  },
+}));
 
 class Registration extends React.Component {
   constructor(props) {
@@ -36,9 +64,9 @@ class Registration extends React.Component {
           justify='flex-start'
           alignItems='center'
         >
-          <h1>{t('register', 'Register')}</h1>
+          <h2 className={classes.title}>{t('register', 'Registration')}</h2>
           <Formik
-            initialValues={{ email: '', adminEmail: '' }}
+            initialValues={{ eventCategory: '', name: '' }}
             validate={values => {
               let errors = {};
               if (!values.email) {
@@ -56,166 +84,173 @@ class Registration extends React.Component {
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
+              setSubmitting(true);
+              const response = registerOrganization(values);
+              console.log('response: ', response);
+              console.log(JSON.stringify(response));
+              response
+                .then(setSubmitting(false))
+                .then(vals => console.log(vals));
             }}
           >
             {({ isSubmitting }) => (
-              <Form>
+              <Form className={classes.mainGrid}>
                 <Grid
+                  className={classes.mainGrid2}
                   container
-                  direction='column'
+                  direction='row'
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <Typography>
-                    {t('caringOrg', 'Please Enter Organization Details')}
-                  </Typography>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='orgName'
-                      label={t('orgName', 'Organization Name')}
-                      className={classes.textField}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('orgName', 'Organization Name')}
-                    />
+                  <Grid xs={4} className={classes.spacer} item>
+                    <h3 className={classes.columnTitle}>Organization</h3>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='orgName'
+                        label={t('orgName', 'Organization Name')}
+                        className={classes.textField}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('orgName', 'Organization Name')}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='email'
+                        label={t('email', 'Email')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('email', 'Email')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='phoneNumber'
+                        label={t('phoneNumber', 'Phone Number')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('phoneNumber', 'Phone Number')}
+                        className={classes.textField}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='email'
-                      label={t('email', 'Email')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('email', 'Email')}
-                      className={classes.textField}
-                    />
+                  <Grid xs={4} className={classes.spacer} item>
+                    <h3 className={classes.columnTitle}>Address</h3>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='address'
+                        label={t('address', 'Address')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('address', 'Address')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='city'
+                        label={t('city', 'City')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('city', 'City')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='province'
+                        label={t('province', 'Province')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('province', 'Province')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='postalCode'
+                        label={t('postalCode', 'Postal Code')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('postalCode', 'Postal Code')}
+                        className={classes.textField}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='phoneNumber'
-                      label={t('phoneNumber', 'Phone Number')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('phoneNumber', 'Phone Number')}
-                      className={classes.textField}
-                    />
+                  <Grid xs={4} className={classes.lastColumn} item>
+                    <h3 className={classes.columnTitle}>Administrator</h3>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='adminFirstName'
+                        label={t('firstName', 'First Name')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('firstName', 'First Name')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='adminLastName'
+                        label={t('lastName', 'Last Name')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('lastName', 'Last Name')}
+                        className={classes.textField}
+                      />
+                    </Grid>
+                    <Grid className={classes.field} item>
+                      <Field
+                        required={true}
+                        component={TextField}
+                        type='text'
+                        name='adminEmail'
+                        label={t('email', 'Email')}
+                        margin='normal'
+                        variant='outlined'
+                        placeholder={t('email', 'Email')}
+                        className={classes.textField}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='address'
-                      label={t('address', 'Address')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('address', 'Address')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='city'
-                      label={t('city', 'City')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('city', 'City')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='province'
-                      label={t('province', 'Province')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('province', 'Province')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='postalCode'
-                      label={t('postalCode', 'Postal Code')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('postalCode', 'Postal Code')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Typography>
-                    {t('caringAdmin', 'Caring Calendar Administrator')}
-                  </Typography>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='adminFirstName'
-                      label={t('firstName', 'First Name')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('firstName', 'First Name')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='adminLastName'
-                      label={t('lastName', 'Last Name')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('lastName', 'Last Name')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Grid className={classes.field} item>
-                    <Field
-                      required={true}
-                      component={TextField}
-                      type='text'
-                      name='adminEmail'
-                      label={t('email', 'Email')}
-                      margin='normal'
-                      variant='outlined'
-                      placeholder={t('email', 'Email')}
-                      className={classes.textField}
-                    />
-                  </Grid>
-                  <Button
-                    className={classes.button}
-                    variant='contained'
-                    color='primary'
-                    type='submit'
-                    disabled={isSubmitting}
-                  >
-                    {t('submit', 'Submit')}
-                  </Button>
                 </Grid>
+                <Button
+                  className={classes.button}
+                  variant='contained'
+                  color='secondary'
+                  type='submit'
+                  disabled={isSubmitting}
+                >
+                  {t('submit', 'Register')}
+                </Button>
               </Form>
             )}
           </Formik>
@@ -230,4 +265,4 @@ Registration.propTypes = {
   classes: PropTypes.object,
 };
 
-export default withStyles(styles)(Registration);
+export default withStyles(styles, { withTheme: true })(Registration);

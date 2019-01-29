@@ -61,20 +61,24 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ### Deployment Instructions
 
 Install sceptre and the AWS cli if you haven't already done so:
+
 ```
 pip install sceptre --upgrade --user
 pip install awscli --upgrade --user
 ```
 
 Create infrastructure:
+
 ```
 (cd cloudformation/config && ln -s base <env>)
 export AWS_PROFILE=<profile name>
 sceptre launch-env <env>
 ```
+
 > Replace '<env>' with your environment name and replace your profile name
 
 Deploy code:
+
 ```
 export AWS_PROFILE=<profile name>
 aws s3 sync --delete build/ s3://<bucket name>/
