@@ -33,7 +33,13 @@ class Header extends React.Component {
                 </Typography>
               </Grid>
               <Grid item>
-                <Button className={classes.button} onClick={() => signOut()}>
+                <Button
+                  className={classes.button}
+                  onClick={() => {
+                    this.props.myFunc();
+                    signOut();
+                  }}
+                >
                   {t('logout', 'Log Out')}
                 </Button>
               </Grid>
@@ -49,6 +55,7 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
   history: PropTypes.any,
+  myFunc: PropTypes.func,
 };
 
 export default withStyles(styles)(Header);

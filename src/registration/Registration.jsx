@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { SimpleEmailRegex } from 'Utils/regex';
-import { registerOrganization } from '../api/endpoints';
+import { registerOrganization, validateOrganization } from '../api/endpoints';
 
 const styles = createStyles(theme => ({
   root: {
@@ -55,7 +55,38 @@ class Registration extends React.Component {
   }
 
   render() {
-    const { t, classes } = this.props;
+    const { t, classes, validation } = this.props;
+    const buttonName = validation ? 'Validate' : 'Register';
+    const title = validation ? 'Validation' : 'Registration';
+    var objIni;
+    if (validation) {
+      objIni = {
+        orgName: 'OrgTest',
+        email: 'marta.padilla@gmail.com',
+        phoneNumber: '5016489797',
+        address: 'Alvarez Quintero',
+        city: 'Malaga',
+        province: 'Malaga',
+        postalCode: '29720',
+        adminFirstName: 'Marta',
+        adminLastName: 'Padilla',
+        adminEmail: 'marta.padilla@gmail.com',
+      };
+    } else {
+      objIni = {
+        orgName: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        city: '',
+        province: '',
+        postalCode: '',
+        adminFirstName: '',
+        adminLastName: '',
+        adminEmail: '',
+      };
+    }
+
     return (
       <div className={classes.root}>
         <Grid
@@ -64,9 +95,9 @@ class Registration extends React.Component {
           justify='flex-start'
           alignItems='center'
         >
-          <h2 className={classes.title}>{t('register', 'Registration')}</h2>
+          <h2 className={classes.title}>{title}</h2>
           <Formik
-            initialValues={{ eventCategory: '', name: '' }}
+            initialValues={objIni}
             validate={values => {
               let errors = {};
               if (!values.email) {
@@ -85,12 +116,22 @@ class Registration extends React.Component {
             }}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
-              const response = registerOrganization(values);
-              console.log('response: ', response);
-              console.log(JSON.stringify(response));
-              response
-                .then(setSubmitting(false))
-                .then(vals => console.log(vals));
+              if (validation) {
+                const response = validateOrganization(
+                  1,
+                  'Org details are okay'
+                );
+                response
+                  .then(setSubmitting(false))
+                  .then(vals => console.log(vals));
+              } else {
+                const response = registerOrganization(values);
+                console.log('response: ', response);
+                console.log(JSON.stringify(response));
+                response
+                  .then(setSubmitting(false))
+                  .then(vals => console.log(vals));
+              }
             }}
           >
             {({ isSubmitting }) => (
@@ -106,6 +147,7 @@ class Registration extends React.Component {
                     <h3 className={classes.columnTitle}>Organization</h3>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -119,6 +161,7 @@ class Registration extends React.Component {
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -132,6 +175,7 @@ class Registration extends React.Component {
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -148,6 +192,7 @@ class Registration extends React.Component {
                     <h3 className={classes.columnTitle}>Address</h3>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -161,6 +206,7 @@ class Registration extends React.Component {
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -174,6 +220,7 @@ class Registration extends React.Component {
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -187,6 +234,7 @@ class Registration extends React.Component {
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -203,6 +251,7 @@ class Registration extends React.Component {
                     <h3 className={classes.columnTitle}>Administrator</h3>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -216,6 +265,7 @@ class Registration extends React.Component {
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -229,6 +279,7 @@ class Registration extends React.Component {
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
+                        disabled={validation}
                         required={true}
                         component={TextField}
                         type='text'
@@ -249,7 +300,7 @@ class Registration extends React.Component {
                   type='submit'
                   disabled={isSubmitting}
                 >
-                  {t('submit', 'Register')}
+                  {buttonName}
                 </Button>
               </Form>
             )}
@@ -263,6 +314,7 @@ class Registration extends React.Component {
 Registration.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
+  validation: PropTypes.bool,
 };
 
 export default withStyles(styles, { withTheme: true })(Registration);

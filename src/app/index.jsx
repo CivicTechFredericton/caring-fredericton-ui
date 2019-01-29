@@ -11,16 +11,26 @@ import { Route, Switch } from 'react-router-dom';
 import Home from '../home';
 
 class App extends Component {
+  siblingAFunc() {
+    console.log('header');
+  }
   render() {
     return (
       <div className='App'>
-        <Header />
+        <Header myFunc={this.siblingAFunc} />
         <Switch>
           <Route path='/login' component={Login} />
           <Route path='/ChangePassword' component={ChangePassword} />
           <Route path='/ForgotPassword' component={ForgotPassword} />
           <Route path='/ResetPassword' component={ResetPassword} />
-          <Route path='/registration' component={Registration} />
+          <Route
+            path='/registration'
+            render={props => <Registration {...props} validation={false} />}
+          />
+          <Route
+            path='/validation'
+            render={props => <Registration {...props} validation={true} />}
+          />
           <Route path='/event' component={Event} />
           <Route path='/' component={Home} />
         </Switch>
