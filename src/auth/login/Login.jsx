@@ -76,7 +76,7 @@ class Login extends React.Component {
             authenticateUser(values.email, values.password, cbVals => {
               setSubmitting(false);
               if (!cbVals) {
-                this.props.history.push('');
+                this.props.history.push('/validation');
               } else {
                 this.setState({ errorMsg: 'Wrong username or password' });
               }
