@@ -22,6 +22,14 @@ function massageOrgRegistration(orgDataObject) {
   return obj;
 }
 
+function verificationObj(reason) {
+  const obj = {
+    is_verified: true,
+    reason: reason,
+  };
+  return obj;
+}
+
 export async function registerOrganization(orgDataObject) {
   const massagedOrgData = massageOrgRegistration(orgDataObject);
   try {
@@ -43,4 +51,20 @@ export async function registerOrganization(orgDataObject) {
     console.log(vals)
   );
   return response;
+}
+
+export async function validateOrganization(orgId, reason) {
+  const verificationData = verificationObj(reason);
+
+  const url =
+    'https://dev-api.caringfredericton.com//organizations/' + orgId + '/verify';
+  const requestData = {
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(verificationData),
+    method: 'POST',
+  };
+
+  return await fetch(url, requestData);
 }

@@ -56,7 +56,6 @@ export const authenticateUser = (email, password, callback) => {
 
 export const signOut = () => {
   userPool.getCurrentUser().signOut();
-  window.location.reload();
 };
 
 export const getCurrentUser = callback => {
