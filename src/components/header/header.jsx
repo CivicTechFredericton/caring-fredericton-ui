@@ -9,6 +9,9 @@ const styles = {
     flexGrow: 1,
     height: '10vh',
   },
+  button: {
+    color: 'white',
+  },
 };
 class Header extends React.Component {
   constructor(props) {
@@ -36,7 +39,6 @@ class Header extends React.Component {
                 <Button
                   className={classes.button}
                   onClick={() => {
-                    this.props.myFunc();
                     signOut();
                   }}
                 >
