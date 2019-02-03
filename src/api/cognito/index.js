@@ -77,3 +77,14 @@ export const getCurrentUser = callback => {
     });
   });
 };
+
+export const getSession = callback => {
+  userPool.getCurrentUser().getSession((err, session) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log('Session valid?', session.isValid());
+    callback(session);
+  });
+};

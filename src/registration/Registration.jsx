@@ -5,6 +5,7 @@ import { Grid, withStyles, createStyles, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import { SimpleEmailRegex } from 'Utils/regex';
 import { registerOrganization, validateOrganization } from '../api/endpoints';
+import { getSession } from '../api/cognito';
 
 const styles = createStyles(theme => ({
   root: {
@@ -117,13 +118,15 @@ class Registration extends React.Component {
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
               if (validation) {
-                const response = validateOrganization(
-                  1,
-                  'Org details are okay'
-                );
-                response
-                  .then(setSubmitting(false))
-                  .then(vals => console.log(vals));
+                getSession(vals => {
+                  validateOrganization(
+                    vals.idToken,
+                    '023b8a07-8813-4b64-937b-79e6c8eb394d',
+                    'Org details are okay'
+                  )
+                    .then(setSubmitting(false))
+                    .then(vals => console.log(vals));
+                });
               } else {
                 const response = registerOrganization(values);
                 console.log('response: ', response);
