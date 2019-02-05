@@ -6,19 +6,24 @@ import PropTypes from 'prop-types';
 import { authenticateUser } from '../../api/cognito';
 import { SimpleEmailRegex } from 'Utils/regex';
 
-import logo from '../../logo.png';
+import logo from '../../ctflogo.jpg';
 
 const styles = createStyles(theme => ({
   button: {
     marginTop: 25,
     color: 'white',
+    paddingBottom: '20px',
+    paddingTop: '20px',
+    paddingRight: '30px',
+    paddingLeft: '30px',
+    fontSize: '18px',
   },
   loginDiv: {
-    border: 'solid',
+    /*  border: 'solid',
     borderRadius: '20px',
     borderWidth: '7px',
     padding: '2%',
-    borderColor: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,*/
     width: '35%',
   },
   textField: {
@@ -34,7 +39,8 @@ const styles = createStyles(theme => ({
     color: theme.palette.secondary.dark,
   },
   image: {
-    width: '100px',
+    width: '100%',
+    height: 'auto',
   },
 }));
 
@@ -87,21 +93,12 @@ class Login extends React.Component {
                 this.setState({ errorMsg: 'Wrong username or password' });
               }
             });
-
-            /*setTimeout(() => {
-            setSubmitting(false);
-            const user = getCurrentUser(vals =>
-              console.log('callback to getCurrentUser:', vals)
-            );
-            console.log('user:', user);
-          }, 400);*/
           }}
         >
           {({ isSubmitting }) => (
             <div className={this.props.classes.loginDiv}>
               <div>
                 <img className={this.props.classes.image} src={logo} />
-                <h2 className={this.props.classes.title}>Caring Calendar</h2>
               </div>
               <Form>
                 <Grid

@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Button, Typography, Grid } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Grid } from '@material-ui/core';
 import { signOut } from '../../api/cognito';
+
+import logo from '../../logo.png';
 
 const styles = {
   root: {
@@ -11,6 +13,18 @@ const styles = {
   },
   button: {
     color: 'white',
+  },
+  image: {
+    width: '30px',
+    marginRight: '20px',
+  },
+  imageGrid: {
+    position: 'relative',
+  },
+  title: {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
   },
 };
 class Header extends React.Component {
@@ -30,10 +44,9 @@ class Header extends React.Component {
               justify='space-between'
               alignItems='center'
             >
-              <Grid item>
-                <Typography variant='h6' color='inherit'>
-                  {t('headerTitle', 'Caring Calendar')}
-                </Typography>
+              <Grid item className={this.props.classes.imageGrid}>
+                <img className={this.props.classes.image} src={logo} />
+                <span>{t('headerTitle', 'Caring Calendar')}</span>
               </Grid>
               <Grid item>
                 <Button
