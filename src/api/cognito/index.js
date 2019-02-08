@@ -5,6 +5,7 @@ import {
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
 import dev from '../aws/dev';
+import history from '../../history';
 
 const userPool = new CognitoUserPool(dev.COGNITO_POOL_DETAILS);
 
@@ -56,6 +57,7 @@ export const authenticateUser = (email, password, callback) => {
 
 export const signOut = () => {
   userPool.getCurrentUser().signOut();
+  history.push('login');
 };
 
 export const getCurrentUser = callback => {
@@ -75,5 +77,16 @@ export const getCurrentUser = callback => {
       if (err) return console.log(err);
       callback(attributes);
     });
+  });
+};
+
+export const getSession = callback => {
+  userPool.getCurrentUser().getSession((err, session) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log('Session valid?', session.isValid());
+    callback(session);
   });
 };

@@ -53,15 +53,17 @@ export async function registerOrganization(orgDataObject) {
   return response;
 }
 
-export async function validateOrganization(orgId, reason) {
+export async function validateOrganization(token, orgId, reason) {
   const verificationData = verificationObj(reason);
 
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
   const url =
-    'https://dev-api.caringfredericton.com//organizations/' + orgId + '/verify';
+    'https://dev-api.caringfredericton.com/organizations/' + orgId + '/verify';
+
   const requestData = {
-    headers: {
-      'content-type': 'application/json',
-    },
+    headers,
     body: JSON.stringify(verificationData),
     method: 'POST',
   };
