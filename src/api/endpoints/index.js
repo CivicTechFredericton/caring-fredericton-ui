@@ -35,7 +35,7 @@ function massageEvntData(evntDataObject) {
     end_date: evntDataObject.start_date,
     start_time: evntDataObject.start_time + ':00',
     end_time: evntDataObject.end_time + ':00',
-    is_recurring: evntDataObject.repeat,
+    is_recurring: false,
   };
 
   console.log(obj);
