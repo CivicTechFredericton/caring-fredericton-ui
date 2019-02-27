@@ -14,6 +14,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
+import { createEvent } from '../api/endpoints';
+import { getSession } from '../api/cognito';
+
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+
 const styles = createStyles(theme => ({
   root: {
     paddingTop: 25,
@@ -28,16 +35,28 @@ const styles = createStyles(theme => ({
     paddingRight: 20,
   },
   button: {
+    marginLeft: '40%',
     marginTop: 30,
+    color: 'white',
+    fontSize: '14px',
   },
   title: {
     color: theme.palette.primary.dark,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit * 2,
+    width: 100,
   },
 }));
 
 class Event extends React.Component {
   handleClickOpen = () => {
     this.setState({ open: true });
+  };
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleClose = () => {
@@ -50,6 +69,7 @@ class Event extends React.Component {
       open: false,
       fullWidth: true,
       maxWidth: 'md',
+      repeat: '',
     };
   }
 
@@ -80,7 +100,6 @@ class Event extends React.Component {
               alignItems='center'
             >
               <Formik
-                initialValues={{ categories: '', eventName: '' }}
                 validate={values => {
                   let errors = {};
                   if (!values.categories) {
@@ -94,10 +113,15 @@ class Event extends React.Component {
                   return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                  setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                  }, 400);
+                  getSession(vals => {
+                    createEvent(
+                      vals.idToken,
+                      '023b8a07-8813-4b64-937b-79e6c8eb394d',
+                      values
+                    )
+                      .then(setSubmitting(false))
+                      .then(vals => console.log(vals));
+                  });
                 }}
               >
                 {({ isSubmitting }) => (
@@ -195,21 +219,29 @@ class Event extends React.Component {
                           />
                         </Grid>
                         <Grid className={classes.field} item>
-                          <Field
-                            component={TextField}
-                            type='text'
+                          <InputLabel>Recurrence:</InputLabel>
+                          <Select
+                            value={this.state.repeat}
+                            onChange={this.handleChange}
                             name='repeat'
-                            label={t('repeat', 'Repeat')}
-                            margin='normal'
-                            variant='outlined'
-                            placeholder={t('repeat', 'Repeat')}
-                            className={classes.textField}
-                          />
+                            displayEmpty
+                            className={classes.selectEmpty}
+                          >
+                            <MenuItem value=''>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Daily</MenuItem>
+                            <MenuItem value={20}>Weekly</MenuItem>
+                            <MenuItem value={30}>Bi-Weekly</MenuItem>
+                            <MenuItem value={30}>Monthly</MenuItem>
+                          </Select>
                         </Grid>
                       </Grid>
                     </Grid>
                     <Button
-                      color='primary'
+                      className={this.props.classes.button}
+                      variant='contained'
+                      color='secondary'
                       type='submit'
                       disabled={isSubmitting}
                     >
