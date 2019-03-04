@@ -1,4 +1,7 @@
-import { validateOrgRegistration } from './queryValidation';
+import {
+  validateOrgRegistration,
+  validateEventRegistration,
+} from './queryValidation';
 
 function massageOrgRegistration(orgDataObject) {
   const obj = {
@@ -19,6 +22,23 @@ function massageOrgRegistration(orgDataObject) {
       country: 'Canada',
     },
   };
+  return obj;
+}
+
+function massageEvntData(evntDataObject) {
+  console.log(evntDataObject);
+  const obj = {
+    name: evntDataObject.name,
+    description: 'API testing',
+    categories: evntDataObject.categories,
+    start_date: evntDataObject.start_date,
+    end_date: evntDataObject.start_date,
+    start_time: evntDataObject.start_time + ':00',
+    end_time: evntDataObject.end_time + ':00',
+    is_recurring: false,
+  };
+
+  console.log(obj);
   return obj;
 }
 
@@ -65,6 +85,31 @@ export async function validateOrganization(token, orgId, reason) {
   const requestData = {
     headers,
     body: JSON.stringify(verificationData),
+    method: 'POST',
+  };
+
+  return await fetch(url, requestData);
+}
+
+export async function createEvent(token, orgId, event) {
+  console.log(event);
+  const massagedEvntData = massageEvntData(event);
+  try {
+    validateEventRegistration(massagedEvntData);
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
+  const url =
+    'https://dev-api.caringfredericton.com/organizations/' + orgId + '/events';
+
+  const requestData = {
+    headers,
+    body: JSON.stringify(massagedEvntData),
     method: 'POST',
   };
 
