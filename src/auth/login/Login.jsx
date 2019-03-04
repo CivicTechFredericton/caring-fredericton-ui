@@ -53,9 +53,10 @@ class Login extends React.Component {
     };
   }
   render() {
+    const { t, classes, history } = this.props;
     return (
       <Grid
-        className={this.props.classes.maingrid}
+        className={classes.maingrid}
         container
         direction='column'
         justify='center'
@@ -69,16 +70,13 @@ class Login extends React.Component {
           validate={values => {
             let errors = {};
             if (!values.email) {
-              errors.email = this.props.t('required', 'Required');
+              errors.email = t('common.required');
             } else if (!SimpleEmailRegex.test(values.email)) {
-              errors.email = errors.email = this.props.t(
-                'invalidEmail',
-                'Invalid email address'
-              );
+              errors.email = errors.email = t('error.invalidEmail');
             }
 
             if (!values.password) {
-              errors.password = this.props.t('required', 'Required');
+              errors.password = t('common.required');
             }
             return errors;
           }}
@@ -88,17 +86,17 @@ class Login extends React.Component {
             authenticateUser(values.email, values.password, cbVals => {
               setSubmitting(false);
               if (!cbVals) {
-                this.props.history.push('/validation');
+                history.push('/validation');
               } else {
-                this.setState({ errorMsg: 'Wrong username or password' });
+                this.setState({ errorMsg: t('authorize.errorLogin') });
               }
             });
           }}
         >
           {({ isSubmitting }) => (
-            <div className={this.props.classes.loginDiv}>
+            <div className={classes.loginDiv}>
               <div>
-                <img className={this.props.classes.image} src={logo} />
+                <img className={classes.image} src={logo} />
               </div>
               <Form>
                 <Grid
@@ -107,40 +105,43 @@ class Login extends React.Component {
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <span className={this.props.classes.error}>
-                    {this.state.errorMsg}
-                  </span>
+                  <span className={classes.error}>{this.state.errorMsg}</span>
                   <Field
-                    required
-                    className={this.props.classes.textField}
+                    className={classes.textField}
                     type='email'
                     name='email'
-                    label={this.props.t('userName', 'User Name')}
+                    label={t('authorize.username')}
                     margin='normal'
                     variant='outlined'
                     component={TextField}
-                    placeholder={this.props.t('userName', 'User Name')}
+                    placeholder={t('authorize.username')}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                   <Field
-                    className={this.props.classes.textField}
+                    className={classes.textField}
                     autoComplete='current-password'
                     type='password'
                     name='password'
-                    label={this.props.t('password', 'Password') + ' *'}
+                    label={t('authorize.password') + ' *'}
                     margin='normal'
                     variant='outlined'
                     component={TextField}
-                    placeholder={this.props.t('password', 'Password') + ' *'}
+                    placeholder={t('authorize.password') + ' *'}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
 
                   <Button
-                    className={this.props.classes.button}
+                    className={classes.button}
                     variant='contained'
                     color='secondary'
                     type='submit'
                     disabled={isSubmitting}
                   >
-                    {this.props.t('submit', 'Login')}
+                    {t('authorize.login')}
                   </Button>
                 </Grid>
               </Form>

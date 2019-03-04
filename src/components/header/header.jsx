@@ -46,7 +46,7 @@ class Header extends React.Component {
             >
               <Grid item className={this.props.classes.imageGrid}>
                 <img className={this.props.classes.image} src={logo} />
-                <span>{t('headerTitle', 'Caring Calendar')}</span>
+                <span>{t('header.title')}</span>
               </Grid>
               <Grid item>
                 <Button
@@ -55,7 +55,7 @@ class Header extends React.Component {
                     signOut();
                   }}
                 >
-                  {t('logout', 'Log Out')}
+                  {t('authorize.logout')}
                 </Button>
               </Grid>
             </Grid>

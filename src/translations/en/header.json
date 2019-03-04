@@ -1,9 +1,0 @@
-{
-  "administration": "Change Language",
-  "dashboard": "English",
-  "logout": "Logout",
-  "login": "Login",
-  "sign_up": "Register",
-  "welcome": "Welcome, {{ username }}",
-  "welcome_new_user": "Welcome to the Demo App!"
-}

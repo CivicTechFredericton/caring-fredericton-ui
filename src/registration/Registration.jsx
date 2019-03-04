@@ -60,6 +60,7 @@ class Registration extends React.Component {
     const buttonName = validation ? 'Validate' : 'Register';
     const title = validation ? 'Validation' : 'Registration';
     var objIni;
+    console.log('t : ', t('common'));
     if (validation) {
       objIni = {
         orgName: 'OrgTest',
@@ -155,11 +156,11 @@ class Registration extends React.Component {
                         component={TextField}
                         type='text'
                         name='orgName'
-                        label={t('orgName', 'Organization Name')}
+                        label={t('register.org_name')}
                         className={classes.textField}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('orgName', 'Organization Name')}
+                        placeholder={t('register.org_name')}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
