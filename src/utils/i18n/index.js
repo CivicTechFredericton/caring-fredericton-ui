@@ -1,13 +1,13 @@
 // import i18next from 'i18next';
 // import i18nextXHRBackend from 'i18next-xhr-backend';
 import i18n from 'i18next';
-// import LanguageDetector from 'i18next-browser-languagedetector';
+import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-xhr-backend';
 
 // this registers all files in the translations folder
 // and make them available in the build. this does NOT
 // actually import files, just a reference to the path
-require.context('../../translations', true, /\.json/);
+require.context('../../../public/translations/', true, /\.json/);
 
 export const getCurrentLanguage = () => {
   return i18n.language;
@@ -30,26 +30,35 @@ export const changeLanguage = nextLang => {
 
 i18n
   .use(Backend)
-  // .use(LanguageDetector)
+  .use(LanguageDetector)
   .init({
     fallbackLng: 'en',
     lng: 'en',
     whitelist: ['en'],
     ns: 'common',
     backend: {
-      loadPath: '../../translations/{{lng}}/{{ns}}.json',
-      addPath: '../../translations/{{lng}}/{{ns}}.json',
+      loadPath: '../translations/{{lng}}/{{ns}}.json',
+      addPath: '../translations/{{lng}}/{{ns}}.json',
+    },
+    react: {
+      // **** BROWSER WARNING *******
+      // the wait option throws browser warning
+      // -> "warning: Did not expect server HTML to contain a <div> in <div>."
+      // it causes the screen to flash when the page is refreshed / loading
+      wait: process && !process.release,
+      bindI18n: false,
+      bindStore: false,
+      nsMode: 'default',
+    },
+    // if react { } is commented out and replaced by initImmediate,
+    // the browser warning disappears. However, the browser
+    // shows translation missing before it initialises
+    // initImmediate: !(process && !process.release),
+
+    cache: {
+      enabled: true,
+      expirationTime: 24 * 60 * 60 * 1000,
     },
   });
-
-// const i18n = i18next.use(i18nextXHRBackend).init({
-//   lng: 'en',
-//   whitelist: ['en'],
-//   ns: 'common',
-//   backend: {
-//     loadPath: 'translations/{{lng}}/{{ns}}.json',
-//     addPath: 'translations/{{lng}}/{{ns}}.json',
-//   },
-// });
 
 export default i18n;

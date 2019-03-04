@@ -7,7 +7,7 @@
   "confirm_password_required": "Must confirm password",
   "password_mismatch": "Password does not match",
   "register": "Register",
-  "orgName": "Organization Name",
+  "org_name": "Organization Name",
   "phoneNumber": "Phone Number",
   "address": "Address",
   "postalCode": "Postal Code",

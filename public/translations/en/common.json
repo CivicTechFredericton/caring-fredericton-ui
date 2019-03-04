@@ -1,10 +1,19 @@
 {
+  "authorize": {
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "logout": "Log Out"
+  },
   "common": {
-    "submit": "Submit",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "register": "Register",
-    "userName": "User Name"
+    "required": "Required",
+    "submit": "Submit"
+  },
+  "error": {
+    "invalidEmail": "Invalid email address"
+  },
+  "header": {
+    "title": "Caring Calendar"
   },
   "register": {
     "register": "Tetsss",
@@ -16,7 +25,7 @@
     "confirm_password_required": "Must confirm password",
     "password_mismatch": "Password does not match",
     "register": "Register",
-    "orgName": "Organization Name",
+    "org_name": "Organization Name",
     "phoneNumber": "Phone Number",
     "address": "Address",
     "postalCode": "Postal Code",

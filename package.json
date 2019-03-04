@@ -20,6 +20,7 @@
     "fs-extra": "7.0.0",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "i18next": "12.1.0",
+    "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "1.5.1",
     "identity-obj-proxy": "3.0.0",
     "lodash": "4.17.11",
