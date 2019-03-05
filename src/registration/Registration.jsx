@@ -54,13 +54,16 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     const { t, classes, validation } = this.props;
-    const buttonName = validation ? 'Validate' : 'Register';
-    const title = validation ? 'Validation' : 'Registration';
+    const buttonName = validation
+      ? t('register.validate')
+      : t('register.register');
+    const title = validation
+      ? t('register.validation')
+      : t('register.registration');
     var objIni;
-    console.log('t : ', t('common'));
+
     if (validation) {
       objIni = {
         orgName: 'OrgTest',
@@ -102,16 +105,49 @@ class Registration extends React.Component {
             initialValues={objIni}
             validate={values => {
               let errors = {};
+
+              if (!values.orgName) {
+                errors.orgName = t('common.required');
+              }
+
               if (!values.email) {
-                errors.email = t('required', 'Required');
+                errors.email = t('common.required');
               } else if (!SimpleEmailRegex.test(values.email)) {
-                errors.email = t('invalidEmail', 'Invalid email address');
+                errors.email = t('error.invalidEmail');
+              }
+
+              if (!values.phoneNumber) {
+                errors.phoneNumber = t('common.required');
+              }
+
+              if (!values.address) {
+                errors.address = t('common.required');
+              }
+
+              if (!values.city) {
+                errors.city = t('common.required');
+              }
+
+              if (!values.province) {
+                errors.province = t('common.required');
+              }
+
+              if (!values.postalCode) {
+                errors.postalCode = t('common.required');
+              }
+
+              if (!values.adminFirstName) {
+                errors.adminFirstName = t('common.required');
+              }
+
+              if (!values.adminLastName) {
+                errors.adminLastName = t('common.required');
               }
 
               if (!values.adminEmail) {
-                errors.adminEmail = t('required', 'Required');
+                errors.adminEmail = t('common.required');
               } else if (!SimpleEmailRegex.test(values.adminEmail)) {
-                errors.adminEmail = t('invalidEmail', 'Invalid email address');
+                errors.adminEmail = t('error.invalidEmail');
               }
 
               return errors;
@@ -124,17 +160,12 @@ class Registration extends React.Component {
                     vals.idToken,
                     '023b8a07-8813-4b64-937b-79e6c8eb394d',
                     'Org details are okay'
-                  )
-                    .then(setSubmitting(false))
-                    .then(vals => console.log(vals));
+                  ).then(setSubmitting(false));
                 });
               } else {
                 const response = registerOrganization(values);
-                console.log('response: ', response);
-                console.log(JSON.stringify(response));
-                response
-                  .then(setSubmitting(false))
-                  .then(vals => console.log(vals));
+
+                response.then(setSubmitting(false));
               }
             }}
           >
@@ -148,150 +179,146 @@ class Registration extends React.Component {
                   alignItems='center'
                 >
                   <Grid xs={4} className={classes.spacer} item>
-                    <h3 className={classes.columnTitle}>Organization</h3>
+                    <h3 className={classes.columnTitle}>
+                      {t('register.organization')}
+                    </h3>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='orgName'
-                        label={t('register.org_name')}
+                        label={t('register.orgName') + '*'}
                         className={classes.textField}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.org_name')}
+                        placeholder={t('register.orgName') + '*'}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='email'
-                        label={t('email', 'Email')}
+                        label={t('register.email') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('email', 'Email')}
+                        placeholder={t('register.email') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='phoneNumber'
-                        label={t('phoneNumber', 'Phone Number')}
+                        label={t('register.phoneNumber') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('phoneNumber', 'Phone Number')}
+                        placeholder={t('register.phoneNumber') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                   </Grid>
                   <Grid xs={4} className={classes.spacer} item>
-                    <h3 className={classes.columnTitle}>Address</h3>
+                    <h3 className={classes.columnTitle}>
+                      {t('register.address')}
+                    </h3>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='address'
-                        label={t('address', 'Address')}
+                        label={t('register.address') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('address', 'Address')}
+                        placeholder={t('register.address') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='city'
-                        label={t('city', 'City')}
+                        label={t('register.city') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('city', 'City')}
+                        placeholder={t('register.city') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='province'
-                        label={t('province', 'Province')}
+                        label={t('register.province') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('province', 'Province')}
+                        placeholder={t('register.province') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='postalCode'
-                        label={t('postalCode', 'Postal Code')}
+                        label={t('register.postalCode') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('postalCode', 'Postal Code')}
+                        placeholder={t('register.postalCode') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                   </Grid>
                   <Grid xs={4} className={classes.lastColumn} item>
-                    <h3 className={classes.columnTitle}>Administrator</h3>
+                    <h3 className={classes.columnTitle}>
+                      {t('register.administrator')}
+                    </h3>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='adminFirstName'
-                        label={t('firstName', 'First Name')}
+                        label={t('register.firstName') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('firstName', 'First Name')}
+                        placeholder={t('register.firstName') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='adminLastName'
-                        label={t('lastName', 'Last Name')}
+                        label={t('register.lastName') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('lastName', 'Last Name')}
+                        placeholder={t('register.lastName') + '*'}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
                         disabled={validation}
-                        required={true}
                         component={TextField}
                         type='text'
                         name='adminEmail'
-                        label={t('email', 'Email')}
+                        label={t('register.email') + '*'}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('email', 'Email')}
+                        placeholder={t('register.email') + '*'}
                         className={classes.textField}
                       />
                     </Grid>

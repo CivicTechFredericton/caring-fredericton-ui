@@ -16,23 +16,20 @@
     "title": "Caring Calendar"
   },
   "register": {
-    "register": "Tetsss",
-    "email": "Email",
-    "username_invalid": "Must be a valid email address",
-    "confirm_password": "Confirm Password",
-    "username_required": "Username is required",
-    "password_required": "Password is required",
-    "confirm_password_required": "Must confirm password",
-    "password_mismatch": "Password does not match",
     "register": "Register",
-    "org_name": "Organization Name",
+    "validate": "Validate",
+    "validation": "Validation",
+    "registration": "Registration",
+    "orgName": "Organization Name",
+    "organization": "Organization",
+    "email": "Email",
     "phoneNumber": "Phone Number",
     "address": "Address",
+    "city": "City",
+    "province": "Province",
     "postalCode": "Postal Code",
+    "administrator": "Administrator",
     "firstName": "First Name",
-    "lastName": "Last Name",
-    "password": "Caring Calendar Password",
-    "confirmPassword": "Confirm Password",
-    "submit": "Submit"
+    "lastName": "Last Name"
   }
 }
