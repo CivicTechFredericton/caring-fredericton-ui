@@ -49,7 +49,4 @@ export function validateEventRegistration(evtDataObject) {
 
   if (!evtDataObject['start_time'])
     throw new ReferenceError('start_time is a required field');
-
-  if (!evtDataObject['is_recurring'])
-    throw new ReferenceError('is_recurring is a required field');
 }

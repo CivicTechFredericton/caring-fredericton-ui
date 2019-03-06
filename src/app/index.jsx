@@ -6,7 +6,6 @@ import Login from '../auth/login';
 import ChangePassword from '../auth/ChangePassword';
 import ForgotPassword from '../auth/ForgotPassword';
 import ResetPassword from '../auth/ResetPassword';
-import Event from '../event';
 import { Route, Switch } from 'react-router-dom';
 import Home from '../home';
 
@@ -31,7 +30,6 @@ class App extends Component {
             path='/validation'
             render={props => <Registration {...props} validation={true} />}
           />
-          <Route path='/event' component={Event} />
           <Route path='/' component={Home} />
         </Switch>
       </div>
