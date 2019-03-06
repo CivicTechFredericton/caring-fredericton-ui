@@ -5,17 +5,23 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 
 import PropTypes from 'prop-types';
-import { Grid, withStyles, createStyles, Button } from '@material-ui/core';
+import {
+  IconButton,
+  AppBar,
+  Toolbar,
+  Grid,
+  withStyles,
+  createStyles,
+  Button,
+} from '@material-ui/core';
+
+import CloseIcon from '@material-ui/icons/Close';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import DialogTitle from '@material-ui/core/DialogTitle';
-
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-
-import { createEvent } from '../api/endpoints';
-import { getSession } from '../api/cognito';
+import { createEvent } from '../../api/endpoints';
+import { getSession } from '../../api/cognito';
 
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -48,19 +54,17 @@ const styles = createStyles(theme => ({
     marginLeft: theme.spacing.unit * 2,
     width: 100,
   },
+  appBar: {
+    position: 'relative',
+  },
+  flex: {
+    flex: 1,
+  },
 }));
 
 class Event extends React.Component {
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
   };
 
   constructor(props) {
@@ -77,21 +81,24 @@ class Event extends React.Component {
     const { t, classes } = this.props;
     return (
       <div className={classes.root}>
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={this.handleClickOpen}
-        >
-          Open form dialog
-        </Button>
         <Dialog
           fullWidth={this.state.fullWidth}
           maxWidth={this.state.maxWidth}
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={this.props.show}
           aria-labelledby='form-dialog-title'
         >
-          <DialogTitle id='form-dialog-title'>Create event</DialogTitle>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <span className={classes.flex}>Create Event</span>
+              <IconButton
+                color='inherit'
+                onClick={this.props.handleClose}
+                aria-label='Close'
+              >
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
           <DialogContent>
             <Grid
               container
@@ -103,11 +110,11 @@ class Event extends React.Component {
                 validate={values => {
                   let errors = {};
                   if (!values.categories) {
-                    errors.categories = t('required', 'Required');
+                    errors.categories = t('common.required');
                   }
 
                   if (!values.name) {
-                    errors.name = t('required', 'Required');
+                    errors.name = t('common.required');
                   }
 
                   return errors;
@@ -138,10 +145,10 @@ class Event extends React.Component {
                             component={TextField}
                             type='text'
                             name='categories'
-                            label={t('eventCategory', 'Event Category')}
+                            label={t('event.category')}
                             margin='normal'
                             variant='outlined'
-                            placeholder={t('eventCategory', 'Event Category')}
+                            placeholder={t('event.category')}
                             className={classes.textField}
                           />
                         </Grid>
@@ -150,10 +157,10 @@ class Event extends React.Component {
                             component={TextField}
                             type='text'
                             name='name'
-                            label={t('eventName', 'Event Name')}
+                            label={t('event.name')}
                             margin='normal'
                             variant='outlined'
-                            placeholder={t('eventName', 'Event Name')}
+                            placeholder={t('event.name')}
                             className={classes.textField}
                           />
                         </Grid>
@@ -164,13 +171,10 @@ class Event extends React.Component {
                             component={TextField}
                             type='text'
                             name='description'
-                            label={t('eventDescription', 'Event Description')}
+                            label={t('event.description')}
                             margin='normal'
                             variant='outlined'
-                            placeholder={t(
-                              'eventDescription',
-                              'Event Description'
-                            )}
+                            placeholder={t('event.description')}
                             className={classes.textField}
                           />
                         </Grid>
@@ -181,7 +185,7 @@ class Event extends React.Component {
                             component={TextField}
                             type='date'
                             name='start_date'
-                            label={t('date', 'Date')}
+                            label={t('common.date')}
                             margin='normal'
                             variant='outlined'
                             className={classes.textField}
@@ -195,7 +199,7 @@ class Event extends React.Component {
                             component={TextField}
                             type='time'
                             name='start_time'
-                            label={t('startTime', 'Start Time')}
+                            label={t('event.startTime')}
                             margin='normal'
                             variant='outlined'
                             className={classes.textField}
@@ -209,7 +213,7 @@ class Event extends React.Component {
                             component={TextField}
                             type='time'
                             name='end_time'
-                            label={t('endTime', 'End Time')}
+                            label={t('event.endTime')}
                             margin='normal'
                             variant='outlined'
                             className={classes.textField}
@@ -261,8 +265,8 @@ class Event extends React.Component {
 Event.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
+  show: PropTypes.bool,
+  handleClose: PropTypes.func,
 };
 
-const Comp1 = withStyles(styles, { withTheme: true })(Event);
-
-export default withMobileDialog()(Comp1);
+export default withStyles(styles, { withTheme: true })(Event);
