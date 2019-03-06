@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles, Typography } from '@material-ui/core';
 import Filter from './filter';
 
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 import '../style/react-big-calendar.css';
+import CreateEvent from './create-event/CreateEvent';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -55,6 +59,11 @@ const styles = () =>
     filter: {
       width: 200,
     },
+    fab: {
+      position: 'absolute',
+      bottom: '50px',
+      right: '50px',
+    },
   });
 
 class Home extends React.Component {
@@ -62,8 +71,22 @@ class Home extends React.Component {
     super(props);
     this.state = {
       events: [],
+      show: false,
     };
   }
+
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
+  };
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
   componentDidMount() {
     let input = [];
 
@@ -79,7 +102,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { t, classes } = this.props;
     return (
       <Grid
         className={classes.root}
@@ -104,12 +127,28 @@ class Home extends React.Component {
             endAccessor='end'
           />
         </Grid>
+        <Grid className={classes.filter} item>
+          <CreateEvent
+            t={t}
+            show={this.state.show}
+            handleClose={this.hideModal}
+          />
+          <Fab
+            color='primary'
+            onClick={this.showModal}
+            aria-label='Add'
+            className={classes.fab}
+          >
+            <AddIcon />
+          </Fab>
+        </Grid>
       </Grid>
     );
   }
 }
 
 Home.propTypes = {
+  t: PropTypes.func.isRequired,
   classes: PropTypes.object,
 };
 

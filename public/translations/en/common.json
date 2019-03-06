@@ -7,7 +7,8 @@
   },
   "common": {
     "required": "Required",
-    "submit": "Submit"
+    "submit": "Submit",
+    "date": "Date"
   },
   "error": {
     "invalidEmail": "Invalid email address"
@@ -31,5 +32,12 @@
     "administrator": "Administrator",
     "firstName": "First Name",
     "lastName": "Last Name"
+  },
+  "event": {
+    "category": "Event category",
+    "name": "Event name",
+    "description": "Event Description",
+    "startTime": "Start Time",
+    "endTime": "End Tipe"
   }
 }

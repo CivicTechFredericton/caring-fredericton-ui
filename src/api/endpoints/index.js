@@ -26,7 +26,6 @@ function massageOrgRegistration(orgDataObject) {
 }
 
 function massageEvntData(evntDataObject) {
-  console.log(evntDataObject);
   const obj = {
     name: evntDataObject.name,
     description: 'API testing',
@@ -38,7 +37,6 @@ function massageEvntData(evntDataObject) {
     is_recurring: false,
   };
 
-  console.log(obj);
   return obj;
 }
 
@@ -92,7 +90,6 @@ export async function validateOrganization(token, orgId, reason) {
 }
 
 export async function createEvent(token, orgId, event) {
-  console.log(event);
   const massagedEvntData = massageEvntData(event);
   try {
     validateEventRegistration(massagedEvntData);
