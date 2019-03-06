@@ -1,3 +1,4 @@
 import Home from './Home';
+import { withNamespaces } from 'react-i18next';
 
-export default Home;
+export default withNamespaces(['common'])(Home);

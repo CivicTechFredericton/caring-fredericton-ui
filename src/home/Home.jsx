@@ -77,6 +77,7 @@ class Home extends React.Component {
     });
     this.setState({ events: input });
   }
+
   render() {
     const { classes } = this.props;
     return (
