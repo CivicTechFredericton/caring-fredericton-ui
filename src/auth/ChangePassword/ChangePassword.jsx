@@ -130,7 +130,7 @@ const ChangePassword = props => {
                 type='submit'
                 disabled={isSubmitting}
               >
-                {props.t('submit', 'Submit')}
+                {props.t('common.submit')}
               </Button>
             </Grid>
           </Form>

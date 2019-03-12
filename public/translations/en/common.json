@@ -13,8 +13,22 @@
   "error": {
     "invalidEmail": "Invalid email address"
   },
+  "home": {
+    "filterTitle": "Event Category"
+  },
   "header": {
     "title": "Caring Calendar"
+  },
+  "filter": {
+    "meals": "Meals",
+    "laundry": "Laundry",
+    "social": "Social",
+    "showers": "Showers",
+    "education": "Education",
+    "health": "Health",
+    "hairCuts": "Hair Cuts",
+    "taxes": "Taxes",
+    "faith": "Faith"
   },
   "register": {
     "register": "Register",
@@ -38,6 +52,6 @@
     "name": "Event name",
     "description": "Event Description",
     "startTime": "Start Time",
-    "endTime": "End Tipe"
+    "endTime": "End Time"
   }
 }
