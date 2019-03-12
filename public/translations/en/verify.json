@@ -1,4 +1,0 @@
-{
-  "code": "Code",
-  "InvalidParameterException": "Some attribute you have provided is invalid; please review the following error message and correct the error: {{ message }}"
-}

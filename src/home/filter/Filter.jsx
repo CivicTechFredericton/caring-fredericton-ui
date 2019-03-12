@@ -22,39 +22,39 @@ class Filter extends React.Component {
     const filterConfig = [
       {
         id: 'meals',
-        label: t('meals', 'Meals'),
+        label: t('filter.meals'),
       },
       {
         id: 'laundry',
-        label: t('laundry', 'Laundry'),
+        label: t('filter.laundry'),
       },
       {
         id: 'social',
-        label: t('social', 'Social'),
+        label: t('filter.social'),
       },
       {
         id: 'showers',
-        label: t('showers', 'Showers'),
+        label: t('filter.showers'),
       },
       {
         id: 'education',
-        label: t('education', 'Education'),
+        label: t('filter.education'),
       },
       {
         id: 'health',
-        label: t('health', 'Health'),
+        label: t('filter.health'),
       },
       {
         id: 'hairCuts',
-        label: t('hairCuts', 'Hair Cuts'),
+        label: t('filter.hairCuts'),
       },
       {
         id: 'taxes',
-        label: t('taxes', 'Taxes'),
+        label: t('filter.taxes'),
       },
       {
         id: 'faith',
-        label: t('faith', 'Faith'),
+        label: t('filter.faith'),
       },
     ];
 

@@ -112,7 +112,7 @@ class Home extends React.Component {
         alignItems='flex-start'
       >
         <Grid className={classes.filter} item>
-          <Typography>Event Category</Typography>
+          <Typography>{t('home.filterTitle')}</Typography>
           <Filter />
         </Grid>
         <Grid item>
