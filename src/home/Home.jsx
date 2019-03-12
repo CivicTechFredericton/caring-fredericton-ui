@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
 import CreateEvent from './create-event/CreateEvent';
+import { isValidUser } from '../api/cognito/index';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -127,21 +128,23 @@ class Home extends React.Component {
             endAccessor='end'
           />
         </Grid>
-        <Grid className={classes.filter} item>
-          <CreateEvent
-            t={t}
-            show={this.state.show}
-            handleClose={this.hideModal}
-          />
-          <Fab
-            color='primary'
-            onClick={this.showModal}
-            aria-label='Add'
-            className={classes.fab}
-          >
-            <AddIcon />
-          </Fab>
-        </Grid>
+        {isValidUser() && (
+          <Grid className={classes.filter} item>
+            <CreateEvent
+              t={t}
+              show={this.state.show}
+              handleClose={this.hideModal}
+            />
+            <Fab
+              color='primary'
+              onClick={this.showModal}
+              aria-label='Add'
+              className={classes.fab}
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
+        )}
       </Grid>
     );
   }
