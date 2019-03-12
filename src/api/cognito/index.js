@@ -90,3 +90,28 @@ export const getSession = callback => {
     callback(session);
   });
 };
+
+export const isValidSession = () => {
+  if (!userPool.getCurrentUser()) {
+    return false;
+  }
+  return userPool.getCurrentUser().getSession((err, session) => {
+    if (err) {
+      return false;
+    }
+
+    if (session.isValid()) {
+      return true;
+    }
+
+    return false;
+  });
+};
+
+export const isValidUser = () => {
+  return isValidSession();
+};
+
+export const getUserOrganization = () => {
+  return isValidSession();
+};

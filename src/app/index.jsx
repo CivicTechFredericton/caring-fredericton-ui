@@ -8,12 +8,15 @@ import ForgotPassword from '../auth/ForgotPassword';
 import ResetPassword from '../auth/ResetPassword';
 import { Route, Switch } from 'react-router-dom';
 import Home from '../home';
+import { isValidSession } from '../api/cognito';
 
 class App extends Component {
   siblingAFunc() {
     console.log('header');
   }
+
   render() {
+    console.log('valid ', isValidSession());
     return (
       <div className='App'>
         <Header myFunc={this.siblingAFunc} />
