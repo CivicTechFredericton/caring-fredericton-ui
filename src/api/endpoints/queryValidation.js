@@ -23,7 +23,7 @@ export function validateOrgRegistration(orgDataObject) {
 
 // Basic validation for API call data.
 export function validateEventRegistration(evtDataObject) {
-  console.log(evtDataObject);
+  // console.log(evtDataObject);
   if (!evtDataObject)
     throw new ReferenceError(
       'event is falsy -- ensure that it matches registration specification'

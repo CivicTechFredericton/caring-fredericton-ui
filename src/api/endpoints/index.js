@@ -65,9 +65,9 @@ export async function registerOrganization(orgDataObject) {
     body: JSON.stringify(massagedOrgData),
     method: 'POST',
   };
-  const response = await fetch(url, requestData).then(vals =>
-    console.log(vals)
-  );
+  const response = await fetch(url, requestData); //.then(vals =>
+  // //  console.log(vals)
+  // );
   return response;
 }
 
@@ -111,4 +111,26 @@ export async function createEvent(token, orgId, event) {
   };
 
   return await fetch(url, requestData);
+}
+
+export async function getEvent(token, start_date, end_date, categories) {
+  const params = {
+    start_date,
+    end_date,
+    categories,
+  };
+  console.log('call', params);
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
+  const url = 'https://dev-api.caringfredericton.com/events';
+
+  const requestData = {
+    headers,
+    method: 'GET',
+  };
+
+  //console.log(requestData);
+
+  return await fetch(url, requestData).then(response => response.json());
 }
