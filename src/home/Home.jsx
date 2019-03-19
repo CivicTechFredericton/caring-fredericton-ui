@@ -10,47 +10,48 @@ import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
 import CreateEvent from './create-event/CreateEvent';
-import { isValidUser } from '../api/cognito/index';
+import { isValidSession, isValidUser, getSession } from '../api/cognito';
+import { getEvent } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
-const events = {
-  objects: [
-    {
-      id: '1',
-      name: 'Supper',
-      owner: 'United Church',
-      description: 'Supper in Fredericton',
-      categories: ['meals'],
-      start_date: '2019-01-29',
-      end_date: '2019-01-29',
-      start_time: '16:00',
-      end_time: '18:00',
-    },
-    {
-      id: '2',
-      name: 'Programing Class',
-      owner: 'United Church',
-      description: 'JavaScript for Beginners',
-      categories: ['education'],
-      start_date: '2019-01-27',
-      end_date: '2019-01-27',
-      start_time: '12:00:00',
-      end_time: '16:00:00',
-    },
-    {
-      id: '3',
-      name: 'Lunch',
-      owner: 'United Church',
-      description: 'Lunch in Fredericton',
-      categories: ['meals'],
-      start_date: '2019-01-28',
-      end_date: '2019-01-28',
-      start_time: '11:00:00',
-      end_time: '14:00:00',
-    },
-  ],
-};
+// const events = {
+//   objects: [
+//     {
+//       id: '1',
+//       name: 'Supper',
+//       owner: 'United Church',
+//       description: 'Supper in Fredericton',
+//       categories: ['meals'],
+//       start_date: '2019-01-29',
+//       end_date: '2019-01-29',
+//       start_time: '16:00',
+//       end_time: '18:00',
+//     },
+//     {
+//       id: '2',
+//       name: 'Programing Class',
+//       owner: 'United Church',
+//       description: 'JavaScript for Beginners',
+//       categories: ['education'],
+//       start_date: '2019-01-27',
+//       end_date: '2019-01-27',
+//       start_time: '12:00:00',
+//       end_time: '16:00:00',
+//     },
+//     {
+//       id: '3',
+//       name: 'Lunch',
+//       owner: 'United Church',
+//       description: 'Lunch in Fredericton',
+//       categories: ['meals'],
+//       start_date: '2019-01-28',
+//       end_date: '2019-01-28',
+//       start_time: '11:00:00',
+//       end_time: '14:00:00',
+//     },
+//   ],
+// };
 
 const styles = () =>
   createStyles({
@@ -89,17 +90,28 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    let input = [];
+    //const temp = false;
 
-    events.objects.map(result => {
-      input.push({
-        title: result.name,
-        allDay: false,
-        start: new Date(result.start_date + 'T' + result.start_time),
-        end: new Date(result.end_date + 'T' + result.end_time),
+    if (isValidSession()) {
+      //if (temp) {
+
+      getSession(vals => {
+        getEvent(vals.idToken, '', '', '').then(results => {
+          if (results.length > 0) {
+            let input = [];
+            results.map(result => {
+              input.push({
+                title: result.name,
+                allDay: false,
+                start: new Date(result.start_date + 'T' + result.start_time),
+                end: new Date(result.end_date + 'T' + result.end_time),
+              });
+            });
+            this.setState({ events: input });
+          }
+        });
       });
-    });
-    this.setState({ events: input });
+    }
   }
 
   render() {

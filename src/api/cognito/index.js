@@ -46,7 +46,7 @@ export const authenticateUser = (email, password, callback) => {
   const cognitoUser = new CognitoUser(userData);
   cognitoUser.authenticateUser(authDetails, {
     onSuccess: result => {
-      console.log('access token + ' + result.getAccessToken().getJwtToken());
+      //  console.log('access token + ' + result.getAccessToken().getJwtToken());
       callback(null, result);
     },
     onFailure: err => {
@@ -69,14 +69,15 @@ export const getCurrentUser = callback => {
       console.log(err);
       return;
     }
+    callback(session);
 
     console.log('Session valid?', session.isValid());
     console.log(session);
 
-    cognitoUser.getUserAttributes((err, attributes) => {
-      if (err) return console.log(err);
-      callback(attributes);
-    });
+    // cognitoUser.getUserAttributes((err, attributes) => {
+    //   if (err) return console.log(err);
+    //   callback(attributes);
+    // });
   });
 };
 
@@ -86,7 +87,7 @@ export const getSession = callback => {
       console.log(err);
       return;
     }
-    console.log('Session valid?', session.isValid());
+    //  console.log('Session valid?', session.isValid());
     callback(session);
   });
 };

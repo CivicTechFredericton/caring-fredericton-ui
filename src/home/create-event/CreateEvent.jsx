@@ -127,7 +127,7 @@ class Event extends React.Component {
                       values
                     )
                       .then(setSubmitting(false))
-                      .then(vals => console.log(vals));
+                      .then(this.props.handleClose());
                   });
                 }}
               >
