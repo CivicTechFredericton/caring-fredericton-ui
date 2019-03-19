@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Button, Grid } from '@material-ui/core';
-import { signOut } from '../../api/cognito';
+import { signOut, isValidSession } from '../../api/cognito';
+import history from '../../history';
 
 import logo from '../../logo.png';
 
@@ -49,14 +50,25 @@ class Header extends React.Component {
                 <span>{t('header.title')}</span>
               </Grid>
               <Grid item>
-                <Button
-                  className={classes.button}
-                  onClick={() => {
-                    signOut();
-                  }}
-                >
-                  {t('authorize.logout')}
-                </Button>
+                {isValidSession() ? (
+                  <Button
+                    className={classes.button}
+                    onClick={() => {
+                      signOut();
+                    }}
+                  >
+                    {t('authorize.logout')}
+                  </Button>
+                ) : (
+                  <Button
+                    className={classes.button}
+                    onClick={() => {
+                      history.push('/login');
+                    }}
+                  >
+                    {t('authorize.login')}
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </Toolbar>

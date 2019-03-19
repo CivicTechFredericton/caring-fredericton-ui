@@ -6,32 +6,75 @@ import Login from '../auth/login';
 import ChangePassword from '../auth/ChangePassword';
 import ForgotPassword from '../auth/ForgotPassword';
 import ResetPassword from '../auth/ResetPassword';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Home from '../home';
-import { isValidSession } from '../api/cognito';
+import {
+  isValidSession,
+  isValidUser,
+  getUserOrganization,
+} from '../api/cognito';
 
 class App extends Component {
-  siblingAFunc() {
-    console.log('header');
-  }
-
   render() {
-    console.log('valid ', isValidSession());
     return (
       <div className='App'>
         <Header myFunc={this.siblingAFunc} />
         <Switch>
-          <Route path='/login' component={Login} />
-          <Route path='/ChangePassword' component={ChangePassword} />
-          <Route path='/ForgotPassword' component={ForgotPassword} />
-          <Route path='/ResetPassword' component={ResetPassword} />
+          <Route
+            path='/login'
+            render={props =>
+              !isValidSession() ? <Login {...props} /> : <Redirect to='/' />
+            }
+          />
+          <Route
+            path='/ChangePassword'
+            render={props =>
+              isValidUser() ? (
+                <ChangePassword {...props} />
+              ) : (
+                <Redirect to='/login' />
+              )
+            }
+          />
+          <Route
+            path='/ForgotPassword'
+            render={props =>
+              isValidUser() ? (
+                <ForgotPassword {...props} />
+              ) : (
+                <Redirect to='/login' />
+              )
+            }
+          />
+          <Route
+            path='/ResetPassword'
+            render={props =>
+              isValidUser() ? (
+                <ResetPassword {...props} />
+              ) : (
+                <Redirect to='/login' />
+              )
+            }
+          />
           <Route
             path='/registration'
-            render={props => <Registration {...props} validation={false} />}
+            render={props =>
+              getUserOrganization() ? (
+                <Registration {...props} validation={false} />
+              ) : (
+                <Redirect to='/' />
+              )
+            }
           />
           <Route
             path='/validation'
-            render={props => <Registration {...props} validation={true} />}
+            render={props =>
+              isValidUser() ? (
+                <Registration {...props} validation={true} />
+              ) : (
+                <Redirect to='/login' />
+              )
+            }
           />
           <Route path='/' component={Home} />
         </Switch>

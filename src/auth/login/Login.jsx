@@ -86,7 +86,7 @@ class Login extends React.Component {
             authenticateUser(values.email, values.password, cbVals => {
               setSubmitting(false);
               if (!cbVals) {
-                history.push('/validation');
+                history.push('/registration');
               } else {
                 this.setState({ errorMsg: t('authorize.errorLogin') });
               }
