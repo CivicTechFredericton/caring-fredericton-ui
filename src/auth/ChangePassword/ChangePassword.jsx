@@ -40,12 +40,12 @@ const ChangePassword = props => {
             errors.password = props.t('required', 'Required');
           }
 
-          if (values.password1 != values.password2) {
+          if (values.password1 !== values.password2) {
             errors.password1 = errors.password = props.t(
               'Passwords do not match'
             );
           }
-          if (values.password2 != values.password1) {
+          if (values.password2 !== values.password1) {
             errors.password2 = errors.password = props.t(
               'Passwords do not match'
             );
@@ -145,4 +145,4 @@ ChangePassword.propTypes = {
   t: PropTypes.any,
 };
 
-export default withStyles(styles)(ChangePassword);
+export default withStyles(styles, { withTheme: true })(ChangePassword);

@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
-import { authenticateUser } from '../../api/cognito';
+import { authenticateUser, getUserOrganization } from '../../api/cognito';
 import { SimpleEmailRegex } from 'Utils/regex';
 
 import logo from '../../ctflogo.jpg';
@@ -86,7 +86,10 @@ class Login extends React.Component {
             authenticateUser(values.email, values.password, cbVals => {
               setSubmitting(false);
               if (!cbVals) {
-                history.push('/registration');
+                if (getUserOrganization()) {
+                  history.push('/registration');
+                }
+                history.push('/');
               } else {
                 this.setState({ errorMsg: t('authorize.errorLogin') });
               }

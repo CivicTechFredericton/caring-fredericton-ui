@@ -118,4 +118,4 @@ ForgotPassword.propTypes = {
   t: PropTypes.any,
 };
 
-export default withStyles(styles)(ForgotPassword);
+export default withStyles(styles, { withTheme: true })(ForgotPassword);

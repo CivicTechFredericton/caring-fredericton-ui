@@ -118,4 +118,4 @@ ResetPassword.propTypes = {
   t: PropTypes.any,
 };
 
-export default withStyles(styles)(ResetPassword);
+export default withStyles(styles, { withTheme: true })(ResetPassword);

@@ -85,4 +85,4 @@ Header.propTypes = {
   myFunc: PropTypes.func,
 };
 
-export default withStyles(styles)(Header);
+export default withStyles(styles, { withTheme: true })(Header);

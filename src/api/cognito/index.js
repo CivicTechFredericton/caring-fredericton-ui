@@ -73,11 +73,6 @@ export const getCurrentUser = callback => {
 
     console.log('Session valid?', session.isValid());
     console.log(session);
-
-    // cognitoUser.getUserAttributes((err, attributes) => {
-    //   if (err) return console.log(err);
-    //   callback(attributes);
-    // });
   });
 };
 
@@ -87,7 +82,7 @@ export const getSession = callback => {
       console.log(err);
       return;
     }
-    //  console.log('Session valid?', session.isValid());
+
     callback(session);
   });
 };
@@ -114,5 +109,8 @@ export const isValidUser = () => {
 };
 
 export const getUserOrganization = () => {
-  return isValidSession();
+  if (isValidSession()) {
+    return false;
+  }
+  return false;
 };
