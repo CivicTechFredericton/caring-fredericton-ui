@@ -167,4 +167,4 @@ Home.propTypes = {
   classes: PropTypes.object,
 };
 
-export default withStyles(styles)(Home);
+export default withStyles(styles, { withTheme: true })(Home);

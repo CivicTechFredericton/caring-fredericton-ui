@@ -91,4 +91,4 @@ Filter.propTypes = {
   t: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(Filter);
+export default withStyles(styles, { withTheme: true })(Filter);
