@@ -8,11 +8,7 @@ import ForgotPassword from '../auth/ForgotPassword';
 import ResetPassword from '../auth/ResetPassword';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Home from '../home';
-import {
-  isValidSession,
-  isValidUser,
-  getUserOrganization,
-} from '../api/cognito';
+import { isValidUser } from '../api/cognito';
 
 class App extends Component {
   render() {
@@ -23,7 +19,7 @@ class App extends Component {
           <Route
             path='/login'
             render={props =>
-              !isValidSession() ? <Login {...props} /> : <Redirect to='/' />
+              !isValidUser() ? <Login {...props} /> : <Redirect to='/' />
             }
           />
           <Route
@@ -32,7 +28,7 @@ class App extends Component {
               isValidUser() ? (
                 <ChangePassword {...props} />
               ) : (
-                <Redirect to='/login' />
+                <Redirect to='/' />
               )
             }
           />
@@ -42,24 +38,20 @@ class App extends Component {
               isValidUser() ? (
                 <ForgotPassword {...props} />
               ) : (
-                <Redirect to='/login' />
+                <Redirect to='/' />
               )
             }
           />
           <Route
             path='/ResetPassword'
             render={props =>
-              isValidUser() ? (
-                <ResetPassword {...props} />
-              ) : (
-                <Redirect to='/login' />
-              )
+              isValidUser() ? <ResetPassword {...props} /> : <Redirect to='/' />
             }
           />
           <Route
             path='/registration'
             render={props =>
-              getUserOrganization() ? (
+              isValidUser() ? (
                 <Registration {...props} validation={false} />
               ) : (
                 <Redirect to='/' />
@@ -72,7 +64,7 @@ class App extends Component {
               isValidUser() ? (
                 <Registration {...props} validation={true} />
               ) : (
-                <Redirect to='/login' />
+                <Redirect to='/' />
               )
             }
           />
