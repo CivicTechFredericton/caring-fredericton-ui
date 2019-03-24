@@ -1,8 +1,6 @@
 {
   "extends": ["eslint:recommended", "plugin:react/recommended"],
-  "plugins": [
-    "react", "jest"
-  ],
+  "plugins": ["react", "jest"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 7,
@@ -25,7 +23,7 @@
     }
   },
   "rules": {
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-console": "off",
     "no-unreachable": "error",
     "eqeqeq": "warn",
     "react/react-in-jsx-scope": "error",
