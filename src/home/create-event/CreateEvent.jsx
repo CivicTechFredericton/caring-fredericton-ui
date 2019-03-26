@@ -121,13 +121,15 @@ class Event extends React.Component {
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                   getSession(vals => {
+                    console.log(values);
                     createEvent(
                       vals.idToken,
                       '023b8a07-8813-4b64-937b-79e6c8eb394d',
                       values
-                    )
-                      .then(setSubmitting(false))
-                      .then(this.props.handleClose());
+                    ).then(() => {
+                      setSubmitting(false);
+                      this.props.handleClose();
+                    });
                   });
                 }}
               >
