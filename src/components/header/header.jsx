@@ -63,7 +63,7 @@ class Header extends React.Component {
                   <Button
                     className={classes.button}
                     onClick={() => {
-                      history.push('/');
+                      history.push('/Login');
                     }}
                   >
                     {t('authorize.login')}
