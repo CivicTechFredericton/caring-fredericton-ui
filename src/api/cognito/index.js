@@ -9,6 +9,31 @@ import history from '../../history';
 
 const userPool = new CognitoUserPool(dev.COGNITO_POOL_DETAILS);
 
+export const authenticateUser = (Username, Password, callback) => {
+  const authDetails = new AuthenticationDetails({ Username, Password });
+
+  const cognitoUser = new CognitoUser({
+    Username,
+    Pool: userPool,
+  });
+
+  cognitoUser.authenticateUser(authDetails, {
+    onSuccess: result => {
+      callback(null, result);
+    },
+    onFailure: err => {
+      callback(err);
+    },
+  });
+};
+
+export const signOut = () => {
+  userPool.getCurrentUser().signOut();
+  history.push('/');
+};
+
+////////
+
 export const createUser = (username, email, password, callback) => {
   const attributeList = [
     new CognitoUserAttribute({
@@ -31,33 +56,6 @@ export const verifyUser = (username, verifyCode, callback) => {
   };
   const cognitoUser = new CognitoUser(userData);
   cognitoUser.confirmRegistration(verifyCode, true, callback);
-};
-
-export const authenticateUser = (email, password, callback) => {
-  const authData = {
-    Username: email,
-    Password: password,
-  };
-  const authDetails = new AuthenticationDetails(authData);
-  const userData = {
-    Username: email,
-    Pool: userPool,
-  };
-  const cognitoUser = new CognitoUser(userData);
-  cognitoUser.authenticateUser(authDetails, {
-    onSuccess: result => {
-      //  console.log('access token + ' + result.getAccessToken().getJwtToken());
-      callback(null, result);
-    },
-    onFailure: err => {
-      callback(err);
-    },
-  });
-};
-
-export const signOut = () => {
-  userPool.getCurrentUser().signOut();
-  history.push('/');
 };
 
 export const getCurrentUser = callback => {

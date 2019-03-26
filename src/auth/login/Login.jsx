@@ -1,59 +1,59 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
+import { Button, withStyles, Grid, Typography } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 import { authenticateUser, getUserOrganization } from '../../api/cognito';
 import { SimpleEmailRegex } from 'Utils/regex';
 
 import logo from '../../ctflogo.jpg';
-
-const styles = createStyles(theme => ({
-  button: {
-    marginTop: 25,
-    color: 'white',
-    paddingBottom: '20px',
-    paddingTop: '20px',
-    paddingRight: '30px',
-    paddingLeft: '30px',
-    fontSize: '18px',
-  },
-  loginDiv: {
-    /*  border: 'solid',
-    borderRadius: '20px',
-    borderWidth: '7px',
-    padding: '2%',
-    borderColor: theme.palette.primary.main,*/
-    width: '35%',
-  },
-  textField: {
-    width: '100%',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  maingrid: {
-    height: '90vh',
-  },
-  error: {
-    color: theme.palette.secondary.dark,
-  },
-  image: {
-    width: '100%',
-    height: 'auto',
-  },
-}));
+import styles from './styles';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       errorMsg: '',
     };
   }
+
+  validation = (t, values) => {
+    let errors = {};
+
+    if (!values.email) {
+      errors.email = t('common.required');
+    } else if (!SimpleEmailRegex.test(values.email)) {
+      errors.email = errors.email = t('error.invalidEmail');
+    }
+
+    if (!values.password) {
+      errors.password = t('common.required');
+    }
+    return errors;
+  };
+
+  submitAuth = (values, setSubmitting) => {
+    setSubmitting(true);
+
+    authenticateUser(values.email, values.password, response => {
+      setSubmitting(false);
+      console.log('response', response);
+      if (!response) {
+        this.setState({ errorMsg: '' });
+
+        if (getUserOrganization()) {
+          this.props.history.push('/registration');
+        }
+        this.props.history.push('/');
+      } else {
+        this.setState({ errorMsg: this.props.t('error.errorLogin') });
+      }
+    });
+  };
+
   render() {
-    const { t, classes, history } = this.props;
+    const { t, classes } = this.props;
+
     return (
       <Grid
         className={classes.maingrid}
@@ -63,44 +63,17 @@ class Login extends React.Component {
         alignItems='center'
       >
         <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          validate={values => {
-            let errors = {};
-            if (!values.email) {
-              errors.email = t('common.required');
-            } else if (!SimpleEmailRegex.test(values.email)) {
-              errors.email = errors.email = t('error.invalidEmail');
-            }
-
-            if (!values.password) {
-              errors.password = t('common.required');
-            }
-            return errors;
-          }}
-          onSubmit={(values, { setSubmitting }) => {
-            this.setState({ errorMsg: '' });
-            setSubmitting(true);
-            authenticateUser(values.email, values.password, cbVals => {
-              setSubmitting(false);
-              if (!cbVals) {
-                if (getUserOrganization()) {
-                  history.push('/registration');
-                }
-                history.push('/');
-              } else {
-                this.setState({ errorMsg: t('authorize.errorLogin') });
-              }
-            });
-          }}
+          initialValues={{ email: '', password: '' }}
+          validate={values => this.validation(t, values)}
+          onSubmit={(values, { setSubmitting }) =>
+            this.submitAuth(values, setSubmitting)
+          }
         >
           {({ isSubmitting }) => (
-            <div className={classes.loginDiv}>
-              <div>
+            <Grid className={classes.loginDiv}>
+              <Grid>
                 <img className={classes.image} src={logo} />
-              </div>
+              </Grid>
               <Form>
                 <Grid
                   container
@@ -108,7 +81,10 @@ class Login extends React.Component {
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <span className={classes.error}>{this.state.errorMsg}</span>
+                  <Typography className={classes.error}>
+                    {this.state.errorMsg}
+                  </Typography>
+
                   <Field
                     className={classes.textField}
                     type='email'
@@ -122,6 +98,7 @@ class Login extends React.Component {
                       shrink: true,
                     }}
                   />
+
                   <Field
                     className={classes.textField}
                     autoComplete='current-password'
@@ -148,7 +125,7 @@ class Login extends React.Component {
                   </Button>
                 </Grid>
               </Form>
-            </div>
+            </Grid>
           )}
         </Formik>
       </Grid>
