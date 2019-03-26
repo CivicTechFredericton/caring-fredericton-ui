@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
 import CreateEvent from './create-event/CreateEvent';
-import { isValidUser, getSession } from '../api/cognito';
+import { isValidUser } from '../api/cognito';
 import { getEvent } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
@@ -91,22 +91,22 @@ class Home extends React.Component {
   };
 
   loadEvents = () => {
-    getSession(vals => {
-      getEvent(vals.idToken, '', '', '').then(results => {
-        if (results.length > 0) {
-          let input = [];
-          results.map(result => {
-            input.push({
-              title: result.name,
-              allDay: false,
-              start: new Date(result.start_date + 'T' + result.start_time),
-              end: new Date(result.end_date + 'T' + result.end_time),
-            });
+    // getSession(vals => {
+    getEvent('', '', '').then(results => {
+      if (results.length > 0) {
+        let input = [];
+        results.map(result => {
+          input.push({
+            title: result.name,
+            allDay: false,
+            start: new Date(result.start_date + 'T' + result.start_time),
+            end: new Date(result.end_date + 'T' + result.end_time),
           });
-          this.setState({ events: input });
-        }
-      });
+        });
+        this.setState({ events: input });
+      }
     });
+    // });
   };
 
   componentDidMount() {

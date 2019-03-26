@@ -113,7 +113,7 @@ export async function createEvent(token, orgId, event) {
   return await fetch(url, requestData);
 }
 
-export async function getEvent(token, start_date, end_date, categories) {
+export async function getEvent(start_date, end_date, categories) {
   let url = 'https://dev-api.caringfredericton.com/guest-view/events';
   let query;
 
@@ -135,7 +135,7 @@ export async function getEvent(token, start_date, end_date, categories) {
 
   console.log(query);
   const headers = new Headers();
-  headers.append('Authorization', token.jwtToken);
+  //headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
 
   //url = encodeURIComponent(url);
