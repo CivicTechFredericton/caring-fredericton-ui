@@ -109,36 +109,18 @@ export async function createEvent(token, orgId, event) {
     body: JSON.stringify(massagedEvntData),
     method: 'POST',
   };
-
+  URL;
   return await fetch(url, requestData);
 }
 
 export async function getEvent(start_date, end_date, categories) {
-  let url = 'https://dev-api.caringfredericton.com/guest-view/events';
-  let query;
+  let url = new URL('https://dev-api.caringfredericton.com/guest-view/events');
 
-  if (start_date) {
-    query = 'start_time=' + encodeURIComponent(start_date);
-  }
+  url.search = new URLSearchParams({ start_date, end_date, categories });
 
-  if (end_date) {
-    query = query + '&end_date=' + encodeURIComponent(end_date);
-  }
-
-  if (categories) {
-    query = query + '';
-  }
-
-  if (query) {
-    query = url + '?' + query;
-  }
-
-  console.log(query);
+  console.log(url);
   const headers = new Headers();
-  //headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
-
-  //url = encodeURIComponent(url);
 
   const requestData = {
     headers,

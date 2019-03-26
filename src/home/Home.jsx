@@ -92,7 +92,10 @@ class Home extends React.Component {
 
   loadEvents = () => {
     // getSession(vals => {
-    getEvent('', '', '').then(results => {
+    const start = '2019-02-01';
+    const end = '2019-04-29';
+    const categories = '';
+    getEvent(start, end, categories).then(results => {
       if (results.length > 0) {
         let input = [];
         results.map(result => {
