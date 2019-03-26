@@ -63,19 +63,19 @@ const styles = createStyles(theme => ({
 }));
 
 class Event extends React.Component {
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
   constructor(props) {
     super(props);
     this.state = {
       open: false,
       fullWidth: true,
       maxWidth: 'md',
-      repeat: '',
+      repeat: 0,
     };
   }
+
+  handleChange = event => {
+    this.setState({ repeat: event.target.value });
+  };
 
   render() {
     const { t, classes } = this.props;
@@ -107,6 +107,15 @@ class Event extends React.Component {
               alignItems='center'
             >
               <Formik
+                initialValues={{
+                  categories: '',
+                  name: '',
+                  description: '',
+                  start_date: '',
+                  start_time: '',
+                  end_time: '',
+                  repeat: 0,
+                }}
                 validate={values => {
                   let errors = {};
                   if (!values.categories) {
@@ -128,6 +137,7 @@ class Event extends React.Component {
                       values
                     ).then(() => {
                       setSubmitting(false);
+
                       this.props.handleClose();
                     });
                   });
