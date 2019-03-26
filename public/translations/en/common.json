@@ -11,7 +11,8 @@
     "date": "Date"
   },
   "error": {
-    "invalidEmail": "Invalid email address"
+    "invalidEmail": "Invalid email address",
+    "errorLogin": "Password or User Name is incorrect."
   },
   "home": {
     "filterTitle": "Event Category"

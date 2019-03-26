@@ -77,6 +77,10 @@ class Home extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.loadEvents();
+  }
+
   showModal = () => {
     this.setState({ show: true });
   };
@@ -111,10 +115,6 @@ class Home extends React.Component {
     });
     // });
   };
-
-  componentDidMount() {
-    this.loadEvents();
-  }
 
   render() {
     const { t, classes } = this.props;
