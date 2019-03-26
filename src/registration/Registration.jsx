@@ -6,6 +6,7 @@ import { TextField } from 'formik-material-ui';
 import { SimpleEmailRegex } from 'Utils/regex';
 import { registerOrganization, validateOrganization } from '../api/endpoints';
 import { getSession } from '../api/cognito';
+import history from '../history';
 
 const styles = createStyles(theme => ({
   root: {
@@ -167,6 +168,8 @@ class Registration extends React.Component {
 
                 response.then(setSubmitting(false));
               }
+
+              history.push('/');
             }}
           >
             {({ isSubmitting }) => (

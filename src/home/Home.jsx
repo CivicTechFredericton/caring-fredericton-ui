@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
 import CreateEvent from './create-event/CreateEvent';
-import { isValidSession, isValidUser, getSession } from '../api/cognito';
+import { isValidUser, getSession } from '../api/cognito';
 import { getEvent } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
@@ -82,6 +82,7 @@ class Home extends React.Component {
   };
 
   hideModal = () => {
+    this.loadEvents();
     this.setState({ show: false });
   };
 
@@ -89,29 +90,27 @@ class Home extends React.Component {
     this.setState({ open: true });
   };
 
-  componentDidMount() {
-    //const temp = false;
-
-    if (isValidSession()) {
-      //if (temp) {
-
-      getSession(vals => {
-        getEvent(vals.idToken, '', '', '').then(results => {
-          if (results.length > 0) {
-            let input = [];
-            results.map(result => {
-              input.push({
-                title: result.name,
-                allDay: false,
-                start: new Date(result.start_date + 'T' + result.start_time),
-                end: new Date(result.end_date + 'T' + result.end_time),
-              });
+  loadEvents = () => {
+    getSession(vals => {
+      getEvent(vals.idToken, '', '', '').then(results => {
+        if (results.length > 0) {
+          let input = [];
+          results.map(result => {
+            input.push({
+              title: result.name,
+              allDay: false,
+              start: new Date(result.start_date + 'T' + result.start_time),
+              end: new Date(result.end_date + 'T' + result.end_time),
             });
-            this.setState({ events: input });
-          }
-        });
+          });
+          this.setState({ events: input });
+        }
       });
-    }
+    });
+  };
+
+  componentDidMount() {
+    this.loadEvents();
   }
 
   render() {
