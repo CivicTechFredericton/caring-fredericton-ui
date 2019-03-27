@@ -19,6 +19,7 @@ class Registration extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    // Initialize validation or registration page through api calls
     if (!state.intOjt) {
       let intOjt = {
         orgName: '',
@@ -61,6 +62,7 @@ class Registration extends React.Component {
     return state;
   }
 
+  //Formik submission and aoi calls
   submitValues = (values, setSubmitting) => {
     const { isValidationForm, history } = this.props;
     setSubmitting(true);
@@ -82,6 +84,27 @@ class Registration extends React.Component {
     history.push('/');
   };
 
+  //create generic reusable input field
+  getInputFields = configData => {
+    const { classes } = this.props;
+
+    return configData.map(value => (
+      <Grid key={value.name} className={classes.field} item>
+        <Field
+          disabled={value.disabled}
+          component={value.component}
+          type={value.text}
+          name={value.name}
+          label={value.label}
+          className={value.className}
+          margin={value.margin}
+          variant={value.variant}
+          placeholder={value.placeholder}
+        />
+      </Grid>
+    ));
+  };
+
   render() {
     const { t, classes, isValidationForm } = this.props;
 
@@ -94,6 +117,113 @@ class Registration extends React.Component {
       title = t('register.validation');
       required = '';
     }
+
+    /////Configure fields section
+
+    //Default field properties
+    const defaultField = {
+      disabled: isValidationForm,
+      component: TextField,
+      type: 'text',
+      name: '',
+      label: '',
+      className: classes.textField,
+      margin: 'normal',
+      variant: 'outlined',
+      placeholder: '',
+    };
+
+    // Column 1 config of fields
+    const creatConfigColumn1 = () => {
+      const configColumn1 = [];
+      const element1 = {
+        name: 'orgName',
+        label: t('register.orgName') + required,
+        placeholder: t('register.orgName') + required,
+      };
+
+      const element2 = {
+        name: 'email',
+        label: t('register.email') + required,
+        placeholder: t('register.email') + required,
+      };
+
+      const element3 = {
+        name: 'phoneNumber',
+        label: t('register.phoneNumber') + required,
+        placeholder: t('register.phoneNumber') + required,
+      };
+
+      configColumn1.push(Object.assign({}, defaultField, element1));
+      configColumn1.push(Object.assign({}, defaultField, element2));
+      configColumn1.push(Object.assign({}, defaultField, element3));
+
+      return configColumn1;
+    };
+
+    // Column 2 config of fields
+    const creatConfigColumn2 = () => {
+      const configColumn2 = [];
+      const element1 = {
+        name: 'address',
+        label: t('register.address') + required,
+        placeholder: t('register.address') + required,
+      };
+
+      const element2 = {
+        name: 'city',
+        label: t('register.city') + required,
+        placeholder: t('register.city') + required,
+      };
+
+      const element3 = {
+        name: 'province',
+        label: t('register.province') + required,
+        placeholder: t('register.province') + required,
+      };
+
+      const element4 = {
+        name: 'postalCode',
+        label: t('register.postalCode') + required,
+        placeholder: t('register.postalCode') + required,
+      };
+
+      configColumn2.push(Object.assign({}, defaultField, element1));
+      configColumn2.push(Object.assign({}, defaultField, element2));
+      configColumn2.push(Object.assign({}, defaultField, element3));
+      configColumn2.push(Object.assign({}, defaultField, element4));
+
+      return configColumn2;
+    };
+
+    // Column 3 config of fields
+
+    const creatConfigColumn3 = () => {
+      const configColumn3 = [];
+      const element1 = {
+        name: 'adminFirstName',
+        label: t('register.firstName'),
+        placeholder: t('register.firstName'),
+      };
+
+      const element2 = {
+        name: 'adminLastName',
+        label: t('register.lastName'),
+        placeholder: t('register.lastName'),
+      };
+
+      const element3 = {
+        name: 'adminEmail',
+        label: t('register.email') + required,
+        placeholder: t('register.email') + required,
+      };
+
+      configColumn3.push(Object.assign({}, defaultField, element1));
+      configColumn3.push(Object.assign({}, defaultField, element2));
+      configColumn3.push(Object.assign({}, defaultField, element3));
+
+      return configColumn3;
+    };
 
     return (
       <div className={classes.root}>
@@ -125,146 +255,19 @@ class Registration extends React.Component {
                     <h3 className={classes.columnTitle}>
                       {t('register.organization')}
                     </h3>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='orgName'
-                        label={t('register.orgName') + required}
-                        className={classes.textField}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.orgName') + required}
-                      />
-                    </Grid>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='email'
-                        label={t('register.email') + required}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.email') + required}
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='phoneNumber'
-                        label={t('register.phoneNumber') + required}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.phoneNumber') + required}
-                        className={classes.textField}
-                      />
-                    </Grid>
+                    {this.getInputFields(creatConfigColumn1())}
                   </Grid>
                   <Grid xs={4} className={classes.spacer} item>
                     <h3 className={classes.columnTitle}>
                       {t('register.address')}
                     </h3>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='address'
-                        label={t('register.address') + required}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.address') + required}
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='city'
-                        label={t('register.city') + required}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.city') + required}
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='province'
-                        label={t('register.province') + required}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.province') + required}
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='postalCode'
-                        label={t('register.postalCode') + required}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.postalCode') + required}
-                        className={classes.textField}
-                      />
-                    </Grid>
+                    {this.getInputFields(creatConfigColumn2())}
                   </Grid>
                   <Grid xs={4} className={classes.lastColumn} item>
                     <h3 className={classes.columnTitle}>
                       {t('register.administrator')}
                     </h3>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='adminFirstName'
-                        label={t('register.firstName')}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.firstName')}
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='adminLastName'
-                        label={t('register.lastName')}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.lastName')}
-                        className={classes.textField}
-                      />
-                    </Grid>
-                    <Grid className={classes.field} item>
-                      <Field
-                        disabled={isValidationForm}
-                        component={TextField}
-                        type='text'
-                        name='adminEmail'
-                        label={t('register.email')}
-                        margin='normal'
-                        variant='outlined'
-                        placeholder={t('register.email')}
-                        className={classes.textField}
-                      />
-                    </Grid>
+                    {this.getInputFields(creatConfigColumn3())}
                   </Grid>
                 </Grid>
                 <Button
