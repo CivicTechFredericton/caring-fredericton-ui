@@ -14,7 +14,13 @@ class Registration extends React.Component {
     super(props);
 
     this.state = {
-      intOjt: {
+      intOjt: null,
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!state.intOjt) {
+      let intOjt = {
         orgName: '',
         email: '',
         phoneNumber: '',
@@ -25,13 +31,7 @@ class Registration extends React.Component {
         adminFirstName: '',
         adminLastName: '',
         adminEmail: '',
-      },
-      isValidationForm: null,
-    };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (props.isValidationForm !== state.isValidationForm) {
+      };
       let responseData = {};
 
       if (props.isValidationForm) {
@@ -55,8 +55,8 @@ class Registration extends React.Component {
         };
       }
 
-      let intOjt = Object.assign({}, state.intOjt, responseData);
-      return { intOjt, isValidationForm: props.isValidationForm };
+      intOjt = Object.assign({}, intOjt, responseData);
+      return { intOjt };
     }
     return state;
   }
