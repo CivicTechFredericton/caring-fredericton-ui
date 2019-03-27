@@ -8,7 +8,7 @@ import { getSession } from '../api/cognito';
 
 import validation from './validation';
 import styles from './styles';
-//import * as R from 'ramda'
+
 class Registration extends React.Component {
   constructor(props) {
     super(props);
@@ -26,17 +26,12 @@ class Registration extends React.Component {
         adminLastName: '',
         adminEmail: '',
       },
-      intValidation: null,
+      isValidationForm: null,
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log('Derived');
-    if (
-      state.intValidation === null ||
-      props.isValidationForm !== state.intValidation
-    ) {
-      console.log('enter the dragon');
+    if (props.isValidationForm !== state.isValidationForm) {
       let responseData = {};
 
       if (props.isValidationForm) {
@@ -61,30 +56,34 @@ class Registration extends React.Component {
       }
 
       let intOjt = Object.assign({}, state.intOjt, responseData);
-      return { intOjt, intValidation: props.isValidationForm };
+      return { intOjt, isValidationForm: props.isValidationForm };
     }
     return state;
   }
 
-  temp = () => {
-    this.setState({
-      intOjt: {
-        orgName: '',
-        email: '',
-        phoneNumber: '',
-        address: '',
-        city: '',
-        province: '',
-        postalCode: '',
-        adminFirstName: '',
-        adminLastName: '',
-        adminEmail: '',
-      },
-    });
+  submitValues = (values, setSubmitting) => {
+    const { isValidationForm, history } = this.props;
+    setSubmitting(true);
+
+    if (isValidationForm) {
+      getSession(token => {
+        validateOrganization(
+          token.idToken,
+          '023b8a07-8813-4b64-937b-79e6c8eb394d',
+          'Org details are okay'
+        ).then(setSubmitting(false));
+      });
+    } else {
+      const response = registerOrganization(values);
+
+      response.then(setSubmitting(false));
+    }
+
+    history.push('/');
   };
 
   render() {
-    const { t, classes, isValidationForm, history } = this.props;
+    const { t, classes, isValidationForm } = this.props;
 
     let buttonName = t('register.register');
     let title = t('register.registration');
@@ -109,24 +108,9 @@ class Registration extends React.Component {
           <Formik
             initialValues={this.state.intOjt}
             validate={values => validation(t, values)}
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(true);
-              if (isValidationForm) {
-                getSession(vals => {
-                  validateOrganization(
-                    vals.idToken,
-                    '023b8a07-8813-4b64-937b-79e6c8eb394d',
-                    'Org details are okay'
-                  ).then(setSubmitting(false));
-                });
-              } else {
-                const response = registerOrganization(values);
-
-                response.then(setSubmitting(false));
-              }
-
-              history.push('/');
-            }}
+            onSubmit={(values, { setSubmitting }) =>
+              this.submitValues(values, setSubmitting)
+            }
           >
             {({ isSubmitting }) => (
               <Form className={classes.mainGrid}>
@@ -295,7 +279,6 @@ class Registration extends React.Component {
               </Form>
             )}
           </Formik>
-          <Button onClick={this.temp}>Click</Button>
         </Grid>
       </div>
     );
