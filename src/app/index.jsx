@@ -53,7 +53,7 @@ class App extends Component {
             path='/registration'
             render={props =>
               isValidUser() ? (
-                <Registration {...props} validation={false} />
+                <Registration {...props} isValidationForm={false} />
               ) : (
                 <Redirect to='/' />
               )
@@ -63,7 +63,7 @@ class App extends Component {
             path='/validation'
             render={props =>
               isValidUser() ? (
-                <Registration {...props} validation={true} />
+                <Registration {...props} isValidationForm={true} />
               ) : (
                 <Redirect to='/' />
               )

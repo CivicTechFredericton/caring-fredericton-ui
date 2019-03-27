@@ -17,7 +17,8 @@ class Login extends React.Component {
     };
   }
 
-  validation = (t, values) => {
+  validation = values => {
+    const { t } = this.props;
     let errors = {};
 
     if (!values.email) {
@@ -33,6 +34,7 @@ class Login extends React.Component {
   };
 
   submitAuth = (values, setSubmitting) => {
+    const { t, history } = this.props;
     setSubmitting(true);
 
     authenticateUser(values.email, values.password, response => {
@@ -42,11 +44,11 @@ class Login extends React.Component {
         this.setState({ errorMsg: '' });
 
         if (getUserOrganization()) {
-          this.props.history.push('/registration');
+          history.push('/registration');
         }
-        this.props.history.push('/');
+        history.push('/');
       } else {
-        this.setState({ errorMsg: this.props.t('error.errorLogin') });
+        this.setState({ errorMsg: t('error.errorLogin') });
       }
     });
   };
@@ -64,7 +66,7 @@ class Login extends React.Component {
       >
         <Formik
           initialValues={{ email: '', password: '' }}
-          validate={values => this.validation(t, values)}
+          validate={values => this.validation(values)}
           onSubmit={(values, { setSubmitting }) =>
             this.submitAuth(values, setSubmitting)
           }
