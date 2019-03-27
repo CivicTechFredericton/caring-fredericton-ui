@@ -13,7 +13,8 @@ class Header extends React.Component {
     super(props);
   }
 
-  authButtonGroup = (t, classes) => {
+  authButtonGroup = () => {
+    const { t, classes } = this.props;
     return (
       <>
         {isValidSession() ? (
@@ -67,7 +68,7 @@ class Header extends React.Component {
                   <Grid item>{t('header.title')}</Grid>
                 </Grid>
               </Grid>
-              <Grid item>{this.authButtonGroup(t, classes)}</Grid>
+              <Grid item>{this.authButtonGroup()}</Grid>
             </Grid>
           </Toolbar>
         </AppBar>

@@ -1,85 +1,26 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
-import { Grid, withStyles, createStyles, Button } from '@material-ui/core';
+import { Grid, withStyles, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
-import { SimpleEmailRegex } from 'Utils/regex';
 import { registerOrganization, validateOrganization } from '../api/endpoints';
 import { getSession } from '../api/cognito';
-import history from '../history';
 
-const styles = createStyles(theme => ({
-  root: {
-    paddingTop: 15,
-  },
-  field: {
-    paddingBottom: 5,
-  },
-  textField: {
-    width: '100%',
-  },
-  mainGrid: {
-    width: '100%',
-  },
-  mainGrid2: {
-    paddingRight: 50,
-    paddingLeft: 50,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  spacer: {
-    paddingRight: 20,
-    paddingLeft: 20,
-    height: '60vh',
-    borderRight: '3px solid ',
-    borderRightColor: theme.palette.primary.dark,
-  },
-  button: {
-    marginTop: 10,
-    color: 'white',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  columnTitle: {
-    marginTop: 3,
-    color: theme.palette.primary.dark,
-  },
-  lastColumn: {
-    height: '60vh',
-    paddingLeft: 20,
-  },
-}));
+import validation from './validation';
+import styles from './styles';
 
 class Registration extends React.Component {
   constructor(props) {
     super(props);
-  }
-  render() {
-    const { t, classes, validation } = this.props;
-    const buttonName = validation
-      ? t('register.validate')
-      : t('register.register');
-    const title = validation
-      ? t('register.validation')
-      : t('register.registration');
-    var objIni;
 
-    if (validation) {
-      objIni = {
-        orgName: 'OrgTest',
-        email: 'marta.padilla@gmail.com',
-        phoneNumber: '5016489797',
-        address: 'Alvarez Quintero',
-        city: 'Malaga',
-        province: 'Malaga',
-        postalCode: '29720',
-        adminFirstName: 'Marta',
-        adminLastName: 'Padilla',
-        adminEmail: 'marta.padilla@gmail.com',
-      };
-    } else {
-      objIni = {
+    this.state = {
+      intOjt: null,
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!state.intOjt) {
+      let intOjt = {
         orgName: '',
         email: '',
         phoneNumber: '',
@@ -91,6 +32,67 @@ class Registration extends React.Component {
         adminLastName: '',
         adminEmail: '',
       };
+      let responseData = {};
+
+      if (props.isValidationForm) {
+        responseData = {
+          orgName: 'OrgTest',
+          email: 'marta.padilla@gmail.com',
+          phoneNumber: '5016489797',
+          address: 'Alvarez Quintero',
+          city: 'Malaga',
+          province: 'Malaga',
+          postalCode: '29720',
+          adminFirstName: 'Marta',
+          adminLastName: 'Padilla',
+          adminEmail: 'marta.padilla@gmail.com',
+        };
+      } else {
+        responseData = {
+          adminFirstName: 'Marta',
+          adminLastName: 'Padilla',
+          adminEmail: 'marta.padilla@gmail.com',
+        };
+      }
+
+      intOjt = Object.assign({}, intOjt, responseData);
+      return { intOjt };
+    }
+    return state;
+  }
+
+  submitValues = (values, setSubmitting) => {
+    const { isValidationForm, history } = this.props;
+    setSubmitting(true);
+
+    if (isValidationForm) {
+      getSession(token => {
+        validateOrganization(
+          token.idToken,
+          '023b8a07-8813-4b64-937b-79e6c8eb394d',
+          'Org details are okay'
+        ).then(setSubmitting(false));
+      });
+    } else {
+      const response = registerOrganization(values);
+
+      response.then(setSubmitting(false));
+    }
+
+    history.push('/');
+  };
+
+  render() {
+    const { t, classes, isValidationForm } = this.props;
+
+    let buttonName = t('register.register');
+    let title = t('register.registration');
+    let required = '*';
+
+    if (isValidationForm) {
+      buttonName = t('register.validate');
+      title = t('register.validation');
+      required = '';
     }
 
     return (
@@ -102,75 +104,13 @@ class Registration extends React.Component {
           alignItems='center'
         >
           <h2 className={classes.title}>{title}</h2>
+
           <Formik
-            initialValues={objIni}
-            validate={values => {
-              let errors = {};
-
-              if (!values.orgName) {
-                errors.orgName = t('common.required');
-              }
-
-              if (!values.email) {
-                errors.email = t('common.required');
-              } else if (!SimpleEmailRegex.test(values.email)) {
-                errors.email = t('error.invalidEmail');
-              }
-
-              if (!values.phoneNumber) {
-                errors.phoneNumber = t('common.required');
-              }
-
-              if (!values.address) {
-                errors.address = t('common.required');
-              }
-
-              if (!values.city) {
-                errors.city = t('common.required');
-              }
-
-              if (!values.province) {
-                errors.province = t('common.required');
-              }
-
-              if (!values.postalCode) {
-                errors.postalCode = t('common.required');
-              }
-
-              if (!values.adminFirstName) {
-                errors.adminFirstName = t('common.required');
-              }
-
-              if (!values.adminLastName) {
-                errors.adminLastName = t('common.required');
-              }
-
-              if (!values.adminEmail) {
-                errors.adminEmail = t('common.required');
-              } else if (!SimpleEmailRegex.test(values.adminEmail)) {
-                errors.adminEmail = t('error.invalidEmail');
-              }
-
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(true);
-              if (validation) {
-                getSession(vals => {
-                  validateOrganization(
-                    vals.idToken,
-                    '023b8a07-8813-4b64-937b-79e6c8eb394d',
-                    'Org details are okay'
-                  ).then(setSubmitting(false));
-                });
-              } else {
-                const response = registerOrganization(values);
-
-                response.then(setSubmitting(false));
-              }
-
-              history.push('/');
-            }}
+            initialValues={this.state.intOjt}
+            validate={values => validation(t, values)}
+            onSubmit={(values, { setSubmitting }) =>
+              this.submitValues(values, setSubmitting)
+            }
           >
             {({ isSubmitting }) => (
               <Form className={classes.mainGrid}>
@@ -187,40 +127,40 @@ class Registration extends React.Component {
                     </h3>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='orgName'
-                        label={t('register.orgName') + '*'}
+                        label={t('register.orgName') + required}
                         className={classes.textField}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.orgName') + '*'}
+                        placeholder={t('register.orgName') + required}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='email'
-                        label={t('register.email') + '*'}
+                        label={t('register.email') + required}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.email') + '*'}
+                        placeholder={t('register.email') + required}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='phoneNumber'
-                        label={t('register.phoneNumber') + '*'}
+                        label={t('register.phoneNumber') + required}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.phoneNumber') + '*'}
+                        placeholder={t('register.phoneNumber') + required}
                         className={classes.textField}
                       />
                     </Grid>
@@ -231,53 +171,53 @@ class Registration extends React.Component {
                     </h3>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='address'
-                        label={t('register.address') + '*'}
+                        label={t('register.address') + required}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.address') + '*'}
+                        placeholder={t('register.address') + required}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='city'
-                        label={t('register.city') + '*'}
+                        label={t('register.city') + required}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.city') + '*'}
+                        placeholder={t('register.city') + required}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='province'
-                        label={t('register.province') + '*'}
+                        label={t('register.province') + required}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.province') + '*'}
+                        placeholder={t('register.province') + required}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='postalCode'
-                        label={t('register.postalCode') + '*'}
+                        label={t('register.postalCode') + required}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.postalCode') + '*'}
+                        placeholder={t('register.postalCode') + required}
                         className={classes.textField}
                       />
                     </Grid>
@@ -288,40 +228,40 @@ class Registration extends React.Component {
                     </h3>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='adminFirstName'
-                        label={t('register.firstName') + '*'}
+                        label={t('register.firstName')}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.firstName') + '*'}
+                        placeholder={t('register.firstName')}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='adminLastName'
-                        label={t('register.lastName') + '*'}
+                        label={t('register.lastName')}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.lastName') + '*'}
+                        placeholder={t('register.lastName')}
                         className={classes.textField}
                       />
                     </Grid>
                     <Grid className={classes.field} item>
                       <Field
-                        disabled={validation}
+                        disabled={isValidationForm}
                         component={TextField}
                         type='text'
                         name='adminEmail'
-                        label={t('register.email') + '*'}
+                        label={t('register.email')}
                         margin='normal'
                         variant='outlined'
-                        placeholder={t('register.email') + '*'}
+                        placeholder={t('register.email')}
                         className={classes.textField}
                       />
                     </Grid>
@@ -348,7 +288,8 @@ class Registration extends React.Component {
 Registration.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
-  validation: PropTypes.bool,
+  isValidationForm: PropTypes.bool,
+  history: PropTypes.any,
 };
 
 export default withStyles(styles, { withTheme: true })(Registration);
