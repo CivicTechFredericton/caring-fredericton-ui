@@ -24,7 +24,7 @@ class App extends Component {
             }
           />
           <Route
-            path='/ChangePassword'
+            path='/changePassword'
             render={props =>
               isValidUser() ? (
                 <ChangePassword {...props} />
@@ -34,7 +34,7 @@ class App extends Component {
             }
           />
           <Route
-            path='/ForgotPassword'
+            path='/forgotPassword'
             render={props =>
               isValidUser() ? (
                 <ForgotPassword {...props} />
@@ -44,7 +44,7 @@ class App extends Component {
             }
           />
           <Route
-            path='/ResetPassword'
+            path='/resetPassword'
             render={props =>
               isValidUser() ? <ResetPassword {...props} /> : <Redirect to='/' />
             }
