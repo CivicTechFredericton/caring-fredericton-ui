@@ -1,9 +1,20 @@
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+### This an ejected create react app project.
 
-## Available Scripts
+Recent changes
 
-In the project directory, you can run:
+The project works using yarn or npm. To use yarn remove the package-lock.json
+file and yarn install to create lock file. Recently upgraded to React 16.8. Node
+version 11.8.0 Npm version 6.5.0
+
+Secure routes have been added to help developers there is a way to turn off the
+routes. In src/api/cognito/index there is a function isValidSession. Inside the
+function set dev to true this will shut of the secure routing so developers can
+write and test the pages without using a password.
+
+List of routes
+
+'/login' '/changePassword' '/forgotPassword' '/resetPassword' '/registration'
+'/validation' '/'
 
 ### `npm start`
 
@@ -31,32 +42,6 @@ ready to be deployed!
 See the section about
 [deployment](https://facebook.github.io/create-react-app/docs/deployment) for
 more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time. This command will remove the single build dependency from
-your project.
-
-Instead, it will copy all the configuration files and the transitive
-dependencies (Webpack, Babel, ESLint, etc) right into your project so you have
-full control over them. All of the commands except `eject` will still work, but
-they will point to the copied scripts so you can tweak them. At this point
-you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for
-small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you couldn’t
-customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### Deployment Instructions
 

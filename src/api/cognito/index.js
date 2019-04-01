@@ -86,6 +86,12 @@ export const getSession = callback => {
 };
 
 export const isValidSession = () => {
+  const dev = false;
+
+  if (dev) {
+    return true;
+  }
+
   if (!userPool.getCurrentUser()) {
     return false;
   }
@@ -110,5 +116,6 @@ export const getUserOrganization = () => {
   if (isValidSession()) {
     return false;
   }
+
   return false;
 };
