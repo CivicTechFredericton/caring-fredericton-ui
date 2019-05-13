@@ -1,6 +1,6 @@
 import {
   validateOrgRegistration,
-  validateEventRegistration,
+  // validateEventRegistration,
 } from './queryValidation';
 
 function massageOrgRegistration(orgDataObject) {
@@ -25,20 +25,20 @@ function massageOrgRegistration(orgDataObject) {
   return obj;
 }
 
-function massageEvntData(evntDataObject) {
-  const obj = {
-    name: evntDataObject.name,
-    description: 'API testing',
-    categories: evntDataObject.categories,
-    start_date: evntDataObject.start_date,
-    end_date: evntDataObject.start_date,
-    start_time: evntDataObject.start_time + ':00',
-    end_time: evntDataObject.end_time + ':00',
-    is_recurring: false,
-  };
+// function massageEvntData(evntDataObject) {
+//   const obj = {
+//     name: evntDataObject.name,
+//     description: 'API testing',
+//     categories: evntDataObject.categories,
+//     start_date: evntDataObject.start_date,
+//     end_date: evntDataObject.start_date,
+//     start_time: evntDataObject.start_time + ':00',
+//     end_time: evntDataObject.end_time + ':00',
+//     is_recurring: false,
+//   };
 
-  return obj;
-}
+//   return obj;
+// }
 
 function verificationObj(reason) {
   const obj = {
@@ -90,13 +90,13 @@ export async function validateOrganization(token, orgId, reason) {
 }
 
 export async function createEvent(token, orgId, event) {
-  const massagedEvntData = massageEvntData(event);
-  try {
-    validateEventRegistration(massagedEvntData);
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+  //const massagedEvntData = massageEvntData(event);
+  // try {
+  //   validateEventRegistration(event);
+  // } catch (error) {
+  //   console.log(error);
+  //   return null;
+  // }
 
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
@@ -106,7 +106,7 @@ export async function createEvent(token, orgId, event) {
 
   const requestData = {
     headers,
-    body: JSON.stringify(massagedEvntData),
+    body: JSON.stringify(event),
     method: 'POST',
   };
   URL;
@@ -118,7 +118,6 @@ export async function getEvent(start_date, end_date, categories) {
 
   url.search = new URLSearchParams({ start_date, end_date, categories });
 
-  console.log(url);
   const headers = new Headers();
   headers.append('content-type', 'application/json');
 

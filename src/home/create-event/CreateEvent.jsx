@@ -4,6 +4,8 @@ import { Formik, Form, Field } from 'formik';
 
 import { TextField } from 'formik-material-ui';
 
+import moment from 'moment';
+
 import PropTypes from 'prop-types';
 import {
   IconButton,
@@ -26,6 +28,8 @@ import { getSession } from '../../api/cognito';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+
+import uuidv4 from 'uuid';
 
 const styles = createStyles(theme => ({
   root: {
@@ -77,8 +81,77 @@ class Event extends React.Component {
     this.setState({ repeat: event.target.value });
   };
 
+  transformEvent = (event, orgId) => {
+    const categories = [event.categories];
+
+    const startDateTime = moment(
+      event.start_date + ' ' + event.start_time
+    ).utc();
+
+    const endDate = event.end_date || event.start_date;
+
+    const endDateTime = moment(endDate + ' ' + event.end_time).utc();
+
+    const getOrgName = () => {
+      if (orgId) {
+        return 'Caring Calender';
+      }
+      return 'Caring Calender';
+    };
+
+    const isRecurring = () => {
+      return false;
+    };
+
+    const reCurringEndDate = () => {
+      return endDateTime.format('YYYY-MM-DD');
+    };
+
+    const endOnDate = () => {
+      return endDateTime.format('YYYY-MM-DD');
+    };
+
+    const occurrenceType = () => {
+      // NEVER ON AFTER
+      return 'ON';
+    };
+
+    let eventObj = {
+      id: uuidv4(),
+      name: event.name,
+      owner: getOrgName(),
+      description: event.description,
+      categories,
+      start_date: startDateTime.format('YYYY-MM-DD'),
+      end_date: endDateTime.format('YYYY-MM-DD'),
+      start_time: startDateTime.format('HH:mm:ss'),
+      end_time: endDateTime.format('HH:mm:ss'),
+      end_date_no_recur: reCurringEndDate(),
+      is_recurring: isRecurring(),
+      recurrence_details,
+      timezone: startDateTime.utcOffset(),
+    };
+
+    const recurrence_details = {
+      recurrence: event.repeat.toUpperCase(),
+      occurrence_type: occurrenceType(),
+      num_recurrences: 1,
+      on_end_date: endOnDate(),
+      day_of_week: 1,
+      week_of_month: 1,
+      separation_count: 1,
+    };
+
+    if (event.repeat.toUpperCase() !== 'NONE') {
+      eventObj.recurrence_details = recurrence_details;
+    }
+
+    return eventObj;
+  };
+
   render() {
     const { t, classes } = this.props;
+
     return (
       <div className={classes.root}>
         <Dialog
@@ -114,7 +187,7 @@ class Event extends React.Component {
                   start_date: '',
                   start_time: '',
                   end_time: '',
-                  repeat: 0,
+                  repeat: 'None',
                 }}
                 validate={values => {
                   let errors = {};
@@ -130,11 +203,22 @@ class Event extends React.Component {
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                   getSession(vals => {
-                    console.log(values);
+                    const valuesTransform = this.transformEvent(
+                      values,
+                      '023b8a07-8813-4b64-937b-79e6c8eb394d'
+                    );
+                    console.log(
+                      'transform ',
+                      this.transformEvent(
+                        values,
+                        '023b8a07-8813-4b64-937b-79e6c8eb394d'
+                      )
+                    );
+
                     createEvent(
                       vals.idToken,
                       '023b8a07-8813-4b64-937b-79e6c8eb394d',
-                      values
+                      valuesTransform
                     ).then(() => {
                       setSubmitting(false);
 
@@ -243,13 +327,13 @@ class Event extends React.Component {
                             displayEmpty
                             className={classes.selectEmpty}
                           >
-                            <MenuItem value=''>
-                              <em>None</em>
+                            <MenuItem value='NONE'>
+                              <em>NONE</em>
                             </MenuItem>
-                            <MenuItem value={10}>Daily</MenuItem>
-                            <MenuItem value={20}>Weekly</MenuItem>
-                            <MenuItem value={30}>Bi-Weekly</MenuItem>
-                            <MenuItem value={30}>Monthly</MenuItem>
+                            <MenuItem value={'DAILY'}>Daily</MenuItem>
+                            <MenuItem value={'WEEKLY'}>Weekly</MenuItem>
+                            <MenuItem value={'BI-WEEKLY'}>Bi-Weekly</MenuItem>
+                            <MenuItem value={'MONTHLY'}>Monthly</MenuItem>
                           </Select>
                         </Grid>
                       </Grid>

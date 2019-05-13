@@ -62,7 +62,7 @@ class Registration extends React.Component {
     return state;
   }
 
-  //Formik submission and aoi calls
+  //Formik submission and api calls
   submitValues = (values, setSubmitting) => {
     const { isValidationForm, history } = this.props;
     setSubmitting(true);

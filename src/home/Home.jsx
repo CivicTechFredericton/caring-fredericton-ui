@@ -12,6 +12,7 @@ import '../style/react-big-calendar.css';
 import CreateEvent from './create-event/CreateEvent';
 import { isValidUser } from '../api/cognito';
 import { getEvent } from '../api/endpoints';
+import { convertDateToUTC } from '../utils/date';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -79,6 +80,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.loadEvents();
+    convertDateToUTC();
   }
 
   showModal = () => {
@@ -96,18 +98,32 @@ class Home extends React.Component {
 
   loadEvents = () => {
     // getSession(vals => {
-    const start = '2019-02-01';
-    const end = '2019-04-29';
+    const start = '2019-01-01';
+    const end = '2019-12-29';
     const categories = '';
     getEvent(start, end, categories).then(results => {
       if (results.length > 0) {
         let input = [];
         results.map(result => {
+          const startDate = moment(result.start_date + ' ' + result.start_time)
+            .utc('YYYY-MM-DD HH:mm:ss')
+            .local();
+
+          const endDate = moment(result.end_date + ' ' + result.end_time)
+            .utc('YYYY-MM-DD HH:mm:ss')
+            .local();
+
           input.push({
             title: result.name,
             allDay: false,
-            start: new Date(result.start_date + 'T' + result.start_time),
-            end: new Date(result.end_date + 'T' + result.end_time),
+            start: new Date(
+              startDate.format('YYYY-MM-DD') +
+                'T' +
+                startDate.format('HH:mm:ss')
+            ),
+            end: new Date(
+              endDate.format('YYYY-MM-DD') + 'T' + endDate.format('HH:mm:ss')
+            ),
           });
         });
         this.setState({ events: input });
