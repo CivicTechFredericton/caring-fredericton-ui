@@ -12,7 +12,6 @@ import '../style/react-big-calendar.css';
 import CreateEvent from './create-event/CreateEvent';
 import { isValidUser } from '../api/cognito';
 import { getEvent } from '../api/endpoints';
-import { convertDateToUTC } from '../utils/date';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -80,7 +79,6 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.loadEvents();
-    convertDateToUTC();
   }
 
   showModal = () => {

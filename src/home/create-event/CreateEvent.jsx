@@ -73,12 +73,17 @@ class Event extends React.Component {
       open: false,
       fullWidth: true,
       maxWidth: 'md',
-      repeat: 0,
+      repeat: 'NONE',
+      categories: 'social',
     };
   }
 
   handleChange = event => {
     this.setState({ repeat: event.target.value });
+  };
+
+  handleCategoriesChange = event => {
+    this.setState({ categories: event.target.value });
   };
 
   transformEvent = (event, orgId) => {
@@ -100,7 +105,10 @@ class Event extends React.Component {
     };
 
     const isRecurring = () => {
-      return false;
+      if (event.repeat.toUpperCase() === 'NONE') {
+        return false;
+      }
+      return true;
     };
 
     const reCurringEndDate = () => {
@@ -181,13 +189,13 @@ class Event extends React.Component {
             >
               <Formik
                 initialValues={{
-                  categories: '',
+                  categories: 'social',
                   name: '',
                   description: '',
                   start_date: '',
                   start_time: '',
                   end_time: '',
-                  repeat: 'None',
+                  repeat: 'NONE',
                 }}
                 validate={values => {
                   let errors = {};
@@ -206,13 +214,6 @@ class Event extends React.Component {
                     const valuesTransform = this.transformEvent(
                       values,
                       '023b8a07-8813-4b64-937b-79e6c8eb394d'
-                    );
-                    console.log(
-                      'transform ',
-                      this.transformEvent(
-                        values,
-                        '023b8a07-8813-4b64-937b-79e6c8eb394d'
-                      )
                     );
 
                     createEvent(
@@ -237,16 +238,26 @@ class Event extends React.Component {
                     >
                       <Grid className={classes.spacer} item>
                         <Grid className={classes.field} item>
-                          <Field
-                            component={TextField}
-                            type='text'
+                          <InputLabel>Categories:</InputLabel>
+                          <Select
+                            value={this.state.categories}
+                            onChange={this.handleCategoriesChange}
                             name='categories'
-                            label={t('event.category')}
-                            margin='normal'
-                            variant='outlined'
-                            placeholder={t('event.category')}
-                            className={classes.textField}
-                          />
+                            displayEmpty
+                            className={classes.selectEmpty}
+                          >
+                            <MenuItem value='social'>
+                              <em>Social</em>
+                            </MenuItem>
+                            <MenuItem value={'meals'}>Meals</MenuItem>
+                            <MenuItem value={'laundry'}>Laundry</MenuItem>
+                            <MenuItem value={'showers'}>Showers</MenuItem>
+                            <MenuItem value={'education'}>Education</MenuItem>
+                            <MenuItem value={'health'}>Health</MenuItem>
+                            <MenuItem value={'hairCuts'}>Hair Cuts</MenuItem>
+                            <MenuItem value={'taxes'}>Taxes</MenuItem>
+                            <MenuItem value={'faith'}>Faith</MenuItem>
+                          </Select>
                         </Grid>
                         <Grid className={classes.field} item>
                           <Field

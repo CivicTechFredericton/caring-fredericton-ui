@@ -127,7 +127,7 @@ export const getCurrentUser = callback => {
     }
     callback(session);
 
-    console.log('Session valid?', session.isValid());
-    console.log(session);
+    // console.log('Session valid?', session.isValid());
+    // console.log(session);
   });
 };
