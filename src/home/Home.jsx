@@ -15,44 +15,6 @@ import { getEvent } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
-// const events = {
-//   objects: [
-//     {
-//       id: '1',
-//       name: 'Supper',
-//       owner: 'United Church',
-//       description: 'Supper in Fredericton',
-//       categories: ['meals'],
-//       start_date: '2019-01-29',
-//       end_date: '2019-01-29',
-//       start_time: '16:00',
-//       end_time: '18:00',
-//     },
-//     {
-//       id: '2',
-//       name: 'Programing Class',
-//       owner: 'United Church',
-//       description: 'JavaScript for Beginners',
-//       categories: ['education'],
-//       start_date: '2019-01-27',
-//       end_date: '2019-01-27',
-//       start_time: '12:00:00',
-//       end_time: '16:00:00',
-//     },
-//     {
-//       id: '3',
-//       name: 'Lunch',
-//       owner: 'United Church',
-//       description: 'Lunch in Fredericton',
-//       categories: ['meals'],
-//       start_date: '2019-01-28',
-//       end_date: '2019-01-28',
-//       start_time: '11:00:00',
-//       end_time: '14:00:00',
-//     },
-//   ],
-// };
-
 const styles = () =>
   createStyles({
     root: {
@@ -111,18 +73,24 @@ class Home extends React.Component {
             .utc('YYYY-MM-DD HH:mm:ss')
             .local();
 
-          input.push({
-            title: result.name,
-            allDay: false,
-            start: new Date(
-              startDate.format('YYYY-MM-DD') +
-                'T' +
-                startDate.format('HH:mm:ss')
-            ),
-            end: new Date(
-              endDate.format('YYYY-MM-DD') + 'T' + endDate.format('HH:mm:ss')
-            ),
-          });
+          const event = Object.assign(
+            {},
+            {
+              title: result.name,
+              allDay: false,
+              start: new Date(
+                startDate.format('YYYY-MM-DD') +
+                  'T' +
+                  startDate.format('HH:mm:ss')
+              ),
+              end: new Date(
+                endDate.format('YYYY-MM-DD') + 'T' + endDate.format('HH:mm:ss')
+              ),
+            },
+            result
+          );
+
+          input.push(event);
         });
         this.setState({ events: input });
       }
@@ -132,6 +100,7 @@ class Home extends React.Component {
 
   render() {
     const { t, classes } = this.props;
+    console.log('state', this.state);
     return (
       <Grid
         className={classes.root}

@@ -137,7 +137,7 @@ class Event extends React.Component {
       end_date_no_recur: reCurringEndDate(),
       is_recurring: isRecurring(),
       recurrence_details,
-      timezone: startDateTime.utcOffset(),
+      timezone: 'AST',
     };
 
     const recurrence_details = {

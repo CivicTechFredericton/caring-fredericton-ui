@@ -25,21 +25,6 @@ function massageOrgRegistration(orgDataObject) {
   return obj;
 }
 
-// function massageEvntData(evntDataObject) {
-//   const obj = {
-//     name: evntDataObject.name,
-//     description: 'API testing',
-//     categories: evntDataObject.categories,
-//     start_date: evntDataObject.start_date,
-//     end_date: evntDataObject.start_date,
-//     start_time: evntDataObject.start_time + ':00',
-//     end_time: evntDataObject.end_time + ':00',
-//     is_recurring: false,
-//   };
-
-//   return obj;
-// }
-
 function verificationObj(reason) {
   const obj = {
     is_verified: true,
