@@ -39,7 +39,6 @@ class Login extends React.Component {
 
     authenticateUser(values.email, values.password, response => {
       setSubmitting(false);
-      console.log('response', response);
       if (!response) {
         this.setState({ errorMsg: '' });
 
