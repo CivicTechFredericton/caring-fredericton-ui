@@ -99,7 +99,7 @@ export async function createEvent(token, orgId, event) {
 }
 
 export async function getEvent(start_date, end_date, categories) {
-  let url = new URL('https://dev-api.caringfredericton.com/guest-view/events');
+  let url = new URL('https://dev-api.caringfredericton.com/guests/events');
 
   url.search = new URLSearchParams({ start_date, end_date, categories });
 
