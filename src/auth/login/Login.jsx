@@ -9,11 +9,14 @@ import { SimpleEmailRegex } from 'Utils/regex';
 import logo from '../../ctflogo.jpg';
 import styles from './styles';
 
+import CreateUser from '../createUser';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       errorMsg: '',
+      open: false,
     };
   }
 
@@ -31,6 +34,14 @@ class Login extends React.Component {
       errors.password = t('common.required');
     }
     return errors;
+  };
+
+  openModel = () => {
+    this.setState({ open: true });
+  };
+
+  closeModel = () => {
+    this.setState({ open: false });
   };
 
   submitAuth = (values, setSubmitting) => {
@@ -129,6 +140,21 @@ class Login extends React.Component {
             </Grid>
           )}
         </Formik>
+        <Grid>
+          <Button
+            className={classes.button}
+            variant='contained'
+            color='secondary'
+            onClick={this.openModel}
+          >
+            {t('authorize.register')}
+          </Button>
+        </Grid>
+        <CreateUser
+          t={t}
+          show={this.state.open}
+          handleClose={this.closeModel}
+        />
       </Grid>
     );
   }

@@ -29,8 +29,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 
-import uuidv4 from 'uuid';
-
 const styles = createStyles(theme => ({
   root: {
     paddingTop: 25,
@@ -125,7 +123,6 @@ class Event extends React.Component {
     };
 
     let eventObj = {
-      id: uuidv4(),
       name: event.name,
       owner: getOrgName(),
       description: event.description,
@@ -143,7 +140,7 @@ class Event extends React.Component {
     const recurrence_details = {
       recurrence: event.repeat.toUpperCase(),
       occurrence_type: occurrenceType(),
-      num_recurrences: 1,
+      num_recurrences: 10,
       on_end_date: endOnDate(),
       day_of_week: 1,
       week_of_month: 1,
