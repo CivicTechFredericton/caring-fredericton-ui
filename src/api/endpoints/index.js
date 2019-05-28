@@ -113,3 +113,17 @@ export async function getEvent(start_date, end_date, categories) {
 
   return await fetch(url, requestData).then(response => response.json());
 }
+
+export async function createUser(user) {
+  const headers = new Headers();
+  headers.append('content-type', 'application/json');
+  const url = 'https://dev-api.caringfredericton.com/users/signup';
+
+  const requestData = {
+    headers,
+    body: JSON.stringify(user),
+    method: 'POST',
+  };
+  URL;
+  return await fetch(url, requestData);
+}
