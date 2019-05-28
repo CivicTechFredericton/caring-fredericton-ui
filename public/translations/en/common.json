@@ -3,7 +3,12 @@
     "username": "Username",
     "password": "Password",
     "login": "Login",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "register": "Register",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "userEmail": "User Email"
   },
   "common": {
     "required": "Required",
