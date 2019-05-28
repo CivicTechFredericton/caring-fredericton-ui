@@ -1,101 +1,91 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Button, withStyles, createStyles, Grid } from '@material-ui/core';
+import { Button, withStyles, Grid, Typography } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
-import { authenticateUser } from '../../api/cognito';
+import { authenticateUser, getUserOrganization } from '../../api/cognito';
 import { SimpleEmailRegex } from 'Utils/regex';
 
-const styles = createStyles(theme => ({
-  button: {
-    marginTop: 25,
-    color: 'white',
-  },
-  loginDiv: {
-    border: 'solid',
-    borderRadius: '20px',
-    padding: '3%',
-    borderColor: theme.palette.primary.main,
-    width: '35%',
-  },
-  textField: {
-    width: '100%',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  maingrid: {
-    height: '90vh',
-  },
-  error: {
-    color: theme.palette.secondary.dark,
-  },
-}));
+import logo from '../../ctflogo.jpg';
+import styles from './styles';
+
+import CreateUser from '../createUser';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       errorMsg: '',
+      open: false,
     };
   }
+
+  validation = values => {
+    const { t } = this.props;
+    let errors = {};
+
+    if (!values.email) {
+      errors.email = t('common.required');
+    } else if (!SimpleEmailRegex.test(values.email)) {
+      errors.email = errors.email = t('error.invalidEmail');
+    }
+
+    if (!values.password) {
+      errors.password = t('common.required');
+    }
+    return errors;
+  };
+
+  openModel = () => {
+    this.setState({ open: true });
+  };
+
+  closeModel = () => {
+    this.setState({ open: false });
+  };
+
+  submitAuth = (values, setSubmitting) => {
+    const { t, history } = this.props;
+    setSubmitting(true);
+
+    authenticateUser(values.email, values.password, response => {
+      setSubmitting(false);
+      if (!response) {
+        this.setState({ errorMsg: '' });
+
+        if (getUserOrganization()) {
+          history.push('/registration');
+        }
+        history.push('/');
+      } else {
+        this.setState({ errorMsg: t('error.errorLogin') });
+      }
+    });
+  };
+
   render() {
+    const { t, classes } = this.props;
+
     return (
       <Grid
-        className={this.props.classes.maingrid}
+        className={classes.maingrid}
         container
         direction='column'
         justify='center'
         alignItems='center'
       >
         <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          validate={values => {
-            let errors = {};
-            if (!values.email) {
-              errors.email = this.props.t('required', 'Required');
-            } else if (!SimpleEmailRegex.test(values.email)) {
-              errors.email = errors.email = this.props.t(
-                'invalidEmail',
-                'Invalid email address'
-              );
-            }
-
-            if (!values.password) {
-              errors.password = this.props.t('required', 'Required');
-            }
-            return errors;
-          }}
-          onSubmit={(values, { setSubmitting }) => {
-            this.setState({ errorMsg: '' });
-            setSubmitting(true);
-            authenticateUser(values.email, values.password, cbVals => {
-              setSubmitting(false);
-              if (!cbVals) {
-                this.props.history.push('');
-              } else {
-                this.setState({ errorMsg: 'Wrong username or password' });
-              }
-            });
-
-            /*setTimeout(() => {
-            setSubmitting(false);
-            const user = getCurrentUser(vals =>
-              console.log('callback to getCurrentUser:', vals)
-            );
-            console.log('user:', user);
-          }, 400);*/
-          }}
+          initialValues={{ email: '', password: '' }}
+          validate={values => this.validation(values)}
+          onSubmit={(values, { setSubmitting }) =>
+            this.submitAuth(values, setSubmitting)
+          }
         >
           {({ isSubmitting }) => (
-            <div className={this.props.classes.loginDiv}>
-              <h3 className={this.props.classes.title}>
-                Log in into your account
-              </h3>
+            <Grid className={classes.loginDiv}>
+              <Grid>
+                <img className={classes.image} src={logo} />
+              </Grid>
               <Form>
                 <Grid
                   container
@@ -103,46 +93,68 @@ class Login extends React.Component {
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <span className={this.props.classes.error}>
+                  <Typography className={classes.error}>
                     {this.state.errorMsg}
-                  </span>
+                  </Typography>
+
                   <Field
-                    required
-                    className={this.props.classes.textField}
+                    className={classes.textField}
                     type='email'
                     name='email'
-                    label={this.props.t('userName', 'User Name')}
+                    label={t('authorize.username')}
                     margin='normal'
                     variant='outlined'
                     component={TextField}
-                    placeholder={this.props.t('userName', 'User Name')}
+                    placeholder={t('authorize.username')}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
+
                   <Field
-                    className={this.props.classes.textField}
+                    className={classes.textField}
                     autoComplete='current-password'
                     type='password'
                     name='password'
-                    label={this.props.t('password', 'Password') + ' *'}
+                    label={t('authorize.password') + ' *'}
                     margin='normal'
                     variant='outlined'
                     component={TextField}
-                    placeholder={this.props.t('password', 'Password') + ' *'}
+                    placeholder={t('authorize.password') + ' *'}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
 
                   <Button
-                    className={this.props.classes.button}
+                    className={classes.button}
                     variant='contained'
                     color='secondary'
                     type='submit'
                     disabled={isSubmitting}
                   >
-                    {this.props.t('submit', 'Login')}
+                    {t('authorize.login')}
                   </Button>
                 </Grid>
               </Form>
-            </div>
+            </Grid>
           )}
         </Formik>
+        <Grid>
+          <Button
+            className={classes.button}
+            variant='contained'
+            color='secondary'
+            onClick={this.openModel}
+          >
+            {t('authorize.register')}
+          </Button>
+        </Grid>
+        <CreateUser
+          t={t}
+          show={this.state.open}
+          handleClose={this.closeModel}
+        />
       </Grid>
     );
   }

@@ -1,4 +1,7 @@
-import { validateOrgRegistration } from './queryValidation';
+import {
+  validateOrgRegistration,
+  // validateEventRegistration,
+} from './queryValidation';
 
 function massageOrgRegistration(orgDataObject) {
   const obj = {
@@ -22,6 +25,14 @@ function massageOrgRegistration(orgDataObject) {
   return obj;
 }
 
+function verificationObj(reason) {
+  const obj = {
+    is_verified: true,
+    reason: reason,
+  };
+  return obj;
+}
+
 export async function registerOrganization(orgDataObject) {
   const massagedOrgData = massageOrgRegistration(orgDataObject);
   try {
@@ -39,8 +50,80 @@ export async function registerOrganization(orgDataObject) {
     body: JSON.stringify(massagedOrgData),
     method: 'POST',
   };
-  const response = await fetch(url, requestData).then(vals =>
-    console.log(vals)
-  );
+  const response = await fetch(url, requestData); //.then(vals =>
+  // //  console.log(vals)
+  // );
   return response;
+}
+
+export async function validateOrganization(token, orgId, reason) {
+  const verificationData = verificationObj(reason);
+
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
+  const url =
+    'https://dev-api.caringfredericton.com/organizations/' + orgId + '/verify';
+
+  const requestData = {
+    headers,
+    body: JSON.stringify(verificationData),
+    method: 'POST',
+  };
+
+  return await fetch(url, requestData);
+}
+
+export async function createEvent(token, orgId, event) {
+  //const massagedEvntData = massageEvntData(event);
+  // try {
+  //   validateEventRegistration(event);
+  // } catch (error) {
+  //   console.log(error);
+  //   return null;
+  // }
+
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
+  const url =
+    'https://dev-api.caringfredericton.com/organizations/' + orgId + '/events';
+
+  const requestData = {
+    headers,
+    body: JSON.stringify(event),
+    method: 'POST',
+  };
+  URL;
+  return await fetch(url, requestData);
+}
+
+export async function getEvent(start_date, end_date, categories) {
+  let url = new URL('https://dev-api.caringfredericton.com/guests/events');
+
+  url.search = new URLSearchParams({ start_date, end_date, categories });
+
+  const headers = new Headers();
+  headers.append('content-type', 'application/json');
+
+  const requestData = {
+    headers,
+    method: 'GET',
+  };
+
+  return await fetch(url, requestData).then(response => response.json());
+}
+
+export async function createUser(user) {
+  const headers = new Headers();
+  headers.append('content-type', 'application/json');
+  const url = 'https://dev-api.caringfredericton.com/users/signup';
+
+  const requestData = {
+    headers,
+    body: JSON.stringify(user),
+    method: 'POST',
+  };
+  URL;
+  return await fetch(url, requestData);
 }
