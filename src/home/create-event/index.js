@@ -1,4 +1,4 @@
 import Event from './CreateEvent';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
-export default withNamespaces(['common'])(Event);
+export default withTranslation(['common'])(Event);
