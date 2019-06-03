@@ -35,6 +35,19 @@ const theme = createMuiTheme({
   },
 });
 
+// const AppWrapper = () => (
+//     <MuiThemeProvider theme={theme}>
+//         <I18nextProvider i18n={i18n} />
+//     </MuiThemeProvider>
+// );
+//
+// ReactDOM.render(
+//     <AppWrapper>
+//         <App/>
+//     </AppWrapper>,
+//     document.getElementById('root')
+// );
+
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Router history={history}>
