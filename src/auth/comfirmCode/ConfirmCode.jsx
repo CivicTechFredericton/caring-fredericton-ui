@@ -20,7 +20,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import { createUser } from '../../api/endpoints';
+import { confirmCode } from '../../api/cognito';
 //import { getSession } from '../../api/cognito';
 
 const styles = createStyles(theme => ({
@@ -58,7 +58,7 @@ const styles = createStyles(theme => ({
   },
 }));
 
-class CreateUser extends React.Component {
+class ConfirmCode extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +81,7 @@ class CreateUser extends React.Component {
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <span className={classes.flex}>Create User</span>
+              <span className={classes.flex}>Confirm Code</span>
               <IconButton
                 color='inherit'
                 onClick={this.props.handleClose}
@@ -100,26 +100,22 @@ class CreateUser extends React.Component {
             >
               <Formik
                 initialValues={{
-                  email: '',
-                  first_name: '',
-                  last_name: '',
-                  password: '',
+                  code: null,
                 }}
                 validate={values => {
                   let errors = {};
 
-                  if (!values.first_name) {
+                  if (!values.code) {
                     errors.first_name = t('common.required');
                   }
 
                   return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                  createUser(values).then(() => {
+                  confirmCode(this.props.userName, values).then(() => {
                     setSubmitting(false);
-                    this.props.setUsername(values.email);
+
                     this.props.handleClose();
-                    this.props.toggleConfirm();
                   });
                 }}
               >
@@ -136,68 +132,12 @@ class CreateUser extends React.Component {
                           <Field
                             component={TextField}
                             type='text'
-                            name='first_name'
-                            label={t('authorize.firstName')}
+                            name='code'
+                            label={t('authorize.code')}
                             margin='normal'
                             variant='outlined'
-                            placeholder={t('authorize.firstName')}
+                            placeholder={t('authorize.code')}
                             className={classes.textField}
-                          />
-                        </Grid>
-                        <Grid className={classes.field} item>
-                          <Field
-                            component={TextField}
-                            type='text'
-                            name='last_name'
-                            label={t('authorize.lastName')}
-                            margin='normal'
-                            variant='outlined'
-                            placeholder={t('authorize.lastName')}
-                            className={classes.textField}
-                          />
-                        </Grid>
-                        <Grid className={classes.field} item>
-                          <Field
-                            className={classes.textField}
-                            type='email'
-                            name='email'
-                            label={t('authorize.userEmail')}
-                            margin='normal'
-                            variant='outlined'
-                            component={TextField}
-                            placeholder={t('authorize.userEmail')}
-                          />
-                        </Grid>
-                        <Grid className={classes.field} item>
-                          <Field
-                            className={classes.textField}
-                            autoComplete='current-password'
-                            type='password'
-                            name='password'
-                            label={t('authorize.password') + ' *'}
-                            margin='normal'
-                            variant='outlined'
-                            component={TextField}
-                            placeholder={t('authorize.password') + ' *'}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                          />
-                        </Grid>
-                        <Grid className={classes.field} item>
-                          <Field
-                            className={classes.textField}
-                            autoComplete='current-password'
-                            type='password'
-                            name='confirmPassword'
-                            label={t('authorize.confirmPassword') + ' *'}
-                            margin='normal'
-                            variant='outlined'
-                            component={TextField}
-                            placeholder={t('authorize.confirmPassword') + ' *'}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
                           />
                         </Grid>
                       </Grid>
@@ -209,7 +149,7 @@ class CreateUser extends React.Component {
                       type='submit'
                       disabled={isSubmitting}
                     >
-                      Create
+                      Confirm
                     </Button>
                   </Form>
                 )}
@@ -222,13 +162,12 @@ class CreateUser extends React.Component {
   }
 }
 
-CreateUser.propTypes = {
+ConfirmCode.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
   show: PropTypes.bool,
   handleClose: PropTypes.func,
-  toggleConfirm: PropTypes.func,
-  setUsername: PropTypes.func,
+  userName: PropTypes.string,
 };
 
-export default withStyles(styles, { withTheme: true })(CreateUser);
+export default withStyles(styles, { withTheme: true })(ConfirmCode);

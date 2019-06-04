@@ -8,7 +8,8 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
-    "userEmail": "User Email"
+    "userEmail": "User Email",
+    "code": "Confirm Code"
   },
   "common": {
     "required": "Required",
