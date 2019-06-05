@@ -1,11 +1,28 @@
 import { validateOrgRegistration } from './queryValidation';
+import dev from '../aws/dev';
+
+const base_api_url = dev.API_URL;
 
 /**
  * Guest user endpoints
  */
 export async function listEventsForGuestUser(start_date, end_date, categories) {
-  let url = new URL('https://dev-api.caringfredericton.com/guests/events');
+  let url = new URL(base_api_url + '/guests/events');
   url.search = new URLSearchParams({ start_date, end_date, categories });
+
+  const headers = new Headers();
+  headers.append('content-type', 'application/json');
+
+  const requestData = {
+    headers,
+    method: 'GET',
+  };
+
+  return await fetch(url, requestData).then(response => response.json());
+}
+
+export async function listRegisteredOrganizations() {
+  let url = base_api_url + '/guests/organizations';
 
   const headers = new Headers();
   headers.append('content-type', 'application/json');
@@ -24,7 +41,7 @@ export async function listEventsForGuestUser(start_date, end_date, categories) {
 export async function createUser(user) {
   const headers = new Headers();
   headers.append('content-type', 'application/json');
-  const url = 'https://dev-api.caringfredericton.com/users/signup';
+  const url = base_api_url + '/users/signup';
 
   const requestData = {
     headers,
@@ -39,7 +56,7 @@ export async function getUserDetails(token, userId) {
   const headers = new Headers();
   headers.append('content-type', 'application/json');
   headers.append('Authorization', token.jwtToken);
-  const url = 'https://dev-api.caringfredericton.com/users/' + userId;
+  const url = base_api_url + '/users/' + userId;
 
   const requestData = {
     headers,
@@ -52,12 +69,26 @@ export async function getUserDetails(token, userId) {
 /**
  * Organization endpoints
  */
+export async function getOrganizatonDetails(token, orgId) {
+  const headers = new Headers();
+  headers.append('content-type', 'application/json');
+  headers.append('Authorization', token.jwtToken);
+  const url = base_api_url + '/organizations/' + orgId;
+
+  const requestData = {
+    headers,
+    method: 'GET',
+  };
+
+  return await fetch(url, requestData).then(response => response.json());
+}
+
 function massageOrgRegistration(orgDataObject) {
   const obj = {
     name: orgDataObject.orgName,
     email: orgDataObject.email,
     phone: orgDataObject.phoneNumber,
-    administrator_email: orgDataObject.adminEmail,
+    administrator_id: orgDataObject.adminId,
     address: {
       street: orgDataObject.address,
       postal_code: orgDataObject.postalCode,
@@ -78,7 +109,7 @@ export async function registerOrganization(token, orgDataObject) {
     return null;
   }
 
-  const url = 'https://dev-api.caringfredericton.com/organizations/register';
+  const url = base_api_url + '/organizations/register';
   const requestData = {
     headers: {
       'content-type': 'application/json',
@@ -105,8 +136,7 @@ export async function validateOrganization(token, orgId, reason) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
-  const url =
-    'https://dev-api.caringfredericton.com/organizations/' + orgId + '/verify';
+  const url = base_api_url + '/organizations/' + orgId + '/verify';
 
   const requestData = {
     headers,
@@ -124,8 +154,7 @@ export async function createEvent(token, orgId, event) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
-  const url =
-    'https://dev-api.caringfredericton.com/organizations/' + orgId + '/events';
+  const url = base_api_url + '/organizations/' + orgId + '/events';
 
   const requestData = {
     headers,

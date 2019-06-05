@@ -76,7 +76,6 @@ class Home extends React.Component {
     this.updateTimes(new_date, view);
   };
 
-  // updateTimes (date = this.state.current_date, view = this.state.current_view) {
   updateTimes = (date, view) => {
     let start, end;
 
@@ -85,7 +84,6 @@ class Home extends React.Component {
       end = moment(date).endOf('day');
     } else if (view === 'week') {
       start = moment(date).startOf('week');
-      console.log('Test', moment(date));
       end = moment(date).endOf('week');
     } else if (view === 'month') {
       start = moment(date)
