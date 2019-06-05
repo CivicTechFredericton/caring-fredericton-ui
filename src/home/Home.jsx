@@ -11,9 +11,10 @@ import AddIcon from '@material-ui/icons/Add';
 import '../style/react-big-calendar.css';
 import CreateEvent from './create-event/CreateEvent';
 import { isValidUser } from '../api/cognito';
-import { getEvent } from '../api/endpoints';
+import { listEventsForGuestUser } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
+const DEFAULT_VIEW = 'week';
 
 const styles = () =>
   createStyles({
@@ -35,12 +36,14 @@ class Home extends React.Component {
     super(props);
     this.state = {
       events: [],
+      current_date: moment(),
+      current_view: DEFAULT_VIEW,
       show: false,
     };
   }
 
   componentDidMount() {
-    this.loadEvents();
+    this.updateTimes(this.state.current_date, this.state.current_view);
   }
 
   showModal = () => {
@@ -56,12 +59,49 @@ class Home extends React.Component {
     this.setState({ open: true });
   };
 
-  loadEvents = () => {
-    // getSession(vals => {
-    const start = '2019-01-01';
-    const end = '2019-12-29';
+  onView = view => {
+    this.setState({
+      current_view: view,
+    });
+
+    this.updateTimes(this.state.current_date, view);
+  };
+
+  onNavigate = (date, view) => {
+    const new_date = moment(date);
+    this.setState({
+      current_date: new_date,
+    });
+
+    this.updateTimes(new_date, view);
+  };
+
+  // updateTimes (date = this.state.current_date, view = this.state.current_view) {
+  updateTimes = (date, view) => {
+    let start, end;
+
+    if (view === 'day') {
+      start = moment(date).startOf('day');
+      end = moment(date).endOf('day');
+    } else if (view === 'week') {
+      start = moment(date).startOf('week');
+      console.log('Test', moment(date));
+      end = moment(date).endOf('week');
+    } else if (view === 'month') {
+      start = moment(date)
+        .startOf('month')
+        .subtract(7, 'days');
+      end = moment(date)
+        .endOf('month')
+        .add(7, 'days');
+    }
+
+    this.loadEvents(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+  };
+
+  loadEvents = (start, end) => {
     const categories = '';
-    getEvent(start, end, categories).then(results => {
+    listEventsForGuestUser(start, end, categories).then(results => {
       if (results.length > 0) {
         let input = [];
         results.map(result => {
@@ -95,7 +135,6 @@ class Home extends React.Component {
         this.setState({ events: input });
       }
     });
-    // });
   };
 
   render() {
@@ -120,7 +159,10 @@ class Home extends React.Component {
             step={60}
             events={this.state.events}
             defaultView='week'
-            views={['month', 'week']}
+            views={['day', 'week', 'month']}
+            date={this.state.current_date.toDate()}
+            onView={this.onView}
+            onNavigate={this.onNavigate}
             startAccessor='start'
             endAccessor='end'
           />
