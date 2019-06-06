@@ -49,6 +49,7 @@ i18n
       bindI18n: false,
       bindStore: false,
       nsMode: 'default',
+      useSuspense: false,
     },
     // if react { } is commented out and replaced by initImmediate,
     // the browser warning disappears. However, the browser
