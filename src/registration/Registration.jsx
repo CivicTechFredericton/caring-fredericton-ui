@@ -76,7 +76,7 @@ class Registration extends React.Component {
         ).then(setSubmitting(false));
       });
     } else {
-      const response = registerOrganization(values);
+      const response = registerOrganization(token.idToken, values);
 
       response.then(setSubmitting(false));
     }
