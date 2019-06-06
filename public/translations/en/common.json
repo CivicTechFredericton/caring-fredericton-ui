@@ -8,7 +8,8 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
-    "userEmail": "User Email"
+    "userEmail": "Email",
+    "code": "Confirm Code"
   },
   "common": {
     "required": "Required",
@@ -17,7 +18,8 @@
   },
   "error": {
     "invalidEmail": "Invalid email address",
-    "errorLogin": "Password or User Name is incorrect."
+    "errorLogin": "Password or User Name is incorrect.",
+    "passwordsDoNotMatch": "Password does not match"
   },
   "home": {
     "filterTitle": "Event Category"

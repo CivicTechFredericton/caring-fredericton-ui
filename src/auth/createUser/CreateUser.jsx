@@ -16,12 +16,11 @@ import {
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
 import { createUser } from '../../api/endpoints';
-//import { getSession } from '../../api/cognito';
+import { SimpleEmailRegex } from 'Utils/regex';
 
 const styles = createStyles(theme => ({
   root: {
@@ -104,12 +103,37 @@ class CreateUser extends React.Component {
                   first_name: '',
                   last_name: '',
                   password: '',
+                  confirmPassword: '',
                 }}
                 validate={values => {
                   let errors = {};
 
+                  if (!values.email) {
+                    errors.email = t('common.required');
+                  } else if (!SimpleEmailRegex.test(values.email)) {
+                    errors.email = errors.email = t('error.invalidEmail');
+                  }
+
                   if (!values.first_name) {
                     errors.first_name = t('common.required');
+                  }
+
+                  if (!values.last_name) {
+                    errors.last_name = t('common.required');
+                  }
+
+                  if (!values.password) {
+                    errors.password = t('common.required');
+                  }
+
+                  if (!values.confirmPassword) {
+                    errors.confirmPassword = t('common.required');
+                  }
+
+                  if (values.password !== values.confirmPassword) {
+                    errors.password = errors.confirmPassword = t(
+                      'error.passwordsDoNotMatch'
+                    );
                   }
 
                   return errors;
@@ -133,6 +157,21 @@ class CreateUser extends React.Component {
                       <Grid className={classes.spacer} item>
                         <Grid className={classes.field} item>
                           <Field
+                            className={classes.textField}
+                            type='email'
+                            name='email'
+                            label={t('authorize.userEmail')}
+                            margin='normal'
+                            variant='outlined'
+                            component={TextField}
+                            placeholder={t('authorize.userEmail')}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.field} item>
+                          <Field
                             component={TextField}
                             type='text'
                             name='first_name'
@@ -141,6 +180,9 @@ class CreateUser extends React.Component {
                             variant='outlined'
                             placeholder={t('authorize.firstName')}
                             className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
                           />
                         </Grid>
                         <Grid className={classes.field} item>
@@ -153,18 +195,9 @@ class CreateUser extends React.Component {
                             variant='outlined'
                             placeholder={t('authorize.lastName')}
                             className={classes.textField}
-                          />
-                        </Grid>
-                        <Grid className={classes.field} item>
-                          <Field
-                            className={classes.textField}
-                            type='email'
-                            name='email'
-                            label={t('authorize.userEmail')}
-                            margin='normal'
-                            variant='outlined'
-                            component={TextField}
-                            placeholder={t('authorize.userEmail')}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
                           />
                         </Grid>
                         <Grid className={classes.field} item>
@@ -173,11 +206,11 @@ class CreateUser extends React.Component {
                             autoComplete='current-password'
                             type='password'
                             name='password'
-                            label={t('authorize.password') + ' *'}
+                            label={t('authorize.password')}
                             margin='normal'
                             variant='outlined'
                             component={TextField}
-                            placeholder={t('authorize.password') + ' *'}
+                            placeholder={t('authorize.password')}
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -189,11 +222,11 @@ class CreateUser extends React.Component {
                             autoComplete='current-password'
                             type='password'
                             name='confirmPassword'
-                            label={t('authorize.confirmPassword') + ' *'}
+                            label={t('authorize.confirmPassword')}
                             margin='normal'
                             variant='outlined'
                             component={TextField}
-                            placeholder={t('authorize.confirmPassword') + ' *'}
+                            placeholder={t('authorize.confirmPassword')}
                             InputLabelProps={{
                               shrink: true,
                             }}
