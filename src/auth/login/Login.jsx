@@ -17,6 +17,8 @@ class Login extends React.Component {
     this.state = {
       errorMsg: '',
       open: false,
+      confirmCode: false,
+      userName: '',
     };
   }
 
@@ -40,6 +42,18 @@ class Login extends React.Component {
 
   closeModel = () => {
     this.setState({ open: false });
+  };
+
+  openConfirmModel = () => {
+    this.setState({ confirmCode: true });
+  };
+
+  closeConfirmModel = () => {
+    this.setState({ confirmCode: false, userName: '' });
+  };
+
+  setUserName = userName => {
+    this.setState({ userName });
   };
 
   submitAuth = (values, setSubmitting) => {
@@ -152,6 +166,14 @@ class Login extends React.Component {
           t={t}
           show={this.state.open}
           handleClose={this.closeModel}
+          toggleConfirm={this.openConfirmModel}
+          setUsername={this.setUserName}
+        />
+        <ConfirmCode
+          t={t}
+          show={this.state.confirmCode}
+          handleClose={this.closeConfirmModel}
+          userName={this.state.userName}
         />
       </Grid>
     );

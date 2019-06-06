@@ -141,8 +141,9 @@ class CreateUser extends React.Component {
                 onSubmit={(values, { setSubmitting }) => {
                   createUser(values).then(() => {
                     setSubmitting(false);
-
+                    this.props.setUsername(values.email);
                     this.props.handleClose();
+                    this.props.toggleConfirm();
                   });
                 }}
               >
@@ -259,6 +260,8 @@ CreateUser.propTypes = {
   classes: PropTypes.object,
   show: PropTypes.bool,
   handleClose: PropTypes.func,
+  toggleConfirm: PropTypes.func,
+  setUsername: PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(CreateUser);
