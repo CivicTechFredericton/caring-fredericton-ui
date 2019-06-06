@@ -176,6 +176,7 @@ class Login extends React.Component {
           t={t}
           show={this.state.confirmCode}
           handleClose={this.closeConfirmModel}
+          userName={this.state.userName}
         />
       </Grid>
     );
