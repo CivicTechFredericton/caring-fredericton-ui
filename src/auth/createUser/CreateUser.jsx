@@ -80,7 +80,9 @@ class CreateUser extends React.Component {
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <span className={classes.flex}>Create User</span>
+              <Grid item className={classes.flex}>
+                {t('dialogs.createUser')}
+              </Grid>
               <IconButton
                 color='inherit'
                 onClick={this.props.handleClose}
@@ -242,7 +244,7 @@ class CreateUser extends React.Component {
                       type='submit'
                       disabled={isSubmitting}
                     >
-                      Create
+                      {t('authorize.btnCreate')}
                     </Button>
                   </Form>
                 )}
