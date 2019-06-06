@@ -1,4 +1,4 @@
 import ForgotPassword from './ForgotPassword';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
-export default withNamespaces('common')(ForgotPassword);
+export default withTranslation('common')(ForgotPassword);

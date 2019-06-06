@@ -49,6 +49,21 @@ export const getSession = callback => {
   });
 };
 
+export async function confirmCode(Username, code) {
+  const cognitoUser = new CognitoUser({
+    Username,
+    Pool: userPool,
+  });
+
+  cognitoUser.confirmRegistration(code, true, function(err, result) {
+    if (err) {
+      alert(err);
+      return;
+    }
+    alert(result);
+  });
+}
+
 // check for validation
 export const isValidSession = () => {
   const dev = false;

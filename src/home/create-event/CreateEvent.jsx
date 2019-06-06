@@ -52,8 +52,8 @@ const styles = createStyles(theme => ({
     color: theme.palette.primary.dark,
   },
   selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
     width: 100,
   },
   appBar: {

@@ -14,8 +14,8 @@ export function validateOrgRegistration(orgDataObject) {
   if (!orgDataObject['phone'])
     throw new ReferenceError('phone is a required field');
 
-  if (!orgDataObject['administrator'])
-    throw new ReferenceError('administrator is a required field');
+  if (!orgDataObject['administrator_id'])
+    throw new ReferenceError('administrator_id is a required field');
 
   if (!orgDataObject['address'])
     throw new ReferenceError('address is a required field');
