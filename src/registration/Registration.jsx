@@ -76,9 +76,12 @@ class Registration extends React.Component {
         ).then(setSubmitting(false));
       });
     } else {
-      const response = registerOrganization(token.idToken, values);
+      getSession(token => {
+        registerOrganization(token.idToken, values).then(setSubmitting(false));
+      });
+      // const response = registerOrganization(token.idToken, values);
 
-      response.then(setSubmitting(false));
+      // response.then(setSubmitting(false));
     }
 
     history.push('/');
