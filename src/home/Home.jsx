@@ -9,12 +9,15 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
-import CreateEvent from './create-event/CreateEvent';
+//import CreateEvent from './create-event/CreateEvent';
+import RegisterOrganization from './register-organization/RegisterOrganization';
 import { isValidUser } from '../api/cognito';
 import { listEventsForGuestUser } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
+const API_DATE_FORMAT = 'YYYY-MM-DD';
+const API_TIME_FORMAT = 'HH:mm:ss';
 
 const styles = () =>
   createStyles({
@@ -94,7 +97,7 @@ class Home extends React.Component {
         .add(7, 'days');
     }
 
-    this.loadEvents(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+    this.loadEvents(start.format(API_DATE_FORMAT), end.format(API_DATE_FORMAT));
   };
 
   loadEvents = (start, end) => {
@@ -117,12 +120,14 @@ class Home extends React.Component {
               title: result.name,
               allDay: false,
               start: new Date(
-                startDate.format('YYYY-MM-DD') +
+                startDate.format(API_DATE_FORMAT) +
                   'T' +
-                  startDate.format('HH:mm:ss')
+                  startDate.format(API_TIME_FORMAT)
               ),
               end: new Date(
-                endDate.format('YYYY-MM-DD') + 'T' + endDate.format('HH:mm:ss')
+                endDate.format(API_DATE_FORMAT) +
+                  'T' +
+                  endDate.format(API_TIME_FORMAT)
               ),
             },
             result
@@ -137,7 +142,7 @@ class Home extends React.Component {
 
   render() {
     const { t, classes } = this.props;
-    console.log('state', this.state);
+
     return (
       <Grid
         className={classes.root}
@@ -167,7 +172,7 @@ class Home extends React.Component {
         </Grid>
         {isValidUser() && (
           <Grid className={classes.filter} item>
-            <CreateEvent
+            <RegisterOrganization
               t={t}
               show={this.state.show}
               handleClose={this.hideModal}

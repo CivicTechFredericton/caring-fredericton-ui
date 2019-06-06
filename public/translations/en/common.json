@@ -16,7 +16,8 @@
   },
   "dialogs": {
     "createUser": "Create User",
-    "createEvent": "Create Event"
+    "createEvent": "Create Event",
+    "registerOrganization": "Register Organization"
   },
   "common": {
     "required": "Required",
