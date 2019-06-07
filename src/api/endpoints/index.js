@@ -97,16 +97,15 @@ export async function registerOrganization(token, orgDataObject) {
   return await fetch(url, requestData);
 }
 
-function verificationObj(reason) {
+function verificationObj() {
   const obj = {
     is_verified: true,
-    reason: reason,
   };
   return obj;
 }
 
-export async function validateOrganization(token, orgId, reason) {
-  const verificationData = verificationObj(reason);
+export async function validateOrganization(token, orgId) {
+  const verificationData = verificationObj();
 
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
