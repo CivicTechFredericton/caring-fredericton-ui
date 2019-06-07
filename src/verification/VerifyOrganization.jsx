@@ -23,6 +23,7 @@ class Verification extends React.Component {
       getSession(token => {
         getOrganizatonDetails(
           token.idToken,
+          // TODO: Retrieve the org id from the path
           'f0a8802f-7eb9-460e-9276-dada5cd3bf4c'
         ).then(result => {
           console.log(result);
@@ -36,9 +37,9 @@ class Verification extends React.Component {
               city: result.address.city,
               province: result.address.province,
               postalCode: result.address.postal_code,
-              adminFirstName: 'Test',
-              adminLastName: 'User',
-              adminEmail: 'test.user@gmail.com',
+              adminFirstName: result.administrator_details.first_name,
+              adminLastName: result.administrator_details.last_name,
+              adminEmail: result.administrator_details.email,
             },
             result
           );
@@ -117,7 +118,7 @@ class Verification extends React.Component {
 
     // Address Fields
     const createLocationDetailsColumn = () => {
-      const addressElement = {
+      const streetElement = {
         name: 'street',
         label: t('register.address'),
         placeholder: t('register.address'),
@@ -143,7 +144,7 @@ class Verification extends React.Component {
 
       // TODO: Add country drop down
       const locationColumn = [];
-      locationColumn.push(Object.assign({}, defaultField, addressElement));
+      locationColumn.push(Object.assign({}, defaultField, streetElement));
       locationColumn.push(Object.assign({}, defaultField, cityElement));
       locationColumn.push(Object.assign({}, defaultField, provinceElement));
       locationColumn.push(Object.assign({}, defaultField, postalCodeElement));

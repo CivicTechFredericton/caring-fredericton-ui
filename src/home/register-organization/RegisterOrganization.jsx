@@ -87,7 +87,7 @@ class Organization extends React.Component {
       orgName: '',
       orgEmail: '',
       phoneNumber: '',
-      address: '',
+      street: '',
       city: '',
       province: '',
       postalCode: '',
@@ -108,7 +108,7 @@ class Organization extends React.Component {
       phone: values.phoneNumber,
       administrator_id: userDetails.administrator_id,
       address: {
-        street: values.address,
+        street: values.street,
         city: values.city,
         province: values.province,
         postal_code: values.postalCode,
@@ -188,8 +188,8 @@ class Organization extends React.Component {
 
     // Address Fields
     const createLocationDetailsColumn = () => {
-      const addressElement = {
-        name: 'address',
+      const streetElement = {
+        name: 'street',
         label: t('register.address'),
         placeholder: t('register.address'),
       };
@@ -214,7 +214,7 @@ class Organization extends React.Component {
 
       // TODO: Add country drop down
       const locationColumn = [];
-      locationColumn.push(Object.assign({}, defaultField, addressElement));
+      locationColumn.push(Object.assign({}, defaultField, streetElement));
       locationColumn.push(Object.assign({}, defaultField, cityElement));
       locationColumn.push(Object.assign({}, defaultField, provinceElement));
       locationColumn.push(Object.assign({}, defaultField, postalCodeElement));
