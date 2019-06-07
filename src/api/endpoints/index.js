@@ -1,4 +1,3 @@
-import { validateOrgRegistration } from './queryValidation';
 import dev from '../aws/dev';
 
 const base_api_url = dev.API_URL;
@@ -83,55 +82,30 @@ export async function getOrganizatonDetails(token, orgId) {
   return await fetch(url, requestData).then(response => response.json());
 }
 
-function massageOrgRegistration(orgDataObject) {
-  const obj = {
-    name: orgDataObject.orgName,
-    email: orgDataObject.email,
-    phone: orgDataObject.phoneNumber,
-    administrator_id: orgDataObject.adminId,
-    address: {
-      street: orgDataObject.address,
-      postal_code: orgDataObject.postalCode,
-      city: orgDataObject.city,
-      province: orgDataObject.province,
-      country: 'Canada',
-    },
-  };
-  return obj;
-}
-
 export async function registerOrganization(token, orgDataObject) {
-  const massagedOrgData = massageOrgRegistration(orgDataObject);
-  try {
-    validateOrgRegistration(massagedOrgData);
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
   const url = base_api_url + '/organizations/register';
+
   const requestData = {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: token.jwtToken,
-    },
-    body: JSON.stringify(massagedOrgData),
+    headers,
+    body: JSON.stringify(orgDataObject),
     method: 'POST',
   };
 
   return await fetch(url, requestData);
 }
 
-function verificationObj(reason) {
+function verificationObj() {
   const obj = {
     is_verified: true,
-    reason: reason,
   };
   return obj;
 }
 
-export async function validateOrganization(token, orgId, reason) {
-  const verificationData = verificationObj(reason);
+export async function validateOrganization(token, orgId) {
+  const verificationData = verificationObj();
 
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);

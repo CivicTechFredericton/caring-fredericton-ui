@@ -1,12 +1,9 @@
 import React from 'react';
-
 import { Formik, Form, Field } from 'formik';
-
 import { TextField } from 'formik-material-ui';
-
 import moment from 'moment';
-
 import PropTypes from 'prop-types';
+
 import {
   IconButton,
   AppBar,
@@ -18,7 +15,6 @@ import {
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
@@ -167,7 +163,9 @@ class Event extends React.Component {
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <span className={classes.flex}>Create Event</span>
+              <Grid item className={classes.flex}>
+                {t('dialogs.createEvent')}
+              </Grid>
               <IconButton
                 color='inherit'
                 onClick={this.props.handleClose}
@@ -353,7 +351,7 @@ class Event extends React.Component {
                       type='submit'
                       disabled={isSubmitting}
                     >
-                      Create
+                      {t('register.btnCreate')}
                     </Button>
                   </Form>
                 )}

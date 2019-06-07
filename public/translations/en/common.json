@@ -1,5 +1,6 @@
 {
   "authorize": {
+    "userEmail": "Email",
     "username": "Username",
     "password": "Password",
     "login": "Login",
@@ -8,8 +9,15 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
-    "userEmail": "User Email",
-    "code": "Confirm Code"
+    "confirmCode": "Confirm Code",
+    "btnCreate": "Create",
+    "lblConfirmCode": "Please enter the confirmation code sent to your email to proceed",
+    "btnConfirmCode": "Confirm"
+  },
+  "dialogs": {
+    "createUser": "Create User",
+    "createEvent": "Create Event",
+    "registerOrganization": "Register Organization"
   },
   "common": {
     "required": "Required",
@@ -18,7 +26,8 @@
   },
   "error": {
     "invalidEmail": "Invalid email address",
-    "errorLogin": "Password or User Name is incorrect."
+    "errorLogin": "Incorrect username password combination",
+    "passwordsDoNotMatch": "Password does not match"
   },
   "home": {
     "filterTitle": "Event Category"
@@ -52,7 +61,8 @@
     "postalCode": "Postal Code",
     "administrator": "Administrator",
     "firstName": "First Name",
-    "lastName": "Last Name"
+    "lastName": "Last Name",
+    "btnCreate": "Create"
   },
   "event": {
     "category": "Event category",

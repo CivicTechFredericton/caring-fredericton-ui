@@ -4,13 +4,12 @@ import { Button, withStyles, Grid, Typography } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 import { authenticateUser, getUserOrganization } from '../../api/cognito';
-import { SimpleEmailRegex } from 'Utils/regex';
 
 import logo from '../../ctflogo.jpg';
 import styles from './styles';
 
 import CreateUser from '../createUser';
-import ConfirmCode from '../comfirmCode';
+import ConfirmCode from '../ConfirmCode';
 
 class Login extends React.Component {
   constructor(props) {
@@ -27,10 +26,8 @@ class Login extends React.Component {
     const { t } = this.props;
     let errors = {};
 
-    if (!values.email) {
-      errors.email = t('common.required');
-    } else if (!SimpleEmailRegex.test(values.email)) {
-      errors.email = errors.email = t('error.invalidEmail');
+    if (!values.username) {
+      errors.username = t('common.required');
     }
 
     if (!values.password) {
@@ -63,7 +60,7 @@ class Login extends React.Component {
     const { t, history } = this.props;
     setSubmitting(true);
 
-    authenticateUser(values.email, values.password, response => {
+    authenticateUser(values.username, values.password, response => {
       setSubmitting(false);
       if (!response) {
         this.setState({ errorMsg: '' });
@@ -90,7 +87,7 @@ class Login extends React.Component {
         alignItems='center'
       >
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ username: '', password: '' }}
           validate={values => this.validation(values)}
           onSubmit={(values, { setSubmitting }) =>
             this.submitAuth(values, setSubmitting)
@@ -114,8 +111,8 @@ class Login extends React.Component {
 
                   <Field
                     className={classes.textField}
-                    type='email'
-                    name='email'
+                    type='text'
+                    name='username'
                     label={t('authorize.username')}
                     margin='normal'
                     variant='outlined'
@@ -131,11 +128,11 @@ class Login extends React.Component {
                     autoComplete='current-password'
                     type='password'
                     name='password'
-                    label={t('authorize.password') + ' *'}
+                    label={t('authorize.password')}
                     margin='normal'
                     variant='outlined'
                     component={TextField}
-                    placeholder={t('authorize.password') + ' *'}
+                    placeholder={t('authorize.password')}
                     InputLabelProps={{
                       shrink: true,
                     }}

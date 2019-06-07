@@ -1,6 +1,5 @@
 import {
   CognitoUserPool,
-  CognitoUserAttribute,
   CognitoUser,
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
@@ -10,7 +9,6 @@ import history from '../../history';
 const userPool = new CognitoUserPool(dev.COGNITO_POOL_DETAILS);
 
 //Login api call
-
 export const authenticateUser = (Username, Password, callback) => {
   const authDetails = new AuthenticationDetails({
     Username,
@@ -49,19 +47,19 @@ export const getSession = callback => {
   });
 };
 
-export async function confirmCode(Username, code) {
-  const cognitoUser = new CognitoUser({
-    Username,
-    Pool: userPool,
-  });
+// Confirm user registration code
+export async function confirmCode(username, verificationCode, callback) {
+  console.log(username);
+  console.log(verificationCode);
 
-  cognitoUser.confirmRegistration(code, true, function(err, result) {
-    if (err) {
-      alert(err);
-      return;
-    }
-    alert(result);
-  });
+  const userData = {
+    Username: username,
+    Pool: userPool,
+  };
+
+  const cognitoUser = new CognitoUser(userData);
+  // TODO: Handle the callback; console throws an error (uncaught (in promise) callback is not a function)
+  cognitoUser.confirmRegistration(verificationCode, true, callback);
 }
 
 // check for validation
@@ -103,37 +101,11 @@ export const getUserOrganization = () => {
   return false;
 };
 
-////////////////////// To Check
-
-/// These functions may not be used.
-
-export const createUser = (username, email, password, callback) => {
-  const attributeList = [
-    new CognitoUserAttribute({
-      Name: 'email',
-      Value: email,
-    }),
-  ];
-
-  // Username must be unique in a pool, and cant be a valid email format
-  // To log in with email, make sure it is set as an alias attribute in Cognito
-  // More info: http://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html#user-pool-settings-usernames
-
-  userPool.signUp(username, password, attributeList, null, callback);
-};
-
-export const verifyUser = (username, verifyCode, callback) => {
-  const userData = {
-    Username: username,
-    Pool: userPool,
-  };
-  const cognitoUser = new CognitoUser(userData);
-  cognitoUser.confirmRegistration(verifyCode, true, callback);
-};
-
 export const getCurrentUser = callback => {
   const cognitoUser = userPool.getCurrentUser();
-  if (!cognitoUser) return false;
+  if (!cognitoUser) {
+    return false;
+  }
 
   cognitoUser.getSession((err, session) => {
     if (err) {
@@ -141,8 +113,5 @@ export const getCurrentUser = callback => {
       return;
     }
     callback(session);
-
-    // console.log('Session valid?', session.isValid());
-    // console.log(session);
   });
 };

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './index.scss';
-import Registration from '../registration';
-import Header from '../components/header';
+import VerifyOrganization from '../verification';
 import Login from '../auth/login';
+import Home from '../home';
+import Header from '../components/header';
 import ChangePassword from '../auth/ChangePassword';
 import ForgotPassword from '../auth/ForgotPassword';
 import ResetPassword from '../auth/ResetPassword';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import Home from '../home';
 import { isValidUser } from '../api/cognito';
 
 class App extends Component {
@@ -50,20 +50,10 @@ class App extends Component {
             }
           />
           <Route
-            path='/registration'
-            render={props =>
-              isValidUser() ? (
-                <Registration {...props} isValidationForm={false} />
-              ) : (
-                <Redirect to='/' />
-              )
-            }
-          />
-          <Route
             path='/validation'
             render={props =>
               isValidUser() ? (
-                <Registration {...props} isValidationForm={true} />
+                <VerifyOrganization {...props} />
               ) : (
                 <Redirect to='/' />
               )
