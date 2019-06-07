@@ -82,6 +82,25 @@ class Organization extends React.Component {
     };
   }
 
+  initValues = userDetails => {
+    let intOjt = {
+      orgName: '',
+      email: '',
+      phoneNumber: '',
+      address: '',
+      city: '',
+      province: '',
+      postalCode: '',
+      administrator_id: '',
+      adminFirstName: '',
+      adminLastName: '',
+      adminEmail: '',
+    };
+
+    intOjt = Object.assign({}, intOjt, userDetails);
+    return intOjt;
+  };
+
   transformOrganizationDetails = values => {
     let orgRequest = {
       name: values.orgName,
@@ -126,7 +145,7 @@ class Organization extends React.Component {
   };
 
   render() {
-    const { t, classes } = this.props;
+    const { t, classes, userDetails } = this.props;
 
     // Default field properties
     const defaultField = {
@@ -265,11 +284,7 @@ class Organization extends React.Component {
               alignItems='center'
             >
               <Formik
-                initialValues={{
-                  adminFirstName: 'Howard',
-                  adminLastName: 'Powell',
-                  adminEmail: 'howard.powell+user@bluespurs.com',
-                }}
+                initialValues={this.initValues(userDetails)}
                 validate={values => validation(t, values)}
                 onSubmit={(values, { setSubmitting }) => {
                   getSession(token => {
@@ -339,6 +354,7 @@ Organization.propTypes = {
   classes: PropTypes.object,
   show: PropTypes.bool,
   handleClose: PropTypes.func,
+  userDetails: PropTypes.object,
 };
 
 export default withStyles(styles, { withTheme: true })(Organization);

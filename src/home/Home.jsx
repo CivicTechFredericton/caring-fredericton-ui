@@ -9,10 +9,11 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
-import CreateEvent from './create-event/CreateEvent';
-//import RegisterOrganization from './register-organization/RegisterOrganization';
-import { isValidUser } from '../api/cognito';
+//import CreateEvent from './create-event/CreateEvent';
+import RegisterOrganization from './register-organization/RegisterOrganization';
+import { getSession, isValidUser } from '../api/cognito';
 import { listEventsForGuestUser } from '../api/endpoints';
+//import { getUserDetails, listEventsForGuestUser } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
@@ -42,11 +43,26 @@ class Home extends React.Component {
       current_date: moment(),
       current_view: DEFAULT_VIEW,
       show: false,
+      userDetails: {
+        administrator_id: '',
+        adminFirstName: 'Howard',
+        adminLastName: 'Powell',
+        adminEmail: 'howard.powell+user@bluespurs.com',
+      },
     };
   }
 
   componentDidMount() {
     this.updateTimes(this.state.current_date, this.state.current_view);
+
+    // Call to get the user details
+    if (isValidUser()) {
+      getSession(token => {
+        console.log(token.idToken.payload.sub);
+        // console.log(token);
+        // getUserDetails(token.idToken, end, categories).then(results =>
+      });
+    }
   }
 
   showModal = () => {
@@ -172,10 +188,11 @@ class Home extends React.Component {
         </Grid>
         {isValidUser() && (
           <Grid className={classes.filter} item>
-            <CreateEvent
+            <RegisterOrganization
               t={t}
               show={this.state.show}
               handleClose={this.hideModal}
+              userDetails={this.state.userDetails}
             />
             <Fab
               color='primary'
