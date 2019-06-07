@@ -164,7 +164,7 @@ class Event extends React.Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <Grid item className={classes.flex}>
-                {t('dialogs:createEvent')}
+                {t('dialogs.createEvent')}
               </Grid>
               <IconButton
                 color='inherit'
