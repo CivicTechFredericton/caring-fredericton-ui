@@ -12,8 +12,7 @@ import '../style/react-big-calendar.css';
 //import CreateEvent from './create-event/CreateEvent';
 import RegisterOrganization from './register-organization/RegisterOrganization';
 import { getSession, isValidUser } from '../api/cognito';
-import { listEventsForGuestUser } from '../api/endpoints';
-//import { getUserDetails, listEventsForGuestUser } from '../api/endpoints';
+import { getUserDetails, listEventsForGuestUser } from '../api/endpoints';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
@@ -43,12 +42,7 @@ class Home extends React.Component {
       current_date: moment(),
       current_view: DEFAULT_VIEW,
       show: false,
-      userDetails: {
-        administrator_id: '',
-        adminFirstName: 'Howard',
-        adminLastName: 'Powell',
-        adminEmail: 'howard.powell+user@bluespurs.com',
-      },
+      userDetails: {},
     };
   }
 
@@ -58,9 +52,21 @@ class Home extends React.Component {
     // Call to get the user details
     if (isValidUser()) {
       getSession(token => {
-        console.log(token.idToken.payload.sub);
-        // console.log(token);
-        // getUserDetails(token.idToken, end, categories).then(results =>
+        getUserDetails(token.idToken, token.idToken.payload.sub).then(
+          result => {
+            const user = Object.assign(
+              {},
+              {
+                administrator_id: result.id,
+                adminFirstName: result.first_name,
+                adminLastName: result.last_name,
+                adminEmail: result.email,
+              },
+              result
+            );
+            this.setState({ userDetails: user });
+          }
+        );
       });
     }
   }
@@ -70,7 +76,7 @@ class Home extends React.Component {
   };
 
   hideModal = () => {
-    this.loadEvents();
+    this.updateTimes(this.state.current_date, this.state.current_view);
     this.setState({ show: false });
   };
 

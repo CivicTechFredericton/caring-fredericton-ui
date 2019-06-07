@@ -85,7 +85,7 @@ class Organization extends React.Component {
   initValues = userDetails => {
     let intOjt = {
       orgName: '',
-      email: '',
+      orgEmail: '',
       phoneNumber: '',
       address: '',
       city: '',
@@ -101,13 +101,12 @@ class Organization extends React.Component {
     return intOjt;
   };
 
-  transformOrganizationDetails = values => {
+  transformOrganizationDetails = (values, userDetails) => {
     let orgRequest = {
       name: values.orgName,
-      email: values.email,
+      email: values.orgEmail,
       phone: values.phoneNumber,
-      // TODO: Set this value with the signed in user
-      administrator_id: 'cc15b421-cea2-48c6-932f-286283a68dc5',
+      administrator_id: userDetails.administrator_id,
       address: {
         street: values.address,
         city: values.city,
@@ -168,7 +167,7 @@ class Organization extends React.Component {
       };
 
       const emailElement = {
-        name: 'email',
+        name: 'orgEmail',
         label: t('register.email'),
         placeholder: t('register.email'),
       };
@@ -289,7 +288,8 @@ class Organization extends React.Component {
                 onSubmit={(values, { setSubmitting }) => {
                   getSession(token => {
                     const valuesTransform = this.transformOrganizationDetails(
-                      values
+                      values,
+                      userDetails
                     );
 
                     registerOrganization(token.idToken, valuesTransform).then(

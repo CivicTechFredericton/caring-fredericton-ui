@@ -7,10 +7,10 @@ const validation = (t, values) => {
     errors.orgName = t('common.required');
   }
 
-  if (!values.email) {
-    errors.email = t('common.required');
-  } else if (!SimpleEmailRegex.test(values.email)) {
-    errors.email = t('error.invalidEmail');
+  if (!values.orgEmail) {
+    errors.orgEmail = t('common.required');
+  } else if (!SimpleEmailRegex.test(values.orgEmail)) {
+    errors.orgEmail = t('error.invalidEmail');
   }
 
   if (!values.phoneNumber) {

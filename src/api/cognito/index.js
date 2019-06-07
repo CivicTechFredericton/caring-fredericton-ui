@@ -58,6 +58,7 @@ export async function confirmCode(username, verificationCode, callback) {
   };
 
   const cognitoUser = new CognitoUser(userData);
+  // TODO: Handle the callback; console throws an error (uncaught (in promise) callback is not a function)
   cognitoUser.confirmRegistration(verificationCode, true, callback);
 }
 
