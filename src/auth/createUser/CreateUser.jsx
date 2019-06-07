@@ -44,11 +44,6 @@ const styles = createStyles(theme => ({
   title: {
     color: theme.palette.primary.dark,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    width: 100,
-  },
   appBar: {
     position: 'relative',
   },

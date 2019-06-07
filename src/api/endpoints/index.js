@@ -1,4 +1,3 @@
-//import { validateOrgRegistration } from './queryValidation';
 import dev from '../aws/dev';
 
 const base_api_url = dev.API_URL;
@@ -83,32 +82,7 @@ export async function getOrganizatonDetails(token, orgId) {
   return await fetch(url, requestData).then(response => response.json());
 }
 
-/*function massageOrgRegistration(orgDataObject) {
-  const obj = {
-    name: orgDataObject.orgName,
-    email: orgDataObject.email,
-    phone: orgDataObject.phoneNumber,
-    administrator_id: orgDataObject.adminId,
-    address: {
-      street: orgDataObject.address,
-      postal_code: orgDataObject.postalCode,
-      city: orgDataObject.city,
-      province: orgDataObject.province,
-      country: 'Canada',
-    },
-  };
-  return obj;
-}*/
-
 export async function registerOrganization(token, orgDataObject) {
-  /*const massagedOrgData = massageOrgRegistration(orgDataObject);
-  try {
-    validateOrgRegistration(massagedOrgData);
-  } catch (error) {
-    console.log(error);
-    return null;
-  }*/
-
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
@@ -119,15 +93,6 @@ export async function registerOrganization(token, orgDataObject) {
     body: JSON.stringify(orgDataObject),
     method: 'POST',
   };
-
-  /*const requestData = {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: token.jwtToken,
-    },
-    body: JSON.stringify(orgDataObject),
-    method: 'POST',
-  };*/
 
   return await fetch(url, requestData);
 }

@@ -351,7 +351,7 @@ class Event extends React.Component {
                       type='submit'
                       disabled={isSubmitting}
                     >
-                      Create
+                      {t('register.btnCreate')}
                     </Button>
                   </Form>
                 )}

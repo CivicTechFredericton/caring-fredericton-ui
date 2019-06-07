@@ -19,11 +19,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
 
 import validation from './validation';
-//import styles from './styles';
 
 const styles = createStyles(theme => ({
   root: {
-    paddingTop: 15,
+    paddingTop: 25,
   },
   field: {
     paddingBottom: 5,
@@ -48,8 +47,10 @@ const styles = createStyles(theme => ({
     borderRightColor: theme.palette.primary.dark,
   },
   button: {
-    marginTop: 10,
+    marginLeft: '40%',
+    marginTop: 30,
     color: 'white',
+    fontSize: '14px',
   },
   title: {
     color: theme.palette.primary.dark,
@@ -61,6 +62,12 @@ const styles = createStyles(theme => ({
   lastColumn: {
     height: '60vh',
     paddingLeft: 20,
+  },
+  appBar: {
+    position: 'relative',
+  },
+  flex: {
+    flex: 1,
   },
 }));
 
@@ -110,6 +117,9 @@ class Organization extends React.Component {
           margin={value.margin}
           variant={value.variant}
           placeholder={value.placeholder}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
       </Grid>
     ));
@@ -120,7 +130,6 @@ class Organization extends React.Component {
 
     // Default field properties
     const defaultField = {
-      // disabled: isValidationForm,
       component: TextField,
       type: 'text',
       name: '',
@@ -323,37 +332,11 @@ class Organization extends React.Component {
       </div>
     );
   }
-
-  /*static getDerivedStateFromProps(props, state) {
-    // Initialize validation or registration page through api calls
-    if (!state.intOjt) {
-      let intOjt = {
-        name: '',
-        email: '',
-        phoneNumber: '',
-        address: '',
-        city: '',
-        province: '',
-        postalCode: '',
-        country: '',
-        adminFirstName: 'Howard',
-        adminLastName: 'Powell',
-        adminEmail: 'howard.powell+user@bluespurs.com',
-      };
-      let responseData = {};
-
-      intOjt = Object.assign({}, intOjt, responseData);
-      return { intOjt };
-    }
-    return state;
-  }*/
 }
 
 Organization.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
-  isValidationForm: PropTypes.bool,
-  history: PropTypes.any,
   show: PropTypes.bool,
   handleClose: PropTypes.func,
 };

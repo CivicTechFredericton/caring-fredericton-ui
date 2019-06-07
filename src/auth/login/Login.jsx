@@ -8,7 +8,7 @@ import { authenticateUser, getUserOrganization } from '../../api/cognito';
 import logo from '../../ctflogo.jpg';
 import styles from './styles';
 
-import CreateUser from '../CreateUser';
+import CreateUser from '../createUser';
 import ConfirmCode from '../ConfirmCode';
 
 class Login extends React.Component {

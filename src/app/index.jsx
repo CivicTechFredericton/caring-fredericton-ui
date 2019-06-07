@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './index.scss';
 import Registration from '../registration';
 import Header from '../components/header';
-import Login from '../auth/Login';
+import Login from '../auth/login';
 import ChangePassword from '../auth/ChangePassword';
 import ForgotPassword from '../auth/ForgotPassword';
 import ResetPassword from '../auth/ResetPassword';

@@ -9,8 +9,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
-//import CreateEvent from './create-event/CreateEvent';
-import RegisterOrganization from './register-organization/RegisterOrganization';
+import CreateEvent from './create-event/CreateEvent';
+//import RegisterOrganization from './register-organization/RegisterOrganization';
 import { isValidUser } from '../api/cognito';
 import { listEventsForGuestUser } from '../api/endpoints';
 
@@ -172,7 +172,7 @@ class Home extends React.Component {
         </Grid>
         {isValidUser() && (
           <Grid className={classes.filter} item>
-            <RegisterOrganization
+            <CreateEvent
               t={t}
               show={this.state.show}
               handleClose={this.hideModal}
