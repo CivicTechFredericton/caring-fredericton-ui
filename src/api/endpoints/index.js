@@ -104,7 +104,7 @@ function verificationObj() {
   return obj;
 }
 
-export async function validateOrganization(token, orgId) {
+export async function verifyOrganization(token, orgId) {
   const verificationData = verificationObj();
 
   const headers = new Headers();

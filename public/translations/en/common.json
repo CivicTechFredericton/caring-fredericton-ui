@@ -65,8 +65,8 @@
     "btnCreate": "Create"
   },
   "event": {
-    "category": "Event category",
-    "name": "Event name",
+    "category": "Event Category",
+    "name": "Event Name",
     "description": "Event Description",
     "startTime": "Start Time",
     "endTime": "End Time"

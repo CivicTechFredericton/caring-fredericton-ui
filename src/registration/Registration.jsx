@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import { Grid, withStyles, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
-import { registerOrganization, validateOrganization } from '../api/endpoints';
+import { registerOrganization, verifyOrganization } from '../api/endpoints';
 import { getSession } from '../api/cognito';
 
 import validation from './validation';
@@ -69,7 +69,7 @@ class Registration extends React.Component {
 
     if (isValidationForm) {
       getSession(token => {
-        validateOrganization(
+        verifyOrganization(
           token.idToken,
           '023b8a07-8813-4b64-937b-79e6c8eb394d',
           'Org details are okay'

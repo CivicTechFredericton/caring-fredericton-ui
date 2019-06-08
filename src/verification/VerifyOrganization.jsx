@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import PropTypes from 'prop-types';
 import { Grid, withStyles, Button } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
-import { getOrganizatonDetails, validateOrganization } from '../api/endpoints';
+import { getOrganizatonDetails, verifyOrganization } from '../api/endpoints';
 import { getSession, isValidUser } from '../api/cognito';
 
 import styles from './styles';
@@ -195,7 +195,7 @@ class Verification extends React.Component {
             onSubmit={(values, { setSubmitting }) => {
               getSession(token => {
                 // TODO: Pull the organization ID from the history
-                validateOrganization(
+                verifyOrganization(
                   token.idToken,
                   'f0a8802f-7eb9-460e-9276-dada5cd3bf4c'
                 ).then(setSubmitting(false));

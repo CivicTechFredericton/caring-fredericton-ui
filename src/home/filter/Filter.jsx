@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Grid,
-  withStyles,
-  createStyles,
-  // Typography
-} from '@material-ui/core';
+import { Grid, withStyles, createStyles } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
