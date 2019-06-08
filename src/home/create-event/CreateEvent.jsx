@@ -122,7 +122,6 @@ class Event extends React.Component {
 
   transformEvent = event => {
     // Set the required fields
-    //let categorySelection = this.state.categories;
     const categories = Array.from(this.state.categories);
 
     const startDateTime = moment(
@@ -228,9 +227,6 @@ class Event extends React.Component {
                 onSubmit={(values, { setSubmitting }) => {
                   getSession(vals => {
                     let valuesTransform = this.transformEvent(values);
-
-                    setSubmitting(false);
-                    this.props.handleClose();
 
                     createEvent(
                       vals.idToken,
