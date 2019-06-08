@@ -116,7 +116,7 @@ class Event extends React.Component {
   };
 
   // Handle recurrence option change events
-  handleChange = event => {
+  handleRecurrenceChange = event => {
     this.setState({ repeat: event.target.value });
   };
 
@@ -128,8 +128,10 @@ class Event extends React.Component {
       event.start_date + ' ' + event.start_time
     ).utc();
 
-    const endDate = event.end_date || event.start_date;
-    const endDateTime = moment(endDate + ' ' + event.end_time).utc();
+    const endDateTime = moment(event.end_date + ' ' + event.end_time).utc();
+
+    //const endDate = event.end_date || event.start_date;
+    //const endDateTime = moment(endDate + ' ' + event.end_time).utc();
 
     let eventObj = {
       name: event.name,
@@ -143,7 +145,7 @@ class Event extends React.Component {
     };
 
     // Show the following options in the dialog
-    // end_date, num_occurrences, day_of_week, week_of_month
+    // num_occurrences, day_of_week, week_of_month
 
     // Set the recurrence options
     const occurrenceType = () => {
@@ -211,6 +213,7 @@ class Event extends React.Component {
                   description: '',
                   categories: 'social',
                   start_date: '',
+                  end_date: '',
                   start_time: '',
                   end_time: '',
                   repeat: REPEAT_OPTION_NONE,
@@ -220,6 +223,23 @@ class Event extends React.Component {
 
                   if (!values.name) {
                     errors.name = t('common.required');
+                  }
+
+                  // TODO: Check start and end values are valid
+                  if (!values.start_date) {
+                    errors.start_date = t('common.required');
+                  }
+
+                  if (!values.end_date) {
+                    errors.end_date = t('common.required');
+                  }
+
+                  if (!values.start_time) {
+                    errors.start_time = t('common.required');
+                  }
+
+                  if (!values.end_time) {
+                    errors.end_time = t('common.required');
                   }
 
                   return errors;
@@ -411,7 +431,21 @@ class Event extends React.Component {
                             component={TextField}
                             type='date'
                             name='start_date'
-                            label={t('common.date')}
+                            label={t('event.startDate')}
+                            margin='normal'
+                            variant='outlined'
+                            className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.field} item>
+                          <Field
+                            component={TextField}
+                            type='date'
+                            name='end_date'
+                            label={t('event.endDate')}
                             margin='normal'
                             variant='outlined'
                             className={classes.textField}
@@ -452,7 +486,7 @@ class Event extends React.Component {
                           <InputLabel>Recurrence:</InputLabel>
                           <Select
                             value={this.state.repeat}
-                            onChange={this.handleChange}
+                            onChange={this.handleRecurrenceChange}
                             name='repeat'
                             displayEmpty
                             className={classes.selectEmpty}

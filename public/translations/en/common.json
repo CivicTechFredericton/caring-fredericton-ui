@@ -21,8 +21,7 @@
   },
   "common": {
     "required": "Required",
-    "submit": "Submit",
-    "date": "Date"
+    "submit": "Submit"
   },
   "error": {
     "invalidEmail": "Invalid email address",
@@ -68,6 +67,8 @@
     "categories": "Categories",
     "name": "Name",
     "description": "Description",
+    "startDate": "Start Date",
+    "endDate": "End Date",
     "startTime": "Start Time",
     "endTime": "End Time"
   }
