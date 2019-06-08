@@ -25,6 +25,11 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 
+// TODO: Make into constant values used with Home and CreateEvent
+const API_DATE_FORMAT = 'YYYY-MM-DD';
+const API_TIME_FORMAT = 'HH:mm:ss';
+const REPEAT_OPTION_NONE = 'NONE';
+
 const styles = createStyles(theme => ({
   root: {
     paddingTop: 25,
@@ -67,7 +72,7 @@ class Event extends React.Component {
       open: false,
       fullWidth: true,
       maxWidth: 'md',
-      repeat: 'NONE',
+      repeat: REPEAT_OPTION_NONE,
       categories: 'social',
     };
   }
@@ -80,70 +85,53 @@ class Event extends React.Component {
     this.setState({ categories: event.target.value });
   };
 
-  transformEvent = (event, orgId) => {
-    const categories = [event.categories];
+  transformEvent = event => {
+    // Set the required fields
+    let categorySelection = this.state.categories;
+    const categories = [categorySelection];
 
     const startDateTime = moment(
       event.start_date + ' ' + event.start_time
     ).utc();
 
     const endDate = event.end_date || event.start_date;
-
     const endDateTime = moment(endDate + ' ' + event.end_time).utc();
-
-    const getOrgName = () => {
-      if (orgId) {
-        return 'Caring Calender';
-      }
-      return 'Caring Calender';
-    };
-
-    const isRecurring = () => {
-      if (event.repeat.toUpperCase() === 'NONE') {
-        return false;
-      }
-      return true;
-    };
-
-    const reCurringEndDate = () => {
-      return endDateTime.format('YYYY-MM-DD');
-    };
-
-    const endOnDate = () => {
-      return endDateTime.format('YYYY-MM-DD');
-    };
-
-    const occurrenceType = () => {
-      // NEVER ON AFTER
-      return 'ON';
-    };
 
     let eventObj = {
       name: event.name,
-      owner: getOrgName(),
       description: event.description,
       categories,
-      start_date: startDateTime.format('YYYY-MM-DD'),
-      end_date: endDateTime.format('YYYY-MM-DD'),
-      start_time: startDateTime.format('HH:mm:ss'),
-      end_time: endDateTime.format('HH:mm:ss'),
-      end_date_no_recur: reCurringEndDate(),
-      is_recurring: isRecurring(),
-      recurrence_details,
+      start_date: startDateTime.format(API_DATE_FORMAT),
+      end_date: endDateTime.format(API_DATE_FORMAT),
+      start_time: startDateTime.format(API_TIME_FORMAT),
+      end_time: endDateTime.format(API_TIME_FORMAT),
       timezone: 'AST',
     };
 
-    const recurrence_details = {
-      recurrence: event.repeat.toUpperCase(),
-      occurrence_type: occurrenceType(),
-      num_recurrences: 10,
-      on_end_date: endOnDate(),
-      day_of_week: 1,
-      week_of_month: 1,
-      separation_count: 1,
+    // Show the following options in the dialog
+    // end_date, num_occurrences, day_of_week, week_of_month
+
+    // Set the recurrence options
+    const occurrenceType = () => {
+      // Default to end after X occurrences
+      return 'AFTER';
     };
 
-    if (event.repeat.toUpperCase() !== 'NONE') {
+    let repeatOption = this.state.repeat;
+    if (repeatOption === REPEAT_OPTION_NONE) {
+      eventObj.is_recurring = false;
+    } else {
+      eventObj.is_recurring = true;
+
+      let recurrence_details = {
+        recurrence: repeatOption,
+        occurrence_type: occurrenceType(),
+        num_recurrences: 10,
+        day_of_week: 1,
+        week_of_month: 1,
+        separation_count: 1, // default value
+      };
+
       eventObj.recurrence_details = recurrence_details;
     }
 
@@ -151,7 +139,7 @@ class Event extends React.Component {
   };
 
   render() {
-    const { t, classes } = this.props;
+    const { t, classes, userDetails } = this.props;
 
     return (
       <div className={classes.root}>
@@ -184,19 +172,16 @@ class Event extends React.Component {
             >
               <Formik
                 initialValues={{
-                  categories: 'social',
                   name: '',
                   description: '',
+                  categories: 'social',
                   start_date: '',
                   start_time: '',
                   end_time: '',
-                  repeat: 'NONE',
+                  repeat: REPEAT_OPTION_NONE,
                 }}
                 validate={values => {
                   let errors = {};
-                  if (!values.categories) {
-                    errors.categories = t('common.required');
-                  }
 
                   if (!values.name) {
                     errors.name = t('common.required');
@@ -206,18 +191,14 @@ class Event extends React.Component {
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                   getSession(vals => {
-                    const valuesTransform = this.transformEvent(
-                      values,
-                      '023b8a07-8813-4b64-937b-79e6c8eb394d'
-                    );
+                    let valuesTransform = this.transformEvent(values);
 
                     createEvent(
                       vals.idToken,
-                      '023b8a07-8813-4b64-937b-79e6c8eb394d',
+                      userDetails.organization_id,
                       valuesTransform
                     ).then(() => {
                       setSubmitting(false);
-
                       this.props.handleClose();
                     });
                   });
@@ -369,6 +350,7 @@ Event.propTypes = {
   classes: PropTypes.object,
   show: PropTypes.bool,
   handleClose: PropTypes.func,
+  userDetails: PropTypes.object,
 };
 
 export default withStyles(styles, { withTheme: true })(Event);

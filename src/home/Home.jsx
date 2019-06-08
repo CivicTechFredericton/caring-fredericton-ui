@@ -83,11 +83,6 @@ class Home extends React.Component {
     }
   }
 
-  getOrganizationId = () => {
-    let userDetails = this.state.userDetails;
-    return userDetails.organization_id;
-  };
-
   organizationDetailsGroup = () => {
     const { t, classes } = this.props;
 
@@ -110,6 +105,7 @@ class Home extends React.Component {
                 t={t}
                 show={this.state.showEvent}
                 handleClose={this.hideEventModal}
+                userDetails={this.state.userDetails}
               />
               <Fab
                 color='primary'
