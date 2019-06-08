@@ -25,6 +25,12 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 
+import FormLabel from '@material-ui/core/FormLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 // TODO: Make into constant values used with Home and CreateEvent
 const API_DATE_FORMAT = 'YYYY-MM-DD';
 const API_TIME_FORMAT = 'HH:mm:ss';
@@ -63,6 +69,9 @@ const styles = createStyles(theme => ({
   flex: {
     flex: 1,
   },
+  formControl: {
+    margin: theme.spacing(3),
+  },
 }));
 
 class Event extends React.Component {
@@ -73,22 +82,48 @@ class Event extends React.Component {
       fullWidth: true,
       maxWidth: 'md',
       repeat: REPEAT_OPTION_NONE,
-      categories: 'social',
+
+      // Category options
+      categories: new Set(),
+      meals: false,
+      laundry: false,
+      social: false,
+      showers: false,
+      education: false,
+      health: false,
+      hairCuts: false,
+      taxes: false,
+      faith: false,
     };
   }
 
+  // Handle category check box list events
+  handleCheckboxChange = name => event => {
+    let checked = event.target.checked;
+    let value = event.target.value;
+    let categories = this.state.categories;
+
+    if (checked) {
+      categories.add(value);
+    } else {
+      categories.delete(value);
+    }
+
+    this.setState({
+      [name]: checked,
+      categories: categories,
+    });
+  };
+
+  // Handle recurrence option change events
   handleChange = event => {
     this.setState({ repeat: event.target.value });
   };
 
-  handleCategoriesChange = event => {
-    this.setState({ categories: event.target.value });
-  };
-
   transformEvent = event => {
     // Set the required fields
-    let categorySelection = this.state.categories;
-    const categories = [categorySelection];
+    //let categorySelection = this.state.categories;
+    const categories = Array.from(this.state.categories);
 
     const startDateTime = moment(
       event.start_date + ' ' + event.start_time
@@ -135,6 +170,7 @@ class Event extends React.Component {
       eventObj.recurrence_details = recurrence_details;
     }
 
+    console.log(eventObj);
     return eventObj;
   };
 
@@ -193,6 +229,9 @@ class Event extends React.Component {
                   getSession(vals => {
                     let valuesTransform = this.transformEvent(values);
 
+                    setSubmitting(false);
+                    this.props.handleClose();
+
                     createEvent(
                       vals.idToken,
                       userDetails.organization_id,
@@ -214,28 +253,6 @@ class Event extends React.Component {
                     >
                       <Grid className={classes.spacer} item>
                         <Grid className={classes.field} item>
-                          <InputLabel>Categories:</InputLabel>
-                          <Select
-                            value={this.state.categories}
-                            onChange={this.handleCategoriesChange}
-                            name='categories'
-                            displayEmpty
-                            className={classes.selectEmpty}
-                          >
-                            <MenuItem value='social'>
-                              <em>Social</em>
-                            </MenuItem>
-                            <MenuItem value={'meals'}>Meals</MenuItem>
-                            <MenuItem value={'laundry'}>Laundry</MenuItem>
-                            <MenuItem value={'showers'}>Showers</MenuItem>
-                            <MenuItem value={'education'}>Education</MenuItem>
-                            <MenuItem value={'health'}>Health</MenuItem>
-                            <MenuItem value={'hairCuts'}>Hair Cuts</MenuItem>
-                            <MenuItem value={'taxes'}>Taxes</MenuItem>
-                            <MenuItem value={'faith'}>Faith</MenuItem>
-                          </Select>
-                        </Grid>
-                        <Grid className={classes.field} item>
                           <Field
                             component={TextField}
                             type='text'
@@ -245,6 +262,9 @@ class Event extends React.Component {
                             variant='outlined'
                             placeholder={t('event.name')}
                             className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
                           />
                         </Grid>
                         <Grid className={classes.field} item>
@@ -259,7 +279,134 @@ class Event extends React.Component {
                             variant='outlined'
                             placeholder={t('event.description')}
                             className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
                           />
+                        </Grid>
+                        <Grid className={classes.field} item>
+                          <FormLabel component='legend'>
+                            {t('event.categories')}
+                          </FormLabel>
+                          <FormControl
+                            component='fieldset'
+                            className={classes.formControl}
+                          >
+                            <FormGroup row>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.meals}
+                                    onChange={this.handleCheckboxChange(
+                                      'meals'
+                                    )}
+                                    value='meals'
+                                  />
+                                }
+                                label={t('filter.meals')}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.laundry}
+                                    onChange={this.handleCheckboxChange(
+                                      'laundry'
+                                    )}
+                                    value='laundry'
+                                  />
+                                }
+                                label={t('filter.laundry')}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.social}
+                                    onChange={this.handleCheckboxChange(
+                                      'social'
+                                    )}
+                                    value='social'
+                                  />
+                                }
+                                label={t('filter.social')}
+                              />
+                            </FormGroup>
+                            <FormGroup row>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.showers}
+                                    onChange={this.handleCheckboxChange(
+                                      'showers'
+                                    )}
+                                    value='showers'
+                                  />
+                                }
+                                label={t('filter.showers')}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.education}
+                                    onChange={this.handleCheckboxChange(
+                                      'education'
+                                    )}
+                                    value='education'
+                                  />
+                                }
+                                label={t('filter.education')}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.health}
+                                    onChange={this.handleCheckboxChange(
+                                      'health'
+                                    )}
+                                    value='health'
+                                  />
+                                }
+                                label={t('filter.health')}
+                              />
+                            </FormGroup>
+                            <FormGroup row>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.hairCuts}
+                                    onChange={this.handleCheckboxChange(
+                                      'hairCuts'
+                                    )}
+                                    value='hairCuts'
+                                  />
+                                }
+                                label={t('filter.hairCuts')}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.taxes}
+                                    onChange={this.handleCheckboxChange(
+                                      'taxes'
+                                    )}
+                                    value='taxes'
+                                  />
+                                }
+                                label={t('filter.taxes')}
+                              />
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={this.state.faith}
+                                    onChange={this.handleCheckboxChange(
+                                      'faith'
+                                    )}
+                                    value='faith'
+                                  />
+                                }
+                                label={t('filter.faith')}
+                              />
+                            </FormGroup>
+                          </FormControl>
                         </Grid>
                       </Grid>
                       <Grid item>

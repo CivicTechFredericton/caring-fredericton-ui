@@ -124,7 +124,7 @@ export async function verifyOrganization(token, orgId) {
 /**
  * Events endpoints
  */
-export async function createEvent(token, orgId, event) {
+export async function createEvent(token, orgId, eventPayload) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
@@ -132,7 +132,7 @@ export async function createEvent(token, orgId, event) {
 
   const requestData = {
     headers,
-    body: JSON.stringify(event),
+    body: JSON.stringify(eventPayload),
     method: 'POST',
   };
 
