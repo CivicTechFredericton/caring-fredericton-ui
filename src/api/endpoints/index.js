@@ -138,3 +138,17 @@ export async function createEvent(token, orgId, eventPayload) {
 
   return await fetch(url, requestData);
 }
+
+export async function cancelEvent(token, orgId, eventId) {
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
+  const url = base_api_url + '/organizations/' + orgId + '/events/' + eventId;
+
+  const requestData = {
+    headers,
+    method: 'DELETE',
+  };
+
+  return await fetch(url, requestData);
+}
