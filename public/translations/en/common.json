@@ -5,12 +5,12 @@
     "password": "Password",
     "login": "Login",
     "logout": "Log Out",
-    "register": "Register",
     "firstName": "First Name",
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
     "confirmCode": "Confirm Code",
     "btnCreate": "Create",
+    "registerUser": "Don't have an account?  Click here to register.",
     "lblConfirmCode": "Please enter the confirmation code sent to your email to proceed",
     "btnConfirmCode": "Confirm"
   },

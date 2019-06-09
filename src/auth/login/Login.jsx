@@ -16,9 +16,20 @@ import styles from './styles';
 import CreateUser from '../createUser';
 import ConfirmCode from '../ConfirmCode';
 
+const RegisterButton = withStyles({
+  root: {
+    boxShadow: 'none',
+    textTransform: 'none',
+    fontSize: 16,
+    padding: '6px 12px',
+    lineHeight: 1.5,
+  },
+})(Button);
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       errorMsg: '',
       open: false,
@@ -167,7 +178,7 @@ class Login extends React.Component {
                   </Typography>
 
                   <Button
-                    className={classes.button}
+                    className={classes.loginButton}
                     variant='contained'
                     color='secondary'
                     type='submit'
@@ -175,34 +186,33 @@ class Login extends React.Component {
                   >
                     {t('authorize.login')}
                   </Button>
+
+                  <Grid item>
+                    <CreateUser
+                      t={t}
+                      show={this.state.open}
+                      handleClose={this.closeModel}
+                      toggleConfirm={this.openConfirmModel}
+                      setUsername={this.setUserName}
+                    />
+                    <ConfirmCode
+                      t={t}
+                      show={this.state.confirmCode}
+                      handleClose={this.closeConfirmModel}
+                      userName={this.state.userName}
+                    />
+                    <RegisterButton
+                      className={classes.button}
+                      onClick={this.openModel}
+                    >
+                      {t('authorize.registerUser')}
+                    </RegisterButton>
+                  </Grid>
                 </Grid>
               </Form>
             </Grid>
           )}
         </Formik>
-        <Grid>
-          <Button
-            className={classes.button}
-            variant='contained'
-            color='secondary'
-            onClick={this.openModel}
-          >
-            {t('authorize.register')}
-          </Button>
-        </Grid>
-        <CreateUser
-          t={t}
-          show={this.state.open}
-          handleClose={this.closeModel}
-          toggleConfirm={this.openConfirmModel}
-          setUsername={this.setUserName}
-        />
-        <ConfirmCode
-          t={t}
-          show={this.state.confirmCode}
-          handleClose={this.closeConfirmModel}
-          userName={this.state.userName}
-        />
       </Grid>
     );
   }

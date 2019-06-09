@@ -1,7 +1,7 @@
 import { createStyles } from '@material-ui/core';
 
 const styles = createStyles(theme => ({
-  button: {
+  loginButton: {
     marginTop: 25,
     color: 'white',
     fontSize: '18px',
