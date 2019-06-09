@@ -15,18 +15,18 @@ class App extends Component {
 
         <Switch>
           <Route
-            path='/login'
+            path='/login/:orgId?'
             render={props =>
               !isValidUser() ? <Login {...props} /> : <Redirect to='/' />
             }
           />
           <Route
-            path='/validation'
+            path='/validation/:orgId'
             render={props =>
               isValidUser() ? (
                 <VerifyOrganization {...props} />
               ) : (
-                <Redirect to='/login' />
+                <Redirect to={`/login/${props.match.params.orgId}`} />
               )
             }
           />

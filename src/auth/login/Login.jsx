@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { Button, withStyles, Grid, Typography } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
-import { authenticateUser, getUserOrganization } from '../../api/cognito';
+import { authenticateUser } from '../../api/cognito';
 
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -79,7 +79,7 @@ class Login extends React.Component {
   };
 
   submitAuth = (values, setSubmitting) => {
-    const { t, history } = this.props;
+    const { t, history, match } = this.props;
     setSubmitting(true);
 
     authenticateUser(values.username, values.password, response => {
@@ -87,10 +87,12 @@ class Login extends React.Component {
       if (!response) {
         this.setState({ errorMsg: '' });
 
-        if (getUserOrganization()) {
-          history.push('/registration');
+        let orgId = match.params.orgId;
+        if (orgId) {
+          history.push('/validation/' + orgId);
+        } else {
+          history.push('/');
         }
-        history.push('/');
       } else {
         this.setState({ errorMsg: t('error.errorLogin') });
       }
@@ -222,6 +224,7 @@ Login.propTypes = {
   classes: PropTypes.any,
   t: PropTypes.any,
   history: PropTypes.any,
+  match: PropTypes.any,
 };
 
 export default withStyles(styles, { withTheme: true })(Login);

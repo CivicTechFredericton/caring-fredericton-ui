@@ -23,10 +23,8 @@ class Verification extends React.Component {
       getSession(token => {
         getOrganizatonDetails(
           token.idToken,
-          // TODO: Retrieve the org id from the path
-          'f0a8802f-7eb9-460e-9276-dada5cd3bf4c'
+          this.props.match.params.orgId
         ).then(result => {
-          console.log(result);
           const organization = Object.assign(
             {},
             {
@@ -43,7 +41,7 @@ class Verification extends React.Component {
             },
             result
           );
-          this.setState({ intOjt: organization });
+          this.setState({ orgDetails: organization });
         });
       });
     }
@@ -74,7 +72,7 @@ class Verification extends React.Component {
   };
 
   render() {
-    const { t, classes } = this.props;
+    const { t, classes, history, match } = this.props;
 
     // Default field properties
     const defaultField = {
@@ -191,14 +189,15 @@ class Verification extends React.Component {
           <h2 className={classes.title}>{t('register.validation')}</h2>
           <Formik
             enableReinitialize={true}
-            initialValues={this.state.intOjt}
+            initialValues={this.state.orgDetails}
             onSubmit={(values, { setSubmitting }) => {
               getSession(token => {
-                // TODO: Pull the organization ID from the history
-                verifyOrganization(
-                  token.idToken,
-                  'f0a8802f-7eb9-460e-9276-dada5cd3bf4c'
-                ).then(setSubmitting(false));
+                verifyOrganization(token.idToken, match.params.orgId).then(
+                  () => {
+                    setSubmitting(false);
+                    history.push('/');
+                  }
+                );
               });
             }}
           >
@@ -252,6 +251,7 @@ Verification.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
   history: PropTypes.any,
+  match: PropTypes.any,
 };
 
 export default withStyles(styles, { withTheme: true })(Verification);
