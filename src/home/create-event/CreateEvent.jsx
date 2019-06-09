@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import moment from 'moment';
@@ -17,6 +18,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { createEvent } from '../../api/endpoints';
 import { getSession } from '../../api/cognito';
@@ -45,6 +47,12 @@ const styles = createStyles(theme => ({
   },
   textField: {
     width: 350,
+  },
+  occurrenceTextField: {
+    width: 215,
+  },
+  checkBoxField: {
+    width: 120,
   },
   spacer: {
     paddingRight: 20,
@@ -75,27 +83,35 @@ const styles = createStyles(theme => ({
 }));
 
 class Event extends React.Component {
+  default_state = {
+    open: false,
+    fullWidth: true,
+    maxWidth: 'md',
+    repeat: REPEAT_OPTION_NONE,
+
+    // Category options
+    categories: new Set(),
+    meals: false,
+    laundry: false,
+    social: false,
+    showers: false,
+    education: false,
+    health: false,
+    hairCuts: false,
+    taxes: false,
+    faith: false,
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      open: false,
-      fullWidth: true,
-      maxWidth: 'md',
-      repeat: REPEAT_OPTION_NONE,
 
-      // Category options
-      categories: new Set(),
-      meals: false,
-      laundry: false,
-      social: false,
-      showers: false,
-      education: false,
-      health: false,
-      hairCuts: false,
-      taxes: false,
-      faith: false,
-    };
+    this.state = this.default_state;
   }
+
+  handleDialogClose = () => {
+    this.setState(this.default_state);
+    this.props.handleClose();
+  };
 
   // Handle category check box list events
   handleCheckboxChange = name => event => {
@@ -122,21 +138,21 @@ class Event extends React.Component {
 
   transformEvent = event => {
     // Set the required fields
-    const categories = Array.from(this.state.categories);
+    let categoriesSet = this.state.categories;
+    if (categoriesSet.size === 9) {
+      categoriesSet.clear();
+    }
 
-    const startDateTime = moment(
-      event.start_date + ' ' + event.start_time
-    ).utc();
+    let categoriesList = Array.from(categoriesSet);
 
-    const endDateTime = moment(event.end_date + ' ' + event.end_time).utc();
+    let startDateTime = moment(event.start_date + ' ' + event.start_time).utc();
 
-    //const endDate = event.end_date || event.start_date;
-    //const endDateTime = moment(endDate + ' ' + event.end_time).utc();
+    let endDateTime = moment(event.end_date + ' ' + event.end_time).utc();
 
     let eventObj = {
       name: event.name,
       description: event.description,
-      categories,
+      categoriesList,
       start_date: startDateTime.format(API_DATE_FORMAT),
       end_date: endDateTime.format(API_DATE_FORMAT),
       start_time: startDateTime.format(API_TIME_FORMAT),
@@ -145,7 +161,7 @@ class Event extends React.Component {
     };
 
     // Show the following options in the dialog
-    // num_occurrences, day_of_week, week_of_month
+    // day_of_week, week_of_month
 
     // Set the recurrence options
     const occurrenceType = () => {
@@ -162,10 +178,10 @@ class Event extends React.Component {
       let recurrence_details = {
         recurrence: repeatOption,
         occurrence_type: occurrenceType(),
-        num_recurrences: 10,
-        day_of_week: 1,
-        week_of_month: 1,
-        separation_count: 1, // default value
+        num_recurrences: event.num_occurrences,
+        //day_of_week: 1,
+        //week_of_month: 1,
+        //separation_count: 1, // default value
       };
 
       eventObj.recurrence_details = recurrence_details;
@@ -193,7 +209,7 @@ class Event extends React.Component {
               </Grid>
               <IconButton
                 color='inherit'
-                onClick={this.props.handleClose}
+                onClick={this.handleDialogClose}
                 aria-label='Close'
               >
                 <CloseIcon />
@@ -254,7 +270,7 @@ class Event extends React.Component {
                       valuesTransform
                     ).then(() => {
                       setSubmitting(false);
-                      this.props.handleClose();
+                      this.handleDialogClose();
                     });
                   });
                 }}
@@ -286,7 +302,7 @@ class Event extends React.Component {
                         <Grid className={classes.field} item>
                           <Field
                             multiline
-                            rows='6'
+                            rows='4'
                             component={TextField}
                             type='text'
                             name='description'
@@ -310,6 +326,7 @@ class Event extends React.Component {
                           >
                             <FormGroup row>
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.meals}
@@ -322,6 +339,7 @@ class Event extends React.Component {
                                 label={t('filter.meals')}
                               />
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.laundry}
@@ -334,6 +352,7 @@ class Event extends React.Component {
                                 label={t('filter.laundry')}
                               />
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.social}
@@ -348,6 +367,7 @@ class Event extends React.Component {
                             </FormGroup>
                             <FormGroup row>
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.showers}
@@ -360,6 +380,7 @@ class Event extends React.Component {
                                 label={t('filter.showers')}
                               />
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.education}
@@ -372,6 +393,7 @@ class Event extends React.Component {
                                 label={t('filter.education')}
                               />
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.health}
@@ -386,6 +408,7 @@ class Event extends React.Component {
                             </FormGroup>
                             <FormGroup row>
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.hairCuts}
@@ -398,6 +421,7 @@ class Event extends React.Component {
                                 label={t('filter.hairCuts')}
                               />
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.taxes}
@@ -410,6 +434,7 @@ class Event extends React.Component {
                                 label={t('filter.taxes')}
                               />
                               <FormControlLabel
+                                className={classes.checkBoxField}
                                 control={
                                   <Checkbox
                                     checked={this.state.faith}
@@ -482,23 +507,64 @@ class Event extends React.Component {
                             }}
                           />
                         </Grid>
-                        <Grid className={classes.field} item>
-                          <InputLabel>Recurrence:</InputLabel>
-                          <Select
-                            value={this.state.repeat}
-                            onChange={this.handleRecurrenceChange}
-                            name='repeat'
-                            displayEmpty
-                            className={classes.selectEmpty}
-                          >
-                            <MenuItem value='NONE'>
-                              <em>NONE</em>
-                            </MenuItem>
-                            <MenuItem value={'DAILY'}>Daily</MenuItem>
-                            <MenuItem value={'WEEKLY'}>Weekly</MenuItem>
-                            <MenuItem value={'BI-WEEKLY'}>Bi-Weekly</MenuItem>
-                            <MenuItem value={'MONTHLY'}>Monthly</MenuItem>
-                          </Select>
+                        <Grid
+                          container
+                          direction='row'
+                          justify='flex-start'
+                          alignItems='center'
+                        >
+                          <Grid className={classes.spacer} item>
+                            <InputLabel>{t('event.recurrence')}</InputLabel>
+                            <Select
+                              value={this.state.repeat}
+                              onChange={this.handleRecurrenceChange}
+                              name='repeat'
+                              displayEmpty
+                              className={classes.selectEmpty}
+                            >
+                              <MenuItem value={'NONE'}>
+                                <em>{t('recurrenceOptions.none')}</em>
+                              </MenuItem>
+                              <MenuItem value={'DAILY'}>
+                                {t('recurrenceOptions.daily')}
+                              </MenuItem>
+                              <MenuItem value={'WEEKLY'}>
+                                {t('recurrenceOptions.weekly')}
+                              </MenuItem>
+                              <MenuItem value={'BI-WEEKLY'}>
+                                {t('recurrenceOptions.biWeekly')}
+                              </MenuItem>
+                              <MenuItem value={'MONTHLY'}>
+                                {t('recurrenceOptions.monthly')}
+                              </MenuItem>
+                            </Select>
+                          </Grid>
+                          <Grid className={classes.spacer} item>
+                            <Field
+                              component={TextField}
+                              type='number'
+                              name='num_occurrences'
+                              className={clsx(
+                                classes.margin,
+                                classes.occurrenceTextField
+                              )}
+                              label={t('event.endAfter')}
+                              defaultValue={1}
+                              margin='normal'
+                              variant='outlined'
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                inputProps: { min: 1, max: 10 },
+                                endAdornment: (
+                                  <InputAdornment position='start'>
+                                    {t('event.occurrences')}
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>

@@ -45,6 +45,13 @@
     "taxes": "Taxes",
     "faith": "Faith"
   },
+  "recurrenceOptions": {
+    "none": "None",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "biWeekly": "Bi-Weekly",
+    "monthly": "Monthly"
+  },
   "register": {
     "register": "Register",
     "validate": "Validate",
@@ -70,6 +77,9 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "startTime": "Start Time",
-    "endTime": "End Time"
+    "endTime": "End Time",
+    "recurrence": "Recurrence",
+    "endAfter": "End After",
+    "occurrences": "occurrences"
   }
 }

@@ -246,6 +246,7 @@ class Home extends React.Component {
 
           input.push(event);
         });
+
         this.setState({ events: input });
       }
     });

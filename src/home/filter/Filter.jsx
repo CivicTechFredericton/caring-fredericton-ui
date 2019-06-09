@@ -12,44 +12,89 @@ const styles = () =>
   });
 
 class Filter extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // Category options
+      categoriesFilterSet: new Set(),
+      mealsFilter: true,
+      laundryFilter: true,
+      socialFilter: true,
+      showersFilter: true,
+      educationFilter: true,
+      healthFilter: true,
+      hairCutsFilter: true,
+      taxesFilter: true,
+      faithFilter: true,
+    };
+  }
+
+  // Handle category check box list events
+  handleFilterChange = name => event => {
+    let checked = event.target.checked;
+    let value = event.target.value;
+    let categories = this.state.categoriesFilterSet;
+
+    if (checked) {
+      categories.add(value);
+    } else {
+      categories.delete(value);
+    }
+
+    this.setState({
+      [name]: checked,
+      categoriesFilterSet: categories,
+    });
+  };
+
   render() {
     const { classes, t } = this.props;
     const filterConfig = [
       {
-        id: 'meals',
+        id: 'mealsFilter',
         label: t('filter.meals'),
+        changeValue: this.state.mealsFilter,
       },
       {
-        id: 'laundry',
+        id: 'laundryFilter',
         label: t('filter.laundry'),
+        changeValue: this.state.laundryFilter,
       },
       {
-        id: 'social',
+        id: 'socialFilter',
         label: t('filter.social'),
+        changeValue: this.state.socialFilter,
       },
       {
-        id: 'showers',
+        id: 'showersFilter',
         label: t('filter.showers'),
+        changeValue: this.state.showersFilter,
       },
       {
-        id: 'education',
+        id: 'educationFilter',
         label: t('filter.education'),
+        changeValue: this.state.educationFilter,
       },
       {
-        id: 'health',
+        id: 'healthFilter',
         label: t('filter.health'),
+        changeValue: this.state.healthFilter,
       },
       {
-        id: 'hairCuts',
+        id: 'hairCutsFilter',
         label: t('filter.hairCuts'),
+        changeValue: this.state.hairCutsFilter,
       },
       {
-        id: 'taxes',
+        id: 'taxesFilter',
         label: t('filter.taxes'),
+        changeValue: this.state.taxesFilter,
       },
       {
-        id: 'faith',
+        id: 'faithFilter',
         label: t('filter.faith'),
+        changeValue: this.state.faithFilter,
       },
     ];
 
@@ -67,8 +112,8 @@ class Filter extends React.Component {
               key={result.id}
               control={
                 <Checkbox
-                  checked={true}
-                  onChange={() => {}}
+                  checked={result.changeValue}
+                  onChange={this.handleFilterChange(result.id)}
                   value={result.id}
                 />
               }
