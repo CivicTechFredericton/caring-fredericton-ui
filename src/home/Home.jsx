@@ -10,6 +10,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import '../style/react-big-calendar.css';
+import logo from '../ctflogo.jpg';
+
 import CreateEvent from './create-event/CreateEvent';
 import RegisterOrganization from './register-organization/RegisterOrganization';
 import { getSession, isValidUser } from '../api/cognito';
@@ -32,6 +34,10 @@ const styles = () =>
       position: 'absolute',
       bottom: '50px',
       right: '50px',
+    },
+    image: {
+      width: '25%',
+      height: 'auto',
     },
   });
 
@@ -263,12 +269,15 @@ class Home extends React.Component {
         justify='flex-start'
         alignItems='flex-start'
       >
+        <Grid item>
+          <img className={classes.image} src={logo} />
+        </Grid>
         <Grid className={classes.filter} item>
           <Filter />
         </Grid>
         <Grid item>
           <BigCalendar
-            style={{ height: 500, width: 800 }}
+            style={{ height: 500, width: 700 }}
             localizer={localizer}
             step={60}
             events={this.state.events}
