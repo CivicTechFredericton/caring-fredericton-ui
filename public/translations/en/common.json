@@ -81,6 +81,8 @@
     "endTime": "End Time",
     "recurrence": "Recurrence",
     "endAfter": "End After",
-    "occurrences": "occurrences"
+    "occurrences": "occurrences",
+    "dayOfWeek": "Day",
+    "weekOfMonth": "Week"
   }
 }
