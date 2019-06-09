@@ -49,9 +49,6 @@ export const getSession = callback => {
 
 // Confirm user registration code
 export async function confirmCode(username, verificationCode, callback) {
-  console.log(username);
-  console.log(verificationCode);
-
   const userData = {
     Username: username,
     Pool: userPool,

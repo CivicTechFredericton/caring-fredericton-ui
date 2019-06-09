@@ -197,7 +197,6 @@ class Event extends React.Component {
       eventObj.recurrence_details = recurrence_details;
     }
 
-    console.log(eventObj);
     return eventObj;
   };
 
