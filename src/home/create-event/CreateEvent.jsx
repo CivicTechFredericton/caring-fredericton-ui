@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { SimpleEmailRegex } from 'Utils/regex';
 
 import {
   IconButton,
@@ -152,6 +153,7 @@ class Event extends React.Component {
     let eventObj = {
       name: event.name,
       description: event.description,
+      contact_email: event.contactEmail,
       categoriesList,
       start_date: startDateTime.format(API_DATE_FORMAT),
       end_date: endDateTime.format(API_DATE_FORMAT),
@@ -228,6 +230,7 @@ class Event extends React.Component {
                   name: '',
                   description: '',
                   categories: 'social',
+                  contactEmail: '',
                   start_date: '',
                   end_date: '',
                   start_time: '',
@@ -239,6 +242,12 @@ class Event extends React.Component {
 
                   if (!values.name) {
                     errors.name = t('common.required');
+                  }
+
+                  if (!values.contactEmail) {
+                    errors.contactEmail = t('common.required');
+                  } else if (!SimpleEmailRegex.test(values.contactEmail)) {
+                    errors.contactEmail = t('error.invalidEmail');
                   }
 
                   // TODO: Check start and end values are valid
@@ -310,6 +319,21 @@ class Event extends React.Component {
                             margin='normal'
                             variant='outlined'
                             placeholder={t('event.description')}
+                            className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.field} item>
+                          <Field
+                            component={TextField}
+                            type='email'
+                            name='contactEmail'
+                            label={t('event.contactEmail')}
+                            margin='normal'
+                            variant='outlined'
+                            placeholder={t('event.contactEmail')}
                             className={classes.textField}
                             InputLabelProps={{
                               shrink: true,

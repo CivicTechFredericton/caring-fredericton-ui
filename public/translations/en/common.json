@@ -74,6 +74,7 @@
     "categories": "Categories",
     "name": "Name",
     "description": "Description",
+    "contactEmail": "Contact Email",
     "startDate": "Start Date",
     "endDate": "End Date",
     "startTime": "Start Time",

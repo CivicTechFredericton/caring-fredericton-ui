@@ -137,7 +137,7 @@ class CreateUser extends React.Component {
                   if (!values.email) {
                     errors.email = t('common.required');
                   } else if (!SimpleEmailRegex.test(values.email)) {
-                    errors.email = errors.email = t('error.invalidEmail');
+                    errors.email = t('error.invalidEmail');
                   }
 
                   if (!values.first_name) {
