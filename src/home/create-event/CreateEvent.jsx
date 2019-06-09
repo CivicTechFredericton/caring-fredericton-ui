@@ -89,6 +89,7 @@ class Event extends React.Component {
     fullWidth: true,
     maxWidth: 'md',
     repeat: REPEAT_OPTION_NONE,
+    hideRecurrenceOptions: true,
 
     // Category options
     categories: new Set(),
@@ -134,7 +135,14 @@ class Event extends React.Component {
 
   // Handle recurrence option change events
   handleRecurrenceChange = event => {
-    this.setState({ repeat: event.target.value });
+    let recurrenceOption = event.target.value;
+    let hideRecurrenceOptions =
+      recurrenceOption !== REPEAT_OPTION_NONE ? false : true;
+
+    this.setState({
+      repeat: event.target.value,
+      hideRecurrenceOptions: hideRecurrenceOptions,
+    });
   };
 
   transformEvent = event => {
@@ -563,7 +571,11 @@ class Event extends React.Component {
                               </MenuItem>
                             </Select>
                           </Grid>
-                          <Grid className={classes.spacer} item>
+                          <Grid
+                            className={classes.spacer}
+                            hidden={this.state.hideRecurrenceOptions}
+                            item
+                          >
                             <Field
                               component={TextField}
                               type='number'
