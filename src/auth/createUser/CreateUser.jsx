@@ -6,7 +6,6 @@ import { TextField } from 'formik-material-ui';
 
 import PropTypes from 'prop-types';
 import {
-  IconButton,
   AppBar,
   Toolbar,
   Grid,
@@ -18,6 +17,10 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { createUser } from '../../api/endpoints';
 import { SimpleEmailRegex } from 'Utils/regex';
@@ -55,12 +58,38 @@ const styles = createStyles(theme => ({
 class CreateUser extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       open: false,
       fullWidth: true,
       maxWidth: 'md',
+      showPassword: false,
+      showConfirmPassword: false,
     };
   }
+
+  handleClickShowPassword = () => {
+    let currFlag = this.state.showPassword;
+    this.setState({ showPassword: !currFlag });
+  };
+
+  handleClickShowConfirmPassword = () => {
+    let currFlag = this.state.showConfirmPassword;
+    this.setState({ showConfirmPassword: !currFlag });
+  };
+
+  // TODO: Capture errors from the API calls
+  /*submitCreateUser = (values, setSubmitting) => {
+    const { t, history } = this.props;
+    setSubmitting(true);
+
+    createUser(values).then(() => {
+      setSubmitting(false);
+      this.props.setUsername(values.email);
+      this.props.handleClose();
+      this.props.toggleConfirm();
+    });
+  };*/
 
   render() {
     const { t, classes } = this.props;
@@ -202,7 +231,7 @@ class CreateUser extends React.Component {
                           <Field
                             className={classes.textField}
                             autoComplete='current-password'
-                            type='password'
+                            type={this.state.showPassword ? 'text' : 'password'}
                             name='password'
                             label={t('authorize.password')}
                             margin='normal'
@@ -212,13 +241,34 @@ class CreateUser extends React.Component {
                             InputLabelProps={{
                               shrink: true,
                             }}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position='end'>
+                                  <IconButton
+                                    edge='end'
+                                    aria-label='Toggle password visibility'
+                                    onClick={this.handleClickShowPassword}
+                                  >
+                                    {this.state.showPassword ? (
+                                      <VisibilityOff />
+                                    ) : (
+                                      <Visibility />
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
                           />
                         </Grid>
                         <Grid className={classes.field} item>
                           <Field
                             className={classes.textField}
                             autoComplete='current-password'
-                            type='password'
+                            type={
+                              this.state.showConfirmPassword
+                                ? 'text'
+                                : 'password'
+                            }
                             name='confirmPassword'
                             label={t('authorize.confirmPassword')}
                             margin='normal'
@@ -227,6 +277,25 @@ class CreateUser extends React.Component {
                             placeholder={t('authorize.confirmPassword')}
                             InputLabelProps={{
                               shrink: true,
+                            }}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position='end'>
+                                  <IconButton
+                                    edge='end'
+                                    aria-label='Toggle password visibility'
+                                    onClick={
+                                      this.handleClickShowConfirmPassword
+                                    }
+                                  >
+                                    {this.state.showConfirmPassword ? (
+                                      <VisibilityOff />
+                                    ) : (
+                                      <Visibility />
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
                             }}
                           />
                         </Grid>

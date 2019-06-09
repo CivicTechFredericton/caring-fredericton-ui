@@ -5,6 +5,11 @@ import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 import { authenticateUser, getUserOrganization } from '../../api/cognito';
 
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 import logo from '../../ctflogo.jpg';
 import styles from './styles';
 
@@ -19,6 +24,7 @@ class Login extends React.Component {
       open: false,
       confirmCode: false,
       userName: '',
+      showPassword: false,
     };
   }
 
@@ -34,6 +40,11 @@ class Login extends React.Component {
       errors.password = t('common.required');
     }
     return errors;
+  };
+
+  handleClickShowPassword = () => {
+    let currFlag = this.state.showPassword;
+    this.setState({ showPassword: !currFlag });
   };
 
   openModel = () => {
@@ -105,10 +116,6 @@ class Login extends React.Component {
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <Typography className={classes.error}>
-                    {this.state.errorMsg}
-                  </Typography>
-
                   <Field
                     className={classes.textField}
                     type='text'
@@ -126,7 +133,7 @@ class Login extends React.Component {
                   <Field
                     className={classes.textField}
                     autoComplete='current-password'
-                    type='password'
+                    type={this.state.showPassword ? 'text' : 'password'}
                     name='password'
                     label={t('authorize.password')}
                     margin='normal'
@@ -136,7 +143,28 @@ class Login extends React.Component {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            edge='end'
+                            aria-label='Toggle password visibility'
+                            onClick={this.handleClickShowPassword}
+                          >
+                            {this.state.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
+
+                  <Typography className={classes.error}>
+                    {this.state.errorMsg}
+                  </Typography>
 
                   <Button
                     className={classes.button}
