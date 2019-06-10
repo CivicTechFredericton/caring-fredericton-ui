@@ -143,7 +143,7 @@ class Event extends React.Component {
     fullWidth: true,
     maxWidth: false,
     repeat: REPEAT_OPTION_NONE,
-    hideRecurrenceOptions: true,
+    hideRecurrenceOptions: false,
 
     selectedStartDate: new Date(),
     selectedEndDate: new Date(),

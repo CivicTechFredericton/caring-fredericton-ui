@@ -2,7 +2,7 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { Grid, withStyles, createStyles, Typography } from '@material-ui/core';
+import { Grid, withStyles, createStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Filter from './filter';
 
@@ -14,8 +14,9 @@ import logo from '../ctflogo.jpg';
 
 import CreateEvent from './create-event/CreateEvent';
 import RegisterOrganization from './register-organization/RegisterOrganization';
-import { getSession, isValidUser } from '../api/cognito';
-import { getUserDetails, listEventsForGuestUser } from '../api/endpoints';
+import { isValidUser } from '../api/cognito';
+import { listEventsForGuestUser } from '../api/endpoints';
+import { getUserDetails } from '../utils/localStorage';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
@@ -68,24 +69,20 @@ class Home extends React.Component {
     this.updateTimes(this.state.currentDate, this.state.currentView);
 
     if (isValidUser()) {
-      getSession(token => {
-        getUserDetails(token.idToken, token.idToken.payload.sub).then(
-          result => {
-            const user = Object.assign(
-              {},
-              {
-                administrator_id: result.id,
-                adminFirstName: result.first_name,
-                adminLastName: result.last_name,
-                adminEmail: result.email,
-              },
-              result
-            );
+      let userDetails = getUserDetails();
 
-            this.setState({ userDetails: user });
-          }
-        );
-      });
+      const user = Object.assign(
+        {},
+        {
+          administrator_id: userDetails.id,
+          adminFirstName: userDetails.first_name,
+          adminLastName: userDetails.last_name,
+          adminEmail: userDetails.email,
+        },
+        userDetails
+      );
+
+      this.setState({ userDetails: user });
     }
   }
 
@@ -94,7 +91,6 @@ class Home extends React.Component {
 
     let userDetails = this.state.userDetails;
     let orgId = userDetails.organization_id;
-    let orgName = userDetails.organization_name;
 
     return (
       <>
@@ -106,7 +102,6 @@ class Home extends React.Component {
             alignItems='flex-start'
           >
             <Grid className={classes.filter} item>
-              <Typography variant='h4'>{orgName}</Typography>
               <CreateEvent
                 t={t}
                 show={this.state.showEvent}
@@ -277,7 +272,7 @@ class Home extends React.Component {
         </Grid>
         <Grid item>
           <BigCalendar
-            style={{ height: 500, width: 700 }}
+            style={{ height: 500, width: 800 }}
             localizer={localizer}
             step={60}
             events={this.state.events}

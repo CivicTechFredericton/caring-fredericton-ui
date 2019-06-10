@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Button, Grid } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Grid, Typography } from '@material-ui/core';
 import { signOut, isValidSession } from '../../api/cognito';
+import { getUserDetails } from '../../utils/localStorage';
+
 import history from '../../history';
 import logo from '../../logo.png';
-
 import styles from './style';
 
 class Header extends React.Component {
@@ -13,11 +14,13 @@ class Header extends React.Component {
     super(props);
   }
 
-  authButtonGroup = () => {
+  authButtonGroup = validSession => {
     const { t, classes } = this.props;
+
+    // <Typography variant='h4'>{orgName}</Typography>
     return (
       <>
-        {isValidSession() ? (
+        {validSession ? (
           <Button
             className={classes.button}
             onClick={() => {
@@ -43,7 +46,14 @@ class Header extends React.Component {
   };
 
   render() {
-    const { t, classes } = this.props;
+    const { classes } = this.props;
+
+    let validSession = isValidSession();
+
+    let orgName = '';
+    if (validSession) {
+      orgName = getUserDetails().organization_name;
+    }
 
     return (
       <div className={classes.root}>
@@ -65,10 +75,14 @@ class Header extends React.Component {
                   <Grid item>
                     <img className={classes.image} src={logo} />
                   </Grid>
-                  <Grid item>{t('header.title')}</Grid>
                 </Grid>
               </Grid>
-              <Grid item>{this.authButtonGroup()}</Grid>
+              {orgName && (
+                <Grid item>
+                  <Typography variant='h6'>{orgName}</Typography>
+                </Grid>
+              )}
+              <Grid item>{this.authButtonGroup(validSession)}</Grid>
             </Grid>
           </Toolbar>
         </AppBar>
