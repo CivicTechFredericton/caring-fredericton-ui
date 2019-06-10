@@ -17,8 +17,8 @@ const validation = (t, values) => {
     errors.phoneNumber = t('common.required');
   }
 
-  if (!values.address) {
-    errors.address = t('common.required');
+  if (!values.street) {
+    errors.street = t('common.required');
   }
 
   if (!values.city) {
