@@ -3,7 +3,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 import Filter from './filter';
 
 import Fab from '@material-ui/core/Fab';
@@ -42,15 +42,15 @@ const styles = () =>
     },
   });
 
-const RegisterButton = withStyles({
-  root: {
-    boxShadow: 'none',
-    textTransform: 'none',
-    fontSize: 16,
-    padding: '6px 12px',
-    lineHeight: 1.5,
-  },
-})(Button);
+// const RegisterButton = withStyles({
+//   root: {
+//     boxShadow: 'none',
+//     textTransform: 'none',
+//     fontSize: 16,
+//     padding: '6px 12px',
+//     lineHeight: 1.5,
+//   },
+// })(Button);
 
 class Home extends React.Component {
   constructor(props) {
@@ -122,18 +122,18 @@ class Home extends React.Component {
           <Grid className={classes.filter} item>
             <RegisterOrganization
               t={t}
-              show={this.state.showRegister}
+              show={this.props.registerState}
               handleClose={this.hideRegisterModal}
               userDetails={this.state.userDetails}
             />
-            <RegisterButton
+            {/* <RegisterButton
               className={classes.button}
               onClick={() => {
                 this.showRegisterModal();
               }}
             >
               {t('dialogs.registerOrganization')}
-            </RegisterButton>
+            </RegisterButton> */}
           </Grid>
         )}
       </>
@@ -164,7 +164,8 @@ class Home extends React.Component {
 
   hideRegisterModal = () => {
     this.hideModal();
-    this.setState({ showRegister: false });
+    this.props.closeRegister();
+    //this.setState({ showRegister: false });
   };
 
   hideModal = () => {
@@ -294,6 +295,8 @@ class Home extends React.Component {
 Home.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
+  closeRegister: PropTypes.any,
+  registerState: PropTypes.boolean,
 };
 
 export default withStyles(styles, { withTheme: true })(Home);

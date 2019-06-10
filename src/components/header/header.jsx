@@ -19,17 +19,29 @@ class Header extends React.Component {
 
     // <Typography variant='h4'>{orgName}</Typography>
     return (
-      <>
+      <div>
         {validSession ? (
-          <Button
-            className={classes.button}
-            onClick={() => {
-              signOut();
-            }}
-          >
-            {' '}
-            {t('authorize.logout')}{' '}
-          </Button>
+          <div>
+            {!getUserDetails().organization_id && (
+              <Button
+                className={classes.button}
+                onClick={() => {
+                  this.props.openRegister();
+                }}
+              >
+                {t('dialogs.registerOrganization')}
+              </Button>
+            )}
+            <Button
+              className={classes.button}
+              onClick={() => {
+                signOut();
+              }}
+            >
+              {' '}
+              {t('authorize.logout')}{' '}
+            </Button>
+          </div>
         ) : (
           <Button
             className={classes.button}
@@ -41,7 +53,7 @@ class Header extends React.Component {
             {t('authorize.login')}{' '}
           </Button>
         )}
-      </>
+      </div>
     );
   };
 
@@ -95,6 +107,7 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
   history: PropTypes.any,
+  openRegister: PropTypes.any,
 };
 
 export default withStyles(styles, { withTheme: true })(Header);

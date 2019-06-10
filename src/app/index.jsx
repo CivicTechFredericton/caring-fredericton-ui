@@ -8,10 +8,25 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { isValidUser } from '../api/cognito';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      register: false,
+    };
+  }
+
+  openRegister = () => {
+    this.setState({ register: true });
+  };
+
+  closeRegister = () => {
+    this.setState({ register: false });
+  };
+
   render() {
     return (
       <div className='App'>
-        <Header />
+        <Header openRegister={this.openRegister} />
 
         <Switch>
           <Route
@@ -30,7 +45,15 @@ class App extends Component {
               )
             }
           />
-          <Route path='/' component={Home} />
+          <Route
+            path='/'
+            render={() => (
+              <Home
+                closeRegister={this.closeRegister}
+                registerState={this.state.register}
+              />
+            )}
+          />
         </Switch>
       </div>
     );
