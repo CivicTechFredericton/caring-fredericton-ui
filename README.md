@@ -48,7 +48,7 @@ more information.
 Install sceptre and the AWS cli if you haven't already done so:
 
 ```
-pip install sceptre --upgrade --user
+pip install sceptre==1.4.2 --upgrade --user
 pip install awscli --upgrade --user
 ```
 
