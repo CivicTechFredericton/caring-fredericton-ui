@@ -32,6 +32,7 @@ import { createEvent } from '../../api/endpoints';
 import { getSession } from '../../api/cognito';
 
 import Select from '@material-ui/core/Select';
+//import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 
@@ -88,11 +89,14 @@ const styles = createStyles(theme => ({
   textField: {
     width: 350,
   },
+  longTextField: {
+    width: 700,
+  },
   timeField: {
-    width: 100,
+    width: 150,
   },
   dateField: {
-    width: 125,
+    width: 200,
   },
   occurrenceTextField: {
     width: 215,
@@ -101,7 +105,7 @@ const styles = createStyles(theme => ({
     width: 130,
   },
   weekOfMonthTextField: {
-    width: 50,
+    width: 75,
   },
   checkBoxField: {
     width: 120,
@@ -235,6 +239,12 @@ class Event extends React.Component {
     let categoriesList = Array.from(categoriesSet);
 
     let startDateTime = moment(event.start_date + ' ' + event.start_time).utc();
+    //console.log('Start Date 1:' + startDateTime.format(API_DATE_FORMAT));
+    //console.log('Start Time 1:' + startDateTime.format(API_TIME_FORMAT));
+    //let startDateTemp = moment(this.state.selectedStartDate);
+    //let startTimeTemp = moment(this.state.selectedStartTime);
+    //console.log('Start Date 2:' + startDateTemp.format(API_DATE_FORMAT));
+    //console.log('Start Time 2:' + startTimeTemp.format(API_TIME_FORMAT));
     let endDateTime = moment(event.end_date + ' ' + event.end_time).utc();
 
     let eventObj = {
@@ -277,8 +287,7 @@ class Event extends React.Component {
       eventObj.recurrence_details = recurrence_details;
     }
 
-    return {};
-    //return eventObj;
+    return eventObj;
   };
 
   render() {
@@ -382,14 +391,9 @@ class Event extends React.Component {
               >
                 {({ isSubmitting }) => (
                   <Form>
-                    <Grid
-                      container
-                      direction='row'
-                      justify='flex-start'
-                      alignItems='center'
-                    >
-                      <Grid className={classes.spacer} item>
-                        <Grid className={classes.field} item>
+                    <Grid container>
+                      <Grid container>
+                        <Grid item className={classes.spacer}>
                           <Field
                             component={TextField}
                             type='text'
@@ -404,39 +408,7 @@ class Event extends React.Component {
                             }}
                           />
                         </Grid>
-                        <Grid className={classes.field} item>
-                          <Field
-                            multiline
-                            rows='4'
-                            component={TextField}
-                            type='text'
-                            name='description'
-                            label={t('event.description')}
-                            margin='normal'
-                            variant='outlined'
-                            placeholder={t('event.description')}
-                            className={classes.textField}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                          />
-                        </Grid>
-                        <Grid className={classes.field} item>
-                          <Field
-                            component={TextField}
-                            type='email'
-                            name='location'
-                            label={t('event.location')}
-                            margin='normal'
-                            variant='outlined'
-                            placeholder={t('event.location')}
-                            className={classes.textField}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                          />
-                        </Grid>
-                        <Grid className={classes.field} item>
+                        <Grid item className={classes.spacer}>
                           <Field
                             component={TextField}
                             type='email'
@@ -451,6 +423,257 @@ class Event extends React.Component {
                             }}
                           />
                         </Grid>
+                      </Grid>
+                      <Grid container>
+                        <Grid className={classes.field} item>
+                          <Field
+                            component={TextField}
+                            type='text'
+                            name='location'
+                            label={t('event.location')}
+                            margin='normal'
+                            variant='outlined'
+                            placeholder={t('event.location')}
+                            className={classes.longTextField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Grid container>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <Field
+                            component={TextField}
+                            type='date'
+                            name='start_date'
+                            label={t('event.startDate')}
+                            margin='normal'
+                            variant='outlined'
+                            className={classes.dateField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <Field
+                            component={TextField}
+                            type='time'
+                            name='start_time'
+                            label={t('event.startTime')}
+                            margin='normal'
+                            variant='outlined'
+                            className={classes.timeField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <Field
+                            component={TextField}
+                            type='time'
+                            name='end_time'
+                            label={t('event.endTime')}
+                            margin='normal'
+                            variant='outlined'
+                            className={classes.timeField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <Field
+                            component={TextField}
+                            type='date'
+                            name='end_date'
+                            label={t('event.endDate')}
+                            margin='normal'
+                            variant='outlined'
+                            className={classes.dateField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <KeyboardDatePicker
+                            margin='normal'
+                            id='pickers-start-date'
+                            className={classes.dateField}
+                            value={this.state.selectedStartDate}
+                            onChange={this.handleStartDateChange}
+                            label={t('event.startDate')}
+                            KeyboardButtonProps={{
+                              'aria-label': 'change date',
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <KeyboardTimePicker
+                            margin='normal'
+                            id='pickers-start-time'
+                            className={classes.timeField}
+                            value={this.state.selectedStartTime}
+                            onChange={this.handleStartTimeChange}
+                            label={t('event.startTime')}
+                            KeyboardButtonProps={{
+                              'aria-label': 'change time',
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <KeyboardTimePicker
+                            margin='normal'
+                            id='pickers-end-time'
+                            className={classes.timeField}
+                            value={this.state.selectedEndDate}
+                            onChange={this.handleEndDateChange}
+                            label={t('event.endTime')}
+                            KeyboardButtonProps={{
+                              'aria-label': 'change time',
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.dateFieldsSpacer} item>
+                          <KeyboardDatePicker
+                            margin='normal'
+                            id='pickers-end-date'
+                            className={classes.dateField}
+                            value={this.state.selectedEndDate}
+                            onChange={this.handleEndDateChange}
+                            label={t('event.endDate')}
+                            KeyboardButtonProps={{
+                              'aria-label': 'change time',
+                            }}
+                          />
+                        </Grid>
+                      </MuiPickersUtilsProvider>
+                    </Grid>
+                    <Grid container>
+                      <Grid item>
+                        <Grid className={classes.spacer} item>
+                          <InputLabel>{t('event.recurrence')}</InputLabel>
+                          <Select
+                            value={this.state.repeat}
+                            onChange={this.handleRecurrenceChange}
+                            name='repeat'
+                            displayEmpty
+                            className={classes.selectEmpty}
+                          >
+                            <MenuItem value={'NONE'}>
+                              <em>{t('recurrenceOptions.none')}</em>
+                            </MenuItem>
+                            <MenuItem value={'DAILY'}>
+                              {t('recurrenceOptions.daily')}
+                            </MenuItem>
+                            <MenuItem value={'WEEKLY'}>
+                              {t('recurrenceOptions.weekly')}
+                            </MenuItem>
+                            <MenuItem value={'BI-WEEKLY'}>
+                              {t('recurrenceOptions.biWeekly')}
+                            </MenuItem>
+                            <MenuItem value={'MONTHLY'}>
+                              {t('recurrenceOptions.monthly')}
+                            </MenuItem>
+                          </Select>
+                        </Grid>
+                        <Grid
+                          className={classes.spacer}
+                          hidden={this.state.hideRecurrenceOptions}
+                          item
+                        >
+                          <Field
+                            component={TextField}
+                            type='number'
+                            name='num_occurrences'
+                            className={clsx(
+                              classes.margin,
+                              classes.occurrenceTextField
+                            )}
+                            label={t('event.endAfter')}
+                            defaultValue={1}
+                            margin='normal'
+                            variant='outlined'
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            InputProps={{
+                              inputProps: { min: 1, max: 10 },
+                              endAdornment: (
+                                <InputAdornment position='start'>
+                                  {t('event.occurrences')}
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Grid>
+                        <Grid container>
+                          <Grid
+                            className={classes.spacer}
+                            item
+                            hidden={this.state.hideMonthlyOptions}
+                          >
+                            <Field
+                              component={TextField}
+                              type='number'
+                              name='week_of_month'
+                              className={clsx(
+                                classes.margin,
+                                classes.weekOfMonthTextField
+                              )}
+                              label={t('event.weekOfMonth')}
+                              defaultValue={1}
+                              margin='normal'
+                              variant='outlined'
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                inputProps: { min: 1, max: 4 },
+                              }}
+                            />
+                          </Grid>
+                          <Grid
+                            className={classes.spacer}
+                            item
+                            hidden={this.state.hideMonthlyOptions}
+                          >
+                            <Field
+                              select
+                              component={TextField}
+                              name='day_of_week'
+                              label={t('event.dayOfWeek')}
+                              className={classes.dayOfWeekTextField}
+                              defaultValue={'1'}
+                              SelectProps={{
+                                native: true,
+                                MenuProps: {
+                                  className: classes.menu,
+                                },
+                              }}
+                              margin='normal'
+                              variant='outlined'
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            >
+                              {dayNames.map(option => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </Field>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item>
                         <Grid className={classes.field} item>
                           <FormLabel component='legend'>
                             {t('event.categories')}
@@ -585,255 +808,24 @@ class Event extends React.Component {
                           </FormControl>
                         </Grid>
                       </Grid>
-
-                      <Grid className={classes.spacer} item>
-                        <Grid
-                          container
-                          direction='row'
-                          justify='flex-start'
-                          alignItems='center'
-                        >
-                          <MuiPickersUtilsProvider utils={MomentUtils}>
-                            <Grid className={classes.dateFieldsSpacer} item>
-                              <KeyboardDatePicker
-                                margin='normal'
-                                id='pickers-start-date'
-                                className={classes.dateField}
-                                value={this.state.selectedStartDate}
-                                onChange={this.handleStartDateChange}
-                                label={t('event.startDate')}
-                                KeyboardButtonProps={{
-                                  'aria-label': 'change date',
-                                }}
-                              />
-                            </Grid>
-                            <Grid className={classes.dateFieldsSpacer} item>
-                              <KeyboardTimePicker
-                                margin='normal'
-                                id='pickers-start-time'
-                                className={classes.timeField}
-                                value={this.state.selectedStartTime}
-                                onChange={this.handleStartTimeChange}
-                                label={t('event.startTime')}
-                                KeyboardButtonProps={{
-                                  'aria-label': 'change time',
-                                }}
-                              />
-                            </Grid>
-                            <Grid className={classes.dateFieldsSpacer} item>
-                              <KeyboardTimePicker
-                                margin='normal'
-                                id='pickers-end-time'
-                                className={classes.timeField}
-                                value={this.state.selectedEndDate}
-                                onChange={this.handleEndDateChange}
-                                label={t('event.endTime')}
-                                KeyboardButtonProps={{
-                                  'aria-label': 'change time',
-                                }}
-                              />
-                            </Grid>
-                            <Grid className={classes.dateFieldsSpacer} item>
-                              <KeyboardDatePicker
-                                margin='normal'
-                                id='pickers-end-date'
-                                className={classes.dateField}
-                                value={this.state.selectedEndDate}
-                                onChange={this.handleEndDateChange}
-                                label={t('event.endDate')}
-                                KeyboardButtonProps={{
-                                  'aria-label': 'change time',
-                                }}
-                              />
-                            </Grid>
-                          </MuiPickersUtilsProvider>
-                        </Grid>
-
-                        <Grid
-                          container
-                          direction='row'
-                          justify='flex-start'
-                          alignItems='center'
-                        >
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <Field
-                              component={TextField}
-                              type='date'
-                              name='start_date'
-                              label={t('event.startDate')}
-                              margin='normal'
-                              variant='outlined'
-                              className={classes.dateField}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            />
-                          </Grid>
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <Field
-                              component={TextField}
-                              type='time'
-                              name='start_time'
-                              label={t('event.startTime')}
-                              margin='normal'
-                              variant='outlined'
-                              className={classes.timeField}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            />
-                          </Grid>
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <Field
-                              component={TextField}
-                              type='time'
-                              name='end_time'
-                              label={t('event.endTime')}
-                              margin='normal'
-                              variant='outlined'
-                              className={classes.timeField}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            />
-                          </Grid>
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <Field
-                              component={TextField}
-                              type='date'
-                              name='end_date'
-                              label={t('event.endDate')}
-                              margin='normal'
-                              variant='outlined'
-                              className={classes.dateField}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            />
-                          </Grid>
-                        </Grid>
-
-                        <Grid
-                          container
-                          direction='row'
-                          justify='flex-start'
-                          alignItems='center'
-                        >
-                          <Grid className={classes.spacer} item>
-                            <InputLabel>{t('event.recurrence')}</InputLabel>
-                            <Select
-                              value={this.state.repeat}
-                              onChange={this.handleRecurrenceChange}
-                              name='repeat'
-                              displayEmpty
-                              className={classes.selectEmpty}
-                            >
-                              <MenuItem value={'NONE'}>
-                                <em>{t('recurrenceOptions.none')}</em>
-                              </MenuItem>
-                              <MenuItem value={'DAILY'}>
-                                {t('recurrenceOptions.daily')}
-                              </MenuItem>
-                              <MenuItem value={'WEEKLY'}>
-                                {t('recurrenceOptions.weekly')}
-                              </MenuItem>
-                              <MenuItem value={'BI-WEEKLY'}>
-                                {t('recurrenceOptions.biWeekly')}
-                              </MenuItem>
-                              <MenuItem value={'MONTHLY'}>
-                                {t('recurrenceOptions.monthly')}
-                              </MenuItem>
-                            </Select>
-                          </Grid>
-                          <Grid
-                            className={classes.spacer}
-                            hidden={this.state.hideRecurrenceOptions}
-                            item
-                          >
-                            <Field
-                              component={TextField}
-                              type='number'
-                              name='num_occurrences'
-                              className={clsx(
-                                classes.margin,
-                                classes.occurrenceTextField
-                              )}
-                              label={t('event.endAfter')}
-                              defaultValue={1}
-                              margin='normal'
-                              variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              InputProps={{
-                                inputProps: { min: 1, max: 10 },
-                                endAdornment: (
-                                  <InputAdornment position='start'>
-                                    {t('event.occurrences')}
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </Grid>
-                        </Grid>
-                        <Grid container>
-                          <Grid
-                            className={classes.spacer}
-                            item
-                            hidden={this.state.hideMonthlyOptions}
-                          >
-                            <Field
-                              select
-                              component={TextField}
-                              name='day_of_week'
-                              label={t('event.dayOfWeek')}
-                              className={classes.dayOfWeekTextField}
-                              defaultValue={'1'}
-                              SelectProps={{
-                                native: true,
-                                MenuProps: {
-                                  className: classes.menu,
-                                },
-                              }}
-                              margin='normal'
-                              variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            >
-                              {dayNames.map(option => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </Field>
-                          </Grid>
-                          <Grid
-                            className={classes.spacer}
-                            item
-                            hidden={this.state.hideMonthlyOptions}
-                          >
-                            <Field
-                              component={TextField}
-                              type='number'
-                              name='week_of_month'
-                              className={clsx(
-                                classes.margin,
-                                classes.weekOfMonthTextField
-                              )}
-                              label={t('event.weekOfMonth')}
-                              defaultValue={1}
-                              margin='normal'
-                              variant='outlined'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              InputProps={{
-                                inputProps: { min: 1, max: 4 },
-                              }}
-                            />
-                          </Grid>
-                        </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid className={classes.field} item>
+                        <Field
+                          multiline
+                          rows='4'
+                          component={TextField}
+                          type='text'
+                          name='description'
+                          label={t('event.description')}
+                          margin='normal'
+                          variant='outlined'
+                          placeholder={t('event.description')}
+                          className={classes.longTextField}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
                       </Grid>
                     </Grid>
                     <Button
