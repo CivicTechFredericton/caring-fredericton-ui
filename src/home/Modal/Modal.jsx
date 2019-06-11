@@ -92,7 +92,7 @@ class Modal extends React.Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <Grid item className={classes.flex}>
-                {'Catageory name here ' + title}
+                {title}
               </Grid>
               <IconButton
                 color='inherit'
