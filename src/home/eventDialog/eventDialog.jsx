@@ -16,6 +16,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { isValidUser } from '../../api/cognito';
+import moment from 'moment';
 
 const styles = createStyles(theme => ({
   root: {
@@ -67,15 +68,25 @@ class EventDialog extends React.Component {
     let name = '';
 
     if (eventObj) {
+      let eventStartDate = moment(
+        eventObj.start_date + ' ' + eventObj.start_time
+      )
+        .utc('YYYY-MM-DD HH:mm:ss')
+        .local();
+
+      let eventEndDate = moment(eventObj.end_date + ' ' + eventObj.end_time)
+        .utc('YYYY-MM-DD HH:mm:ss')
+        .local();
+
       name = eventObj.name;
       orgName = eventObj.owner_name;
       location = eventObj.location;
       contactEmail = eventObj.contact_email;
       description = eventObj.description;
-      startDate = eventObj.start_date;
-      startTime = eventObj.start_time;
-      endDate = eventObj.end_date;
-      endTime = eventObj.end_time;
+      startDate = eventStartDate.format('YYYY-MM-DD');
+      startTime = eventStartDate.format('hh:mm A');
+      endDate = eventEndDate.format('YYYY-MM-DD');
+      endTime = eventEndDate.format('hh:mm A');
     }
 
     return (
@@ -121,13 +132,16 @@ class EventDialog extends React.Component {
                     {t('eventDetails.lblLocation') + location}
                   </Typography>
                   <Typography>
-                    {t('eventDetails.lblStartDate') +
-                      startDate +
-                      ' ' +
-                      startTime}
+                    {t('eventDetails.lblStartDate') + startDate}
                   </Typography>
                   <Typography>
-                    {t('eventDetails.lblEndDate') + endDate + ' ' + endTime}
+                    {t('eventDetails.lblStartTime') + startTime}
+                  </Typography>
+                  <Typography>
+                    {t('eventDetails.lblEndTime') + endTime}
+                  </Typography>
+                  <Typography>
+                    {t('eventDetails.lblEndDate') + endDate}
                   </Typography>
                   <Typography>
                     {t('eventDetails.lblDescription') + description}
