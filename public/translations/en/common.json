@@ -75,6 +75,7 @@
     "name": "Name",
     "description": "Description",
     "contactEmail": "Contact Email",
+    "location": "Location",
     "startDate": "Start Date",
     "endDate": "End Date",
     "startTime": "Start Time",
@@ -84,5 +85,14 @@
     "occurrences": "occurrences",
     "dayOfWeek": "Day",
     "weekOfMonth": "Week"
+  },
+  "eventDetails": {
+    "lblOrganization": "Organization: ",
+    "lblLocation": "Location: ",
+    "lblStartDate": "Start Date: ",
+    "lblEndDate": "End Date: ",
+    "lblDescription": "Description: ",
+    "lblContact": "Contact: ",
+    "btnCancelEvent": "Cancel Event"
   }
 }

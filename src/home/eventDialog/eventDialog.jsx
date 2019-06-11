@@ -1,10 +1,6 @@
 import React from 'react';
-
-//import { Formik, Form, Field } from 'formik';
-
-//import { TextField } from 'formik-material-ui';
-
 import PropTypes from 'prop-types';
+
 import {
   IconButton,
   AppBar,
@@ -19,30 +15,19 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-
-//import { confirmCode } from '../../api/cognito';
+import { isValidUser } from '../../api/cognito';
 
 const styles = createStyles(theme => ({
   root: {
     paddingTop: 25,
   },
-  field: {
-    paddingBottom: 5,
-  },
-  textField: {
-    width: 200,
-  },
   spacer: {
     paddingRight: 20,
   },
   button: {
-    marginLeft: '40%',
     marginTop: 30,
     color: 'white',
     fontSize: '14px',
-  },
-  title: {
-    color: theme.palette.primary.dark,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -60,17 +45,19 @@ const styles = createStyles(theme => ({
 class EventDialog extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       open: false,
       fullWidth: true,
-      maxWidth: 'md',
+      maxWidth: 'sm',
     };
   }
 
   render() {
-    //   const { t, classes, eventObj } = this.props;
-    const { classes, eventObj } = this.props;
+    const { classes, t, eventObj } = this.props;
 
+    let orgName = '';
+    let location = '';
     let contactEmail = '';
     let description = '';
     let startDate = '';
@@ -80,13 +67,15 @@ class EventDialog extends React.Component {
     let name = '';
 
     if (eventObj) {
+      name = eventObj.name;
+      orgName = eventObj.owner_name;
+      location = eventObj.location;
       contactEmail = eventObj.contact_email;
       description = eventObj.description;
       startDate = eventObj.start_date;
       startTime = eventObj.start_time;
       endDate = eventObj.end_date;
       endTime = eventObj.end_time;
-      name = eventObj.name;
     }
 
     return (
@@ -100,10 +89,7 @@ class EventDialog extends React.Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <Grid item className={classes.flex}>
-                {//eventObj
-                'Event: ' + name
-                // t('authorize.lblConfirmCode')
-                }
+                {name}
               </Grid>
               <IconButton
                 color='inherit'
@@ -128,28 +114,41 @@ class EventDialog extends React.Component {
                 alignItems='center'
               >
                 <Grid className={classes.spacer} item>
-                  <Typography>{'Event: ' + name}</Typography>
                   <Typography>
-                    {'Start Date: ' + startDate + ' ' + startTime}
+                    {t('eventDetails.lblOrganization') + orgName}
                   </Typography>
                   <Typography>
-                    {'End Date: ' + endDate + ' ' + endTime}
+                    {t('eventDetails.lblLocation') + location}
                   </Typography>
-                  <Typography>{'Description: ' + description}</Typography>
-                  <Typography>{'Contact: ' + contactEmail}</Typography>
+                  <Typography>
+                    {t('eventDetails.lblStartDate') +
+                      startDate +
+                      ' ' +
+                      startTime}
+                  </Typography>
+                  <Typography>
+                    {t('eventDetails.lblEndDate') + endDate + ' ' + endTime}
+                  </Typography>
+                  <Typography>
+                    {t('eventDetails.lblDescription') + description}
+                  </Typography>
+                  <Typography>
+                    {t('eventDetails.lblContact') + contactEmail}
+                  </Typography>
                 </Grid>
               </Grid>
-              <Button
-                className={this.props.classes.button}
-                variant='contained'
-                color='secondary'
-                type='submit'
-              >
-                {
-                  'Cancel'
-                  // t('authorize.btnConfirmCode')
-                }
-              </Button>
+              {isValidUser() && (
+                <Grid item>
+                  <Button
+                    className={this.props.classes.button}
+                    variant='contained'
+                    color='secondary'
+                    type='submit'
+                  >
+                    {t('eventDetails.btnCancelEvent')}
+                  </Button>
+                </Grid>
+              )}
             </Grid>
           </DialogContent>
         </Dialog>

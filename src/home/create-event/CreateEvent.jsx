@@ -141,7 +141,7 @@ class Event extends React.Component {
   default_state = {
     open: false,
     fullWidth: true,
-    maxWidth: false,
+    maxWidth: 'md',
     repeat: REPEAT_OPTION_NONE,
     hideRecurrenceOptions: true,
     hideMonthlyOptions: true,
@@ -149,6 +149,7 @@ class Event extends React.Component {
     selectedStartDate: new Date(),
     selectedStartTime: new Date(),
     selectedEndDate: new Date(),
+    selectedEndTime: new Date(),
 
     // Category options
     categories: new Set(),
@@ -205,11 +206,6 @@ class Event extends React.Component {
     });
   };
 
-  /*handleDayOfWeekChange = name => event => {
-    console.log(event.target.value);
-    this.setState({[name]: event.target.value});
-  };*/
-
   /**
    * Date Picker Event Handlers
    */
@@ -223,6 +219,10 @@ class Event extends React.Component {
 
   handleEndDateChange = date => {
     this.setState({ selectedEndDate: date });
+  };
+
+  handleEndTimeChange = date => {
+    this.setState({ selectedEndTime: date });
   };
 
   transformEvent = event => {
@@ -241,6 +241,7 @@ class Event extends React.Component {
       name: event.name,
       description: event.description,
       contact_email: event.contactEmail,
+      location: event.location,
       categoriesList,
       start_date: startDateTime.format(API_DATE_FORMAT),
       end_date: endDateTime.format(API_DATE_FORMAT),
@@ -318,6 +319,7 @@ class Event extends React.Component {
                   description: '',
                   categories: 'social',
                   contactEmail: '',
+                  location: '',
                   start_date: '',
                   start_time: '',
                   end_time: '',
@@ -338,6 +340,10 @@ class Event extends React.Component {
                     errors.contactEmail = t('common.required');
                   } else if (!SimpleEmailRegex.test(values.contactEmail)) {
                     errors.contactEmail = t('error.invalidEmail');
+                  }
+
+                  if (!values.location) {
+                    errors.location = t('common.required');
                   }
 
                   // TODO: Check start and end values are valid
@@ -409,6 +415,21 @@ class Event extends React.Component {
                             margin='normal'
                             variant='outlined'
                             placeholder={t('event.description')}
+                            className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Grid>
+                        <Grid className={classes.field} item>
+                          <Field
+                            component={TextField}
+                            type='email'
+                            name='location'
+                            label={t('event.location')}
+                            margin='normal'
+                            variant='outlined'
+                            placeholder={t('event.location')}
                             className={classes.textField}
                             InputLabelProps={{
                               shrink: true,

@@ -3,7 +3,6 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles } from '@material-ui/core';
-//import Button from '@material-ui/core/Button';
 import Filter from './filter';
 
 import Fab from '@material-ui/core/Fab';
@@ -18,7 +17,6 @@ import { isValidUser } from '../api/cognito';
 import { listEventsForGuestUser } from '../api/endpoints';
 import { getUserDetails } from '../utils/localStorage';
 import EventDialog from './eventDialog';
-// import { throwStatement } from '@babel/types';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
