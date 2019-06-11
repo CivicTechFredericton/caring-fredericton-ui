@@ -17,6 +17,7 @@ import RegisterOrganization from './register-organization/RegisterOrganization';
 import { isValidUser } from '../api/cognito';
 import { listEventsForGuestUser } from '../api/endpoints';
 import { getUserDetails } from '../utils/localStorage';
+// import { throwStatement } from '@babel/types';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
@@ -62,6 +63,9 @@ class Home extends React.Component {
       showEvent: false,
       showRegister: false,
       userDetails: {},
+      filters: {
+        categoriesFilterSet: new Set(),
+      },
     };
   }
 
@@ -85,6 +89,18 @@ class Home extends React.Component {
       this.setState({ userDetails: user });
     }
   }
+
+  updateFilters = filterObj => {
+    const filters = Object.assign({}, this.state.filters, filterObj);
+    this.setState({ filters });
+    if (filters.categoriesFilterSet) {
+      this.updateTimes(
+        this.state.currentDate,
+        this.state.currentView,
+        filters.categoriesFilterSet
+      );
+    }
+  };
 
   organizationDetailsGroup = () => {
     const { t, classes } = this.props;
@@ -192,7 +208,7 @@ class Home extends React.Component {
     this.updateTimes(newDate, view);
   };
 
-  updateTimes = (date, view) => {
+  updateTimes = (date, view, categories) => {
     let start, end;
 
     if (view === 'day') {
@@ -210,12 +226,18 @@ class Home extends React.Component {
         .add(7, 'days');
     }
 
-    this.loadEvents(start.format(API_DATE_FORMAT), end.format(API_DATE_FORMAT));
+    this.loadEvents(
+      start.format(API_DATE_FORMAT),
+      end.format(API_DATE_FORMAT),
+      categories
+    );
   };
 
-  loadEvents = (start, end) => {
-    const categories = '';
-    listEventsForGuestUser(start, end, categories).then(results => {
+  loadEvents = (start, end, categories) => {
+    //const categories = '';
+    const filterCategories =
+      categories || this.state.filters.categoriesFilterSet;
+    listEventsForGuestUser(start, end, filterCategories).then(results => {
       if (results.length > 0) {
         let input = [];
         results.map(result => {
@@ -269,7 +291,7 @@ class Home extends React.Component {
           <img className={classes.image} src={logo} />
         </Grid>
         <Grid className={classes.filter} item>
-          <Filter />
+          <Filter updateFilters={this.updateFilters} />
         </Grid>
         <Grid item>
           <BigCalendar
