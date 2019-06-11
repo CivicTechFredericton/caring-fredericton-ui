@@ -17,6 +17,7 @@ import RegisterOrganization from './register-organization/RegisterOrganization';
 import { isValidUser } from '../api/cognito';
 import { listEventsForGuestUser } from '../api/endpoints';
 import { getUserDetails } from '../utils/localStorage';
+import EventDialog from './eventDialog';
 // import { throwStatement } from '@babel/types';
 
 const localizer = BigCalendar.momentLocalizer(moment);
@@ -66,6 +67,8 @@ class Home extends React.Component {
       filters: {
         categoriesFilterSet: new Set(),
       },
+      showDialog: false,
+      dialogEvent: null,
     };
   }
 
@@ -233,10 +236,20 @@ class Home extends React.Component {
     );
   };
 
+  openEventDialog = (event, e) => {
+    console.log('select ', event, e);
+    this.setState({ showDialog: true, dialogEvent: event });
+  };
+
+  closeEventDialog = () => {
+    this.setState({ showDialog: false, dialogEvent: null });
+  };
+
   loadEvents = (start, end, categories) => {
     //const categories = '';
-    const filterCategories =
-      categories || this.state.filters.categoriesFilterSet;
+    const filterCategories = '';
+    console.log(categories);
+    //     categories || this.state.filters.categoriesFilterSet;
     listEventsForGuestUser(start, end, filterCategories).then(results => {
       if (results.length > 0) {
         let input = [];
@@ -277,7 +290,7 @@ class Home extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, t } = this.props;
 
     return (
       <Grid
@@ -306,9 +319,16 @@ class Home extends React.Component {
             onNavigate={this.onNavigate}
             startAccessor='start'
             endAccessor='end'
+            onSelectEvent={this.openEventDialog}
           />
         </Grid>
         {isValidUser() && <Grid item>{this.organizationDetailsGroup()}</Grid>}
+        <EventDialog
+          t={t}
+          show={this.state.showDialog}
+          handleClose={this.closeEventDialog}
+          eventObj={this.state.dialogEvent}
+        />
       </Grid>
     );
   }
