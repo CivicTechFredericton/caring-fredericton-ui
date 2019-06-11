@@ -502,10 +502,13 @@ class Event extends React.Component {
                     </Grid>
                     <Grid container>
                       <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <Grid className={classes.dateFieldsSpacer} item>
+                        <Grid
+                          className={classes.dateFieldsSpacer}
+                          item
+                          hidden={true}
+                        >
                           <KeyboardDatePicker
                             margin='normal'
-                            id='pickers-start-date'
                             className={classes.dateField}
                             value={this.state.selectedStartDate}
                             onChange={this.handleStartDateChange}
@@ -515,10 +518,13 @@ class Event extends React.Component {
                             }}
                           />
                         </Grid>
-                        <Grid className={classes.dateFieldsSpacer} item>
+                        <Grid
+                          className={classes.dateFieldsSpacer}
+                          item
+                          hidden={true}
+                        >
                           <KeyboardTimePicker
                             margin='normal'
-                            id='pickers-start-time'
                             className={classes.timeField}
                             value={this.state.selectedStartTime}
                             onChange={this.handleStartTimeChange}
@@ -528,10 +534,13 @@ class Event extends React.Component {
                             }}
                           />
                         </Grid>
-                        <Grid className={classes.dateFieldsSpacer} item>
+                        <Grid
+                          className={classes.dateFieldsSpacer}
+                          item
+                          hidden={true}
+                        >
                           <KeyboardTimePicker
                             margin='normal'
-                            id='pickers-end-time'
                             className={classes.timeField}
                             value={this.state.selectedEndDate}
                             onChange={this.handleEndDateChange}
@@ -541,10 +550,13 @@ class Event extends React.Component {
                             }}
                           />
                         </Grid>
-                        <Grid className={classes.dateFieldsSpacer} item>
+                        <Grid
+                          className={classes.dateFieldsSpacer}
+                          item
+                          hidden={true}
+                        >
                           <KeyboardDatePicker
                             margin='normal'
-                            id='pickers-end-date'
                             className={classes.dateField}
                             value={this.state.selectedEndDate}
                             onChange={this.handleEndDateChange}
