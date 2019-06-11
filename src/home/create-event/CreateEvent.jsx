@@ -143,9 +143,11 @@ class Event extends React.Component {
     fullWidth: true,
     maxWidth: false,
     repeat: REPEAT_OPTION_NONE,
-    hideRecurrenceOptions: false,
+    hideRecurrenceOptions: true,
+    hideMonthlyOptions: true,
 
     selectedStartDate: new Date(),
+    selectedStartTime: new Date(),
     selectedEndDate: new Date(),
 
     // Category options
@@ -194,10 +196,12 @@ class Event extends React.Component {
     let recurrenceOption = event.target.value;
     let hideRecurrenceOptions =
       recurrenceOption !== REPEAT_OPTION_NONE ? false : true;
-
+    let hideMonthlyOptions =
+      recurrenceOption === REPEAT_OPTION_MONTHLY ? false : true;
     this.setState({
       repeat: event.target.value,
       hideRecurrenceOptions: hideRecurrenceOptions,
+      hideMonthlyOptions: hideMonthlyOptions,
     });
   };
 
@@ -211,6 +215,10 @@ class Event extends React.Component {
    */
   handleStartDateChange = date => {
     this.setState({ selectedStartDate: date });
+  };
+
+  handleStartTimeChange = date => {
+    this.setState({ selectedStartTime: date });
   };
 
   handleEndDateChange = date => {
@@ -268,7 +276,8 @@ class Event extends React.Component {
       eventObj.recurrence_details = recurrence_details;
     }
 
-    return eventObj;
+    return {};
+    //return eventObj;
   };
 
   render() {
@@ -582,8 +591,8 @@ class Event extends React.Component {
                                 margin='normal'
                                 id='pickers-start-time'
                                 className={classes.timeField}
-                                value={this.state.selectedStartDate}
-                                onChange={this.handleStartDateChange}
+                                value={this.state.selectedStartTime}
+                                onChange={this.handleStartTimeChange}
                                 label={t('event.startTime')}
                                 KeyboardButtonProps={{
                                   'aria-label': 'change time',
@@ -747,7 +756,11 @@ class Event extends React.Component {
                           </Grid>
                         </Grid>
                         <Grid container>
-                          <Grid className={classes.spacer} item>
+                          <Grid
+                            className={classes.spacer}
+                            item
+                            hidden={this.state.hideMonthlyOptions}
+                          >
                             <Field
                               select
                               component={TextField}
@@ -774,7 +787,11 @@ class Event extends React.Component {
                               ))}
                             </Field>
                           </Grid>
-                          <Grid className={classes.spacer} item>
+                          <Grid
+                            className={classes.spacer}
+                            item
+                            hidden={this.state.hideMonthlyOptions}
+                          >
                             <Field
                               component={TextField}
                               type='number'
