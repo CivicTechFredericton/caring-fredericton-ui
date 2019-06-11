@@ -70,7 +70,6 @@ class EventDialog extends React.Component {
   render() {
     //   const { t, classes, eventObj } = this.props;
     const { classes, eventObj } = this.props;
-    console.log(eventObj);
 
     let contactEmail = '';
     let description = '';

@@ -236,8 +236,7 @@ class Home extends React.Component {
     );
   };
 
-  openEventDialog = (event, e) => {
-    console.log('select ', event, e);
+  openEventDialog = event => {
     this.setState({ showDialog: true, dialogEvent: event });
   };
 
@@ -246,10 +245,8 @@ class Home extends React.Component {
   };
 
   loadEvents = (start, end, categories) => {
-    //const categories = '';
-    const filterCategories = '';
-    console.log(categories);
-    //     categories || this.state.filters.categoriesFilterSet;
+    const filterCategories =
+      categories || this.state.filters.categoriesFilterSet;
     listEventsForGuestUser(start, end, filterCategories).then(results => {
       if (results.length > 0) {
         let input = [];
