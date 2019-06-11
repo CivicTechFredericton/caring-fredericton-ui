@@ -245,8 +245,10 @@ class Home extends React.Component {
   };
 
   loadEvents = (start, end, categories) => {
-    const filterCategories =
-      categories || this.state.filters.categoriesFilterSet;
+    console.log(categories);
+    const filterCategories = '';
+    //const filterCategories =
+    //categories || this.state.filters.categoriesFilterSet;
     listEventsForGuestUser(start, end, filterCategories).then(results => {
       if (results.length > 0) {
         let input = [];

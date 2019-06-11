@@ -146,7 +146,7 @@ class EventDialog extends React.Component {
                 type='submit'
               >
                 {
-                  'Delete'
+                  'Cancel'
                   // t('authorize.btnConfirmCode')
                 }
               </Button>
