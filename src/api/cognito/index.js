@@ -5,6 +5,8 @@ import {
 } from 'amazon-cognito-identity-js';
 import dev from '../aws/dev';
 import history from '../../history';
+import { getUserDetails } from '../endpoints';
+import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
 
 const userPool = new CognitoUserPool(dev.COGNITO_POOL_DETAILS);
 
@@ -22,7 +24,15 @@ export const authenticateUser = (Username, Password, callback) => {
 
   cognitoUser.authenticateUser(authDetails, {
     onSuccess: result => {
-      callback(null, result);
+      // Get the user details
+      getUserDetails(result.idToken, result.idToken.payload.sub).then(
+        result => {
+          setUserDetails(result);
+          callback(null, result);
+        }
+      );
+
+      // callback(null, result);
     },
     onFailure: err => {
       callback(err);
@@ -32,6 +42,7 @@ export const authenticateUser = (Username, Password, callback) => {
 
 // Logout api call
 export const signOut = () => {
+  removeUserDetails();
   userPool.getCurrentUser().signOut();
   history.push('/');
 };
@@ -49,9 +60,6 @@ export const getSession = callback => {
 
 // Confirm user registration code
 export async function confirmCode(username, verificationCode, callback) {
-  console.log(username);
-  console.log(verificationCode);
-
   const userData = {
     Username: username,
     Pool: userPool,

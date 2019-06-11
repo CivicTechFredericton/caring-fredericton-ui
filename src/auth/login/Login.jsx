@@ -3,7 +3,12 @@ import { Formik, Form, Field } from 'formik';
 import { Button, withStyles, Grid, Typography } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
-import { authenticateUser, getUserOrganization } from '../../api/cognito';
+import { authenticateUser } from '../../api/cognito';
+
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import logo from '../../ctflogo.jpg';
 import styles from './styles';
@@ -11,14 +16,26 @@ import styles from './styles';
 import CreateUser from '../createUser';
 import ConfirmCode from '../ConfirmCode';
 
+const RegisterButton = withStyles({
+  root: {
+    boxShadow: 'none',
+    textTransform: 'none',
+    fontSize: 16,
+    padding: '6px 12px',
+    lineHeight: 1.5,
+  },
+})(Button);
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       errorMsg: '',
       open: false,
       confirmCode: false,
       userName: '',
+      showPassword: false,
     };
   }
 
@@ -34,6 +51,11 @@ class Login extends React.Component {
       errors.password = t('common.required');
     }
     return errors;
+  };
+
+  handleClickShowPassword = () => {
+    let currFlag = this.state.showPassword;
+    this.setState({ showPassword: !currFlag });
   };
 
   openModel = () => {
@@ -57,7 +79,7 @@ class Login extends React.Component {
   };
 
   submitAuth = (values, setSubmitting) => {
-    const { t, history } = this.props;
+    const { t, history, match } = this.props;
     setSubmitting(true);
 
     authenticateUser(values.username, values.password, response => {
@@ -65,10 +87,12 @@ class Login extends React.Component {
       if (!response) {
         this.setState({ errorMsg: '' });
 
-        if (getUserOrganization()) {
-          history.push('/registration');
+        let orgId = match.params.orgId;
+        if (orgId) {
+          history.push('/validation/' + orgId);
+        } else {
+          history.push('/');
         }
-        history.push('/');
       } else {
         this.setState({ errorMsg: t('error.errorLogin') });
       }
@@ -105,10 +129,6 @@ class Login extends React.Component {
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <Typography className={classes.error}>
-                    {this.state.errorMsg}
-                  </Typography>
-
                   <Field
                     className={classes.textField}
                     type='text'
@@ -126,7 +146,7 @@ class Login extends React.Component {
                   <Field
                     className={classes.textField}
                     autoComplete='current-password'
-                    type='password'
+                    type={this.state.showPassword ? 'text' : 'password'}
                     name='password'
                     label={t('authorize.password')}
                     margin='normal'
@@ -136,10 +156,31 @@ class Login extends React.Component {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            edge='end'
+                            aria-label='Toggle password visibility'
+                            onClick={this.handleClickShowPassword}
+                          >
+                            {this.state.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
 
+                  <Typography className={classes.error}>
+                    {this.state.errorMsg}
+                  </Typography>
+
                   <Button
-                    className={classes.button}
+                    className={classes.loginButton}
                     variant='contained'
                     color='secondary'
                     type='submit'
@@ -147,34 +188,33 @@ class Login extends React.Component {
                   >
                     {t('authorize.login')}
                   </Button>
+
+                  <Grid item>
+                    <CreateUser
+                      t={t}
+                      show={this.state.open}
+                      handleClose={this.closeModel}
+                      toggleConfirm={this.openConfirmModel}
+                      setUsername={this.setUserName}
+                    />
+                    <ConfirmCode
+                      t={t}
+                      show={this.state.confirmCode}
+                      handleClose={this.closeConfirmModel}
+                      userName={this.state.userName}
+                    />
+                    <RegisterButton
+                      className={classes.button}
+                      onClick={this.openModel}
+                    >
+                      {t('authorize.registerUser')}
+                    </RegisterButton>
+                  </Grid>
                 </Grid>
               </Form>
             </Grid>
           )}
         </Formik>
-        <Grid>
-          <Button
-            className={classes.button}
-            variant='contained'
-            color='secondary'
-            onClick={this.openModel}
-          >
-            {t('authorize.register')}
-          </Button>
-        </Grid>
-        <CreateUser
-          t={t}
-          show={this.state.open}
-          handleClose={this.closeModel}
-          toggleConfirm={this.openConfirmModel}
-          setUsername={this.setUserName}
-        />
-        <ConfirmCode
-          t={t}
-          show={this.state.confirmCode}
-          handleClose={this.closeConfirmModel}
-          userName={this.state.userName}
-        />
       </Grid>
     );
   }
@@ -184,6 +224,7 @@ Login.propTypes = {
   classes: PropTypes.any,
   t: PropTypes.any,
   history: PropTypes.any,
+  match: PropTypes.any,
 };
 
 export default withStyles(styles, { withTheme: true })(Login);

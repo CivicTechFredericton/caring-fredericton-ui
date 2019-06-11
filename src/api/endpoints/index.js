@@ -104,7 +104,7 @@ function verificationObj() {
   return obj;
 }
 
-export async function validateOrganization(token, orgId) {
+export async function verifyOrganization(token, orgId) {
   const verificationData = verificationObj();
 
   const headers = new Headers();
@@ -124,7 +124,7 @@ export async function validateOrganization(token, orgId) {
 /**
  * Events endpoints
  */
-export async function createEvent(token, orgId, event) {
+export async function createEvent(token, orgId, eventPayload) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
@@ -132,8 +132,22 @@ export async function createEvent(token, orgId, event) {
 
   const requestData = {
     headers,
-    body: JSON.stringify(event),
+    body: JSON.stringify(eventPayload),
     method: 'POST',
+  };
+
+  return await fetch(url, requestData);
+}
+
+export async function cancelEvent(token, orgId, eventId) {
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
+  const url = base_api_url + '/organizations/' + orgId + '/events/' + eventId;
+
+  const requestData = {
+    headers,
+    method: 'DELETE',
   };
 
   return await fetch(url, requestData);
