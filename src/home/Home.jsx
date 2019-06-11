@@ -16,7 +16,13 @@ import RegisterOrganization from './register-organization/RegisterOrganization';
 import { isValidUser } from '../api/cognito';
 import { listEventsForGuestUser } from '../api/endpoints';
 import { getUserDetails } from '../utils/localStorage';
-import EventDialog from './eventDialog';
+
+{
+  /*uncomment to go back to original */
+}
+//import EventDialog from './eventDialog';  //original
+
+import Modal from './Modal'; //mine
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
@@ -320,7 +326,9 @@ class Home extends React.Component {
           />
         </Grid>
         {isValidUser() && <Grid item>{this.organizationDetailsGroup()}</Grid>}
-        <EventDialog
+
+        {/* replace Modal with EventDialog to go back to original*/}
+        <Modal
           t={t}
           show={this.state.showDialog}
           handleClose={this.closeEventDialog}

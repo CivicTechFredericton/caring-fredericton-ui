@@ -42,7 +42,7 @@ const styles = createStyles(theme => ({
   },
 }));
 
-class EventDialog extends React.Component {
+class Modal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -56,26 +56,29 @@ class EventDialog extends React.Component {
   render() {
     const { classes, t, eventObj } = this.props;
 
-    let orgName = '';
-    let location = '';
-    let contactEmail = '';
-    let description = '';
-    let startDate = '';
-    let startTime = '';
-    let endDate = '';
-    let endTime = '';
-    let name = '';
+    var title = '';
+    var orgName = '';
+    var startDate = '';
+    var eventName = '';
+    var location = '';
+    var startTime = '';
+    var endTime = '';
+    var description = '';
+    var contactEmail = '';
+    var contactPhone = '';
 
     if (eventObj) {
-      name = eventObj.name;
+      title = eventObj.name; //title
+      startDate = eventObj.start_date; //event date / start date
       orgName = eventObj.owner_name;
-      location = eventObj.location;
-      contactEmail = eventObj.contact_email;
-      description = eventObj.description;
-      startDate = eventObj.start_date;
-      startTime = eventObj.start_time;
-      endDate = eventObj.end_date;
-      endTime = eventObj.end_time;
+      eventName = eventObj.name; //event name
+      location = eventObj.location; //event location
+
+      startTime = eventObj.start_time; //event start time 24h format
+      endTime = eventObj.end_time; //event end time 24h format
+      description = eventObj.description; //event description
+      contactEmail = eventObj.contact_email; //event contact's email
+      contactPhone = eventObj.contact_phone; //event contact's / org phone number
     }
 
     return (
@@ -89,7 +92,7 @@ class EventDialog extends React.Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <Grid item className={classes.flex}>
-                {name}
+                {title}
               </Grid>
               <IconButton
                 color='inherit'
@@ -114,26 +117,27 @@ class EventDialog extends React.Component {
                 alignItems='center'
               >
                 <Grid className={classes.spacer} item>
+                  <Typography>{'Event: ' + eventName}</Typography>
+                  <Typography>{'Event Date: ' + startDate}</Typography>
+                  <Typography>{'Host Organization: ' + orgName}</Typography>
+                  <Typography>{'Event Location: ' + location}</Typography>
+                  <Typography>{'Starts At: ' + startTime}</Typography>
+                  <Typography>{'Ends At: ' + endTime}</Typography>
+                  {/* Original start end time fields were to difficult to read
+                   reduced it to an event date at the top and start and end times.
+                   Part of the problem was YYYY-MM-DD format in conjunction with
+                   24h time format*/}
+                  <Typography>{'Description: ' + description}</Typography>
+                  <Typography>{'Contact Email: ' + contactEmail}</Typography>
                   <Typography>
-                    {t('eventDetails.lblOrganization') + orgName}
+                    {/* Added this, not functional, might be a useful feature to have,
+                    email not always the best communication option*/}
+                    {'Host Org Phone: ' + contactPhone}
                   </Typography>
+
                   <Typography>
-                    {t('eventDetails.lblLocation') + location}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblStartDate') +
-                      startDate +
-                      ' ' +
-                      startTime}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblEndDate') + endDate + ' ' + endTime}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblDescription') + description}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblContact') + contactEmail}
+                    {/* This is a place holder for a "possible" new feature*/}
+                    {'Recurrence: ' + 'Yes OR NO ex Yes every First Tuesday'}
                   </Typography>
                 </Grid>
               </Grid>
@@ -157,7 +161,7 @@ class EventDialog extends React.Component {
   }
 }
 
-EventDialog.propTypes = {
+Modal.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
   show: PropTypes.bool,
@@ -165,4 +169,4 @@ EventDialog.propTypes = {
   eventObj: PropTypes.object,
 };
 
-export default withStyles(styles, { withTheme: true })(EventDialog);
+export default withStyles(styles, { withTheme: true })(Modal);
