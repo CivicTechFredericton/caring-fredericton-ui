@@ -46,6 +46,9 @@ class Filter extends React.Component {
       [name]: checked,
       categoriesFilterSet: categories,
     });
+    this.props.updateFilters({
+      categoriesFilterSet: categories,
+    });
   };
 
   render() {
@@ -129,6 +132,7 @@ class Filter extends React.Component {
 Filter.propTypes = {
   classes: PropTypes.object,
   t: PropTypes.func.isRequired,
+  updateFilters: PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(Filter);
