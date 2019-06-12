@@ -1,4 +1,4 @@
-import config from '../aws/dev';
+import config from '../aws/beta';
 
 const base_api_url = config.API_URL;
 
@@ -11,7 +11,6 @@ export async function listEventsForGuestUser(
   categoriesArray
 ) {
   let url = new URL(base_api_url + '/guests/events');
-  //const categories = JSON.stringify(categoriesArray);
   const categories = categoriesArray.join(',');
   url.search = new URLSearchParams({ start_date, end_date, categories });
 
