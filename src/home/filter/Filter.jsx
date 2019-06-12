@@ -17,37 +17,43 @@ class Filter extends React.Component {
 
     this.state = {
       // Category options
-      categoriesFilterSet: new Set(),
-      mealsFilter: true,
-      laundryFilter: true,
-      socialFilter: true,
-      showersFilter: true,
-      educationFilter: true,
-      healthFilter: true,
-      hairCutsFilter: true,
-      taxesFilter: true,
-      faithFilter: true,
+      categoriesFilterSet: [],
+      categories: {
+        meals: false,
+        laundry: false,
+        social: false,
+        showers: false,
+        education: false,
+        health: false,
+        hairCuts: false,
+        taxes: false,
+        faith: false,
+      },
     };
   }
 
   // Handle category check box list events
   handleFilterChange = name => event => {
     let checked = event.target.checked;
-    let value = event.target.value;
-    let categories = this.state.categoriesFilterSet;
+    // let value = event.target.value;
+    let categoriesFilterSet = this.state.categoriesFilterSet;
+    let categories = this.state.categories;
 
-    if (checked) {
-      categories.add(value);
-    } else {
-      categories.delete(value);
-    }
+    categories[name] = checked;
+
+    categoriesFilterSet = Object.keys(categories).filter(result => {
+      if (categories[result]) {
+        return result.toString;
+      }
+    });
 
     this.setState({
-      [name]: checked,
-      categoriesFilterSet: categories,
+      categories,
+      categoriesFilterSet,
     });
+
     this.props.updateFilters({
-      categoriesFilterSet: categories,
+      categoriesFilterSet,
     });
   };
 
@@ -55,49 +61,49 @@ class Filter extends React.Component {
     const { classes, t } = this.props;
     const filterConfig = [
       {
-        id: 'mealsFilter',
+        id: 'meals',
         label: t('filter.meals'),
-        changeValue: this.state.mealsFilter,
+        changeValue: this.state.categories.meals,
       },
       {
-        id: 'laundryFilter',
+        id: 'laundry',
         label: t('filter.laundry'),
-        changeValue: this.state.laundryFilter,
+        changeValue: this.state.categories.laundry,
       },
       {
-        id: 'socialFilter',
+        id: 'social',
         label: t('filter.social'),
-        changeValue: this.state.socialFilter,
+        changeValue: this.state.categories.social,
       },
       {
-        id: 'showersFilter',
+        id: 'showers',
         label: t('filter.showers'),
-        changeValue: this.state.showersFilter,
+        changeValue: this.state.categories.showers,
       },
       {
-        id: 'educationFilter',
+        id: 'education',
         label: t('filter.education'),
-        changeValue: this.state.educationFilter,
+        changeValue: this.state.categories.education,
       },
       {
-        id: 'healthFilter',
+        id: 'health',
         label: t('filter.health'),
-        changeValue: this.state.healthFilter,
+        changeValue: this.state.categories.health,
       },
       {
-        id: 'hairCutsFilter',
+        id: 'hairCuts',
         label: t('filter.hairCuts'),
-        changeValue: this.state.hairCutsFilter,
+        changeValue: this.state.categories.hairCuts,
       },
       {
-        id: 'taxesFilter',
+        id: 'taxes',
         label: t('filter.taxes'),
-        changeValue: this.state.taxesFilter,
+        changeValue: this.state.categories.taxes,
       },
       {
-        id: 'faithFilter',
+        id: 'faith',
         label: t('filter.faith'),
-        changeValue: this.state.faithFilter,
+        changeValue: this.state.categories.faith,
       },
     ];
 
