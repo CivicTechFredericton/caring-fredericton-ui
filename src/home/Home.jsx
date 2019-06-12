@@ -64,17 +64,7 @@ class Home extends React.Component {
       showRegister: false,
       userDetails: {},
       filters: {
-        categoriesFilterSet: [
-          'meals',
-          'laundry',
-          'social',
-          'showers',
-          'education',
-          'health',
-          'hairCuts',
-          'taxes',
-          'faith',
-        ],
+        categoriesFilterSet: [],
       },
       showDialog: false,
       dialogEvent: null,
