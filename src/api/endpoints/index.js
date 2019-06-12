@@ -1,4 +1,4 @@
-import config from '../aws/beta';
+import config from '../aws/dev';
 
 const base_api_url = config.API_URL;
 

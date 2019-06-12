@@ -3,7 +3,7 @@ import {
   CognitoUser,
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
-import config from '../aws/beta';
+import config from '../aws/dev';
 import history from '../../history';
 import { getUserDetails } from '../endpoints';
 import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
