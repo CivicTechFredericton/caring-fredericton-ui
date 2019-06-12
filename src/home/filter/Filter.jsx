@@ -19,15 +19,15 @@ class Filter extends React.Component {
       // Category options
       categoriesFilterSet: [],
       categories: {
-        meals: true,
-        laundry: true,
-        social: true,
-        showers: true,
-        education: true,
-        health: true,
-        hairCuts: true,
-        taxes: true,
-        faith: true,
+        meals: false,
+        laundry: false,
+        social: false,
+        showers: false,
+        education: false,
+        health: false,
+        hairCuts: false,
+        taxes: false,
+        faith: false,
       },
     };
   }
