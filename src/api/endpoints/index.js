@@ -12,7 +12,7 @@ export async function listEventsForGuestUser(
 ) {
   let url = new URL(base_api_url + '/guests/events');
   //const categories = JSON.stringify(categoriesArray);
-  const categories = categoriesArray.join(', ');
+  const categories = categoriesArray.join(',');
   url.search = new URLSearchParams({ start_date, end_date, categories });
 
   const headers = new Headers();
