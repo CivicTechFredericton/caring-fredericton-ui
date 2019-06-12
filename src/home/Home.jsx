@@ -241,10 +241,10 @@ class Home extends React.Component {
 
   closeEventDialog = () => {
     this.setState({ showDialog: false, dialogEvent: null });
+    this.updateTimes(this.state.currentDate, this.state.currentView);
   };
 
   loadEvents = (start, end, categories) => {
-    // const filterCategories = '';
     const filterCategories =
       categories || this.state.filters.categoriesFilterSet;
     listEventsForGuestUser(start, end, filterCategories).then(results => {
