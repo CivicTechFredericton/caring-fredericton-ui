@@ -252,7 +252,7 @@ class Event extends React.Component {
       description: event.description,
       contact_email: event.contactEmail,
       location: event.location,
-      categoriesList,
+      categories: categoriesList,
       start_date: startDateTime.format(API_DATE_FORMAT),
       end_date: endDateTime.format(API_DATE_FORMAT),
       start_time: startDateTime.format(API_TIME_FORMAT),
