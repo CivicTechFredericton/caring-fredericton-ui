@@ -90,6 +90,8 @@
     "lblOrganization": "Organization: ",
     "lblLocation": "Location: ",
     "lblStartDate": "Start Date: ",
+    "lblStartTime": "Start Time: ",
+    "lblEndTime": "End Time: ",
     "lblEndDate": "End Date: ",
     "lblDescription": "Description: ",
     "lblContact": "Contact: ",

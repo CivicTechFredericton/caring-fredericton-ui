@@ -3,12 +3,12 @@ import {
   CognitoUser,
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
-import dev from '../aws/dev';
+import config from '../aws/beta';
 import history from '../../history';
 import { getUserDetails } from '../endpoints';
 import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
 
-const userPool = new CognitoUserPool(dev.COGNITO_POOL_DETAILS);
+const userPool = new CognitoUserPool(config.COGNITO_POOL_DETAILS);
 
 //Login api call
 export const authenticateUser = (Username, Password, callback) => {

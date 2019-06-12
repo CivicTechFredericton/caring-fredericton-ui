@@ -65,6 +65,7 @@ class Modal extends React.Component {
     var endTime = '';
     var description = '';
     var contactEmail = '';
+    var contactPhone = '';
 
     if (eventObj) {
       title = eventObj.name; //title
@@ -77,6 +78,7 @@ class Modal extends React.Component {
       endTime = eventObj.end_time; //event end time 24h format
       description = eventObj.description; //event description
       contactEmail = eventObj.contact_email; //event contact's email
+      contactPhone = eventObj.contact_phone; //event contact's / org phone number
     }
 
     return (
@@ -121,9 +123,22 @@ class Modal extends React.Component {
                   <Typography>{'Event Location: ' + location}</Typography>
                   <Typography>{'Starts At: ' + startTime}</Typography>
                   <Typography>{'Ends At: ' + endTime}</Typography>
-
+                  {/* Original start end time fields were to difficult to read
+                   reduced it to an event date at the top and start and end times.
+                   Part of the problem was YYYY-MM-DD format in conjunction with
+                   24h time format*/}
                   <Typography>{'Description: ' + description}</Typography>
                   <Typography>{'Contact Email: ' + contactEmail}</Typography>
+                  <Typography>
+                    {/* Added this, not functional, might be a useful feature to have,
+                    email not always the best communication option*/}
+                    {'Host Org Phone: ' + contactPhone}
+                  </Typography>
+
+                  <Typography>
+                    {/* This is a place holder for a "possible" new feature*/}
+                    {'Recurrence: ' + 'Yes OR NO ex Yes every First Tuesday'}
+                  </Typography>
                 </Grid>
               </Grid>
               {isValidUser() && (

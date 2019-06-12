@@ -1,6 +1,6 @@
-import dev from '../aws/dev';
+import config from '../aws/beta';
 
-const base_api_url = dev.API_URL;
+const base_api_url = config.API_URL;
 
 /**
  * Guest user endpoints
