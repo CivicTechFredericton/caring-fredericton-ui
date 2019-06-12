@@ -5,10 +5,14 @@ const base_api_url = config.API_URL;
 /**
  * Guest user endpoints
  */
-export async function listEventsForGuestUser(start_date, end_date, categories) {
+export async function listEventsForGuestUser(
+  start_date,
+  end_date,
+  categoriesArray
+) {
   let url = new URL(base_api_url + '/guests/events');
-  const categoriesArray = JSON.stringify(categories);
-  url.search = new URLSearchParams({ start_date, end_date, categoriesArray });
+  const categories = JSON.stringify(categoriesArray);
+  url.search = new URLSearchParams({ start_date, end_date, categories });
 
   const headers = new Headers();
   headers.append('content-type', 'application/json');
