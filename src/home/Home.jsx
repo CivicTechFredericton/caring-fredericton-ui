@@ -69,7 +69,17 @@ class Home extends React.Component {
       showRegister: false,
       userDetails: {},
       filters: {
-        categoriesFilterSet: new Set(),
+        categoriesFilterSet: [
+          'meals',
+          'laundry',
+          'social',
+          'showers',
+          'education',
+          'health',
+          'hairCuts',
+          'taxes',
+          'faith',
+        ],
       },
       showDialog: false,
       dialogEvent: null,
@@ -249,10 +259,9 @@ class Home extends React.Component {
   };
 
   loadEvents = (start, end, categories) => {
-    console.log(categories);
-    const filterCategories = '';
-    //const filterCategories =
-    //categories || this.state.filters.categoriesFilterSet;
+    // const filterCategories = '';
+    const filterCategories =
+      categories || this.state.filters.categoriesFilterSet;
     listEventsForGuestUser(start, end, filterCategories).then(results => {
       if (results.length > 0) {
         let input = [];

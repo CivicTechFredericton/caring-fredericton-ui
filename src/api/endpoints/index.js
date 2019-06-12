@@ -7,7 +7,8 @@ const base_api_url = dev.API_URL;
  */
 export async function listEventsForGuestUser(start_date, end_date, categories) {
   let url = new URL(base_api_url + '/guests/events');
-  url.search = new URLSearchParams({ start_date, end_date, categories });
+  const categoriesArray = JSON.stringify(categories);
+  url.search = new URLSearchParams({ start_date, end_date, categoriesArray });
 
   const headers = new Headers();
   headers.append('content-type', 'application/json');
