@@ -19,8 +19,6 @@ import { getUserDetails } from '../utils/localStorage';
 
 import EventDialog from './eventDialog';
 
-//import Modal from './Modal';
-
 const localizer = BigCalendar.momentLocalizer(moment);
 const DEFAULT_VIEW = 'week';
 const API_DATE_FORMAT = 'YYYY-MM-DD';

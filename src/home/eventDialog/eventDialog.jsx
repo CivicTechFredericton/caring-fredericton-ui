@@ -15,8 +15,10 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import { isValidUser } from '../../api/cognito';
 import moment from 'moment';
+
+import { isValidUser } from '../../api/cognito';
+import { getUserDetails } from '../../utils/localStorage';
 
 const styles = createStyles(theme => ({
   root: {
@@ -57,6 +59,8 @@ class EventDialog extends React.Component {
   render() {
     const { classes, t, eventObj } = this.props;
 
+    let showCancelButton = false;
+
     let orgName = '';
     let location = '';
     let contactEmail = '';
@@ -68,6 +72,14 @@ class EventDialog extends React.Component {
     let name = '';
 
     if (eventObj) {
+      // See if the user belongs to the organzation
+      if (isValidUser()) {
+        let userDetails = getUserDetails();
+        if (eventObj.owner === userDetails.organization_id) {
+          showCancelButton = true;
+        }
+      }
+
       let eventStartDate = moment(
         eventObj.start_date + ' ' + eventObj.start_time
       )
@@ -151,7 +163,7 @@ class EventDialog extends React.Component {
                   </Typography>
                 </Grid>
               </Grid>
-              {isValidUser() && (
+              {showCancelButton && (
                 <Grid item>
                   <Button
                     className={this.props.classes.button}
