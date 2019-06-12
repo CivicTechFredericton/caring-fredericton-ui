@@ -15,10 +15,15 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import moment from 'moment';
 
 import { isValidUser } from '../../api/cognito';
 import { getUserDetails } from '../../utils/localStorage';
+import { cancelEvent } from '../../api/endpoints';
+import { getSession } from '../../api/cognito';
 
 const styles = createStyles(theme => ({
   root: {
@@ -51,16 +56,35 @@ class EventDialog extends React.Component {
 
     this.state = {
       open: false,
+      openCancel: false,
       fullWidth: true,
       maxWidth: 'sm',
     };
   }
+
+  openConfirmModel = () => {
+    this.setState({ openCancel: true });
+  };
+
+  closeConfirmModel = () => {
+    this.setState({ openCancel: false });
+  };
+
+  handleConfirmYes = (orgId, eventId) => {
+    getSession(token => {
+      cancelEvent(token.idToken, orgId, eventId).then(() => {
+        this.props.handleClose();
+      });
+    });
+  };
 
   render() {
     const { classes, t, eventObj } = this.props;
 
     let showCancelButton = false;
 
+    let eventId = '';
+    let orgId = '';
     let orgName = '';
     let location = '';
     let contactEmail = '';
@@ -73,9 +97,10 @@ class EventDialog extends React.Component {
 
     if (eventObj) {
       // See if the user belongs to the organzation
+      orgId = eventObj.owner;
       if (isValidUser()) {
         let userDetails = getUserDetails();
-        if (eventObj.owner === userDetails.organization_id) {
+        if (orgId === userDetails.organization_id) {
           showCancelButton = true;
         }
       }
@@ -90,6 +115,7 @@ class EventDialog extends React.Component {
         .utc('YYYY-MM-DD HH:mm:ss')
         .local();
 
+      eventId = eventObj.id;
       name = eventObj.name;
       orgName = eventObj.owner_name;
       location = eventObj.location;
@@ -170,9 +196,43 @@ class EventDialog extends React.Component {
                     variant='contained'
                     color='secondary'
                     type='submit'
+                    onClick={this.openConfirmModel}
                   >
                     {t('eventDetails.btnCancelEvent')}
                   </Button>
+                  <Dialog
+                    open={this.state.openCancel}
+                    onClose={this.closeConfirmModel}
+                    aria-labelledby='form-dialog-title'
+                  >
+                    <DialogTitle>
+                      {t('eventDetails.lblConfirmCancel')}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        {t('eventDetails.lblCancelMessage')}
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        color='primary'
+                        onClick={this.handleConfirmYes.bind(
+                          this,
+                          orgId,
+                          eventId
+                        )}
+                      >
+                        {t('eventDetails.btnYes')}
+                      </Button>
+                      <Button
+                        onClick={this.props.handleClose}
+                        color='primary'
+                        autoFocus
+                      >
+                        {t('eventDetails.btnNo')}
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Grid>
               )}
             </Grid>

@@ -95,6 +95,10 @@
     "lblEndDate": "End Date: ",
     "lblDescription": "Description: ",
     "lblContact": "Contact: ",
-    "btnCancelEvent": "Cancel Event"
+    "btnCancelEvent": "Cancel Event",
+    "lblConfirmCancel": "Confirm Cancel",
+    "lblCancelMessage": "Are you sure you want to cancel the event?",
+    "btnYes": "Yes",
+    "btnNo": "No"
   }
 }
