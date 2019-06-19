@@ -1,75 +1,59 @@
 import React, { Component } from 'react';
 import './index.scss';
-import Registration from '../registration';
-import Header from '../components/header';
+import VerifyOrganization from '../verification';
 import Login from '../auth/login';
-import ChangePassword from '../auth/ChangePassword';
-import ForgotPassword from '../auth/ForgotPassword';
-import ResetPassword from '../auth/ResetPassword';
-import { Route, Switch, Redirect } from 'react-router-dom';
 import Home from '../home';
+import Header from '../components/header';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { isValidUser } from '../api/cognito';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      register: false,
+    };
+  }
+
+  openRegister = () => {
+    this.setState({ register: true });
+  };
+
+  closeRegister = () => {
+    this.setState({ register: false });
+  };
+
   render() {
     return (
       <div className='App'>
-        <Header />
+        <Header openRegister={this.openRegister} />
 
         <Switch>
           <Route
-            path='/login'
+            path='/login/:orgId?'
             render={props =>
               !isValidUser() ? <Login {...props} /> : <Redirect to='/' />
             }
           />
           <Route
-            path='/changePassword'
+            path='/validation/:orgId'
             render={props =>
               isValidUser() ? (
-                <ChangePassword {...props} />
+                <VerifyOrganization {...props} />
               ) : (
-                <Redirect to='/' />
+                <Redirect to={`/login/${props.match.params.orgId}`} />
               )
             }
           />
           <Route
-            path='/forgotPassword'
-            render={props =>
-              isValidUser() ? (
-                <ForgotPassword {...props} />
-              ) : (
-                <Redirect to='/' />
-              )
-            }
+            path='/'
+            render={() => (
+              <Home
+                closeRegister={this.closeRegister}
+                registerState={this.state.register}
+              />
+            )}
           />
-          <Route
-            path='/resetPassword'
-            render={props =>
-              isValidUser() ? <ResetPassword {...props} /> : <Redirect to='/' />
-            }
-          />
-          <Route
-            path='/registration'
-            render={props =>
-              isValidUser() ? (
-                <Registration {...props} isValidationForm={false} />
-              ) : (
-                <Redirect to='/' />
-              )
-            }
-          />
-          <Route
-            path='/validation'
-            render={props =>
-              isValidUser() ? (
-                <Registration {...props} isValidationForm={true} />
-              ) : (
-                <Redirect to='/' />
-              )
-            }
-          />
-          <Route path='/' component={Home} />
         </Switch>
       </div>
     );

@@ -16,12 +16,10 @@ import {
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
 import { confirmCode } from '../../api/cognito';
-//import { getSession } from '../../api/cognito';
 
 const styles = createStyles(theme => ({
   root: {
@@ -46,8 +44,8 @@ const styles = createStyles(theme => ({
     color: theme.palette.primary.dark,
   },
   selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
     width: 100,
   },
   appBar: {
@@ -81,7 +79,9 @@ class ConfirmCode extends React.Component {
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <span className={classes.flex}>Confirm Code</span>
+              <Grid item className={classes.flex}>
+                {t('authorize.lblConfirmCode')}
+              </Grid>
               <IconButton
                 color='inherit'
                 onClick={this.props.handleClose}
@@ -100,19 +100,19 @@ class ConfirmCode extends React.Component {
             >
               <Formik
                 initialValues={{
-                  code: null,
+                  code: '',
                 }}
                 validate={values => {
                   let errors = {};
 
                   if (!values.code) {
-                    errors.first_name = t('common.required');
+                    errors.code = t('common.required');
                   }
 
                   return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                  confirmCode(this.props.userName, values).then(() => {
+                  confirmCode(this.props.userName, values.code).then(() => {
                     setSubmitting(false);
 
                     this.props.handleClose();
@@ -133,11 +133,14 @@ class ConfirmCode extends React.Component {
                             component={TextField}
                             type='text'
                             name='code'
-                            label={t('authorize.code')}
+                            label={t('authorize.confirmCode')}
                             margin='normal'
                             variant='outlined'
-                            placeholder={t('authorize.code')}
+                            placeholder={t('authorize.confirmCode')}
                             className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
                           />
                         </Grid>
                       </Grid>
@@ -149,7 +152,7 @@ class ConfirmCode extends React.Component {
                       type='submit'
                       disabled={isSubmitting}
                     >
-                      Confirm
+                      {t('authorize.btnConfirmCode')}
                     </Button>
                   </Form>
                 )}

@@ -3,23 +3,39 @@ import { Formik, Form, Field } from 'formik';
 import { Button, withStyles, Grid, Typography } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
-import { authenticateUser, getUserOrganization } from '../../api/cognito';
-import { SimpleEmailRegex } from 'Utils/regex';
+import { authenticateUser } from '../../api/cognito';
+
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import logo from '../../ctflogo.jpg';
 import styles from './styles';
 
 import CreateUser from '../createUser';
-import ConfirmCode from '../comfirmCode';
+import ConfirmCode from '../ConfirmCode';
+
+const RegisterButton = withStyles({
+  root: {
+    boxShadow: 'none',
+    textTransform: 'none',
+    fontSize: 16,
+    padding: '6px 12px',
+    lineHeight: 1.5,
+  },
+})(Button);
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       errorMsg: '',
       open: false,
       confirmCode: false,
       userName: '',
+      showPassword: false,
     };
   }
 
@@ -27,16 +43,19 @@ class Login extends React.Component {
     const { t } = this.props;
     let errors = {};
 
-    if (!values.email) {
-      errors.email = t('common.required');
-    } else if (!SimpleEmailRegex.test(values.email)) {
-      errors.email = errors.email = t('error.invalidEmail');
+    if (!values.username) {
+      errors.username = t('common.required');
     }
 
     if (!values.password) {
       errors.password = t('common.required');
     }
     return errors;
+  };
+
+  handleClickShowPassword = () => {
+    let currFlag = this.state.showPassword;
+    this.setState({ showPassword: !currFlag });
   };
 
   openModel = () => {
@@ -60,18 +79,20 @@ class Login extends React.Component {
   };
 
   submitAuth = (values, setSubmitting) => {
-    const { t, history } = this.props;
+    const { t, history, match } = this.props;
     setSubmitting(true);
 
-    authenticateUser(values.email, values.password, response => {
+    authenticateUser(values.username, values.password, response => {
       setSubmitting(false);
       if (!response) {
         this.setState({ errorMsg: '' });
 
-        if (getUserOrganization()) {
-          history.push('/registration');
+        let orgId = match.params.orgId;
+        if (orgId) {
+          history.push('/validation/' + orgId);
+        } else {
+          history.push('/');
         }
-        history.push('/');
       } else {
         this.setState({ errorMsg: t('error.errorLogin') });
       }
@@ -90,7 +111,7 @@ class Login extends React.Component {
         alignItems='center'
       >
         <Formik
-          initialValues={{ email: '', password: '' }}
+          initialValues={{ username: '', password: '' }}
           validate={values => this.validation(values)}
           onSubmit={(values, { setSubmitting }) =>
             this.submitAuth(values, setSubmitting)
@@ -108,14 +129,10 @@ class Login extends React.Component {
                   justify='flex-start'
                   alignItems='center'
                 >
-                  <Typography className={classes.error}>
-                    {this.state.errorMsg}
-                  </Typography>
-
                   <Field
                     className={classes.textField}
-                    type='email'
-                    name='email'
+                    type='text'
+                    name='username'
                     label={t('authorize.username')}
                     margin='normal'
                     variant='outlined'
@@ -129,20 +146,41 @@ class Login extends React.Component {
                   <Field
                     className={classes.textField}
                     autoComplete='current-password'
-                    type='password'
+                    type={this.state.showPassword ? 'text' : 'password'}
                     name='password'
-                    label={t('authorize.password') + ' *'}
+                    label={t('authorize.password')}
                     margin='normal'
                     variant='outlined'
                     component={TextField}
-                    placeholder={t('authorize.password') + ' *'}
+                    placeholder={t('authorize.password')}
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='end'>
+                          <IconButton
+                            edge='end'
+                            aria-label='Toggle password visibility'
+                            onClick={this.handleClickShowPassword}
+                          >
+                            {this.state.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
 
+                  <Typography className={classes.error}>
+                    {this.state.errorMsg}
+                  </Typography>
+
                   <Button
-                    className={classes.button}
+                    className={classes.loginButton}
                     variant='contained'
                     color='secondary'
                     type='submit'
@@ -150,34 +188,33 @@ class Login extends React.Component {
                   >
                     {t('authorize.login')}
                   </Button>
+
+                  <Grid item>
+                    <CreateUser
+                      t={t}
+                      show={this.state.open}
+                      handleClose={this.closeModel}
+                      toggleConfirm={this.openConfirmModel}
+                      setUsername={this.setUserName}
+                    />
+                    <ConfirmCode
+                      t={t}
+                      show={this.state.confirmCode}
+                      handleClose={this.closeConfirmModel}
+                      userName={this.state.userName}
+                    />
+                    <RegisterButton
+                      className={classes.button}
+                      onClick={this.openModel}
+                    >
+                      {t('authorize.registerUser')}
+                    </RegisterButton>
+                  </Grid>
                 </Grid>
               </Form>
             </Grid>
           )}
         </Formik>
-        <Grid>
-          <Button
-            className={classes.button}
-            variant='contained'
-            color='secondary'
-            onClick={this.openModel}
-          >
-            {t('authorize.register')}
-          </Button>
-        </Grid>
-        <CreateUser
-          t={t}
-          show={this.state.open}
-          handleClose={this.closeModel}
-          toggleConfirm={this.openConfirmModel}
-          setUsername={this.setUserName}
-        />
-        <ConfirmCode
-          t={t}
-          show={this.state.confirmCode}
-          handleClose={this.closeConfirmModel}
-          userName={this.state.userName}
-        />
       </Grid>
     );
   }
@@ -187,6 +224,7 @@ Login.propTypes = {
   classes: PropTypes.any,
   t: PropTypes.any,
   history: PropTypes.any,
+  match: PropTypes.any,
 };
 
 export default withStyles(styles, { withTheme: true })(Login);

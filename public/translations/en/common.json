@@ -1,24 +1,32 @@
 {
   "authorize": {
+    "userEmail": "Email",
     "username": "Username",
     "password": "Password",
     "login": "Login",
     "logout": "Log Out",
-    "register": "Register",
     "firstName": "First Name",
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
-    "userEmail": "User Email",
-    "code": "Confirm Code"
+    "confirmCode": "Confirm Code",
+    "btnCreate": "Create",
+    "registerUser": "Don't have an account?  Click here to register.",
+    "lblConfirmCode": "Please enter the confirmation code sent to your email to proceed",
+    "btnConfirmCode": "Confirm"
+  },
+  "dialogs": {
+    "createUser": "Create User",
+    "createEvent": "Create Event",
+    "registerOrganization": "Register Organization"
   },
   "common": {
     "required": "Required",
-    "submit": "Submit",
-    "date": "Date"
+    "submit": "Submit"
   },
   "error": {
     "invalidEmail": "Invalid email address",
-    "errorLogin": "Password or User Name is incorrect."
+    "errorLogin": "Incorrect username password combination",
+    "passwordsDoNotMatch": "Password does not match"
   },
   "home": {
     "filterTitle": "Event Category"
@@ -37,6 +45,13 @@
     "taxes": "Taxes",
     "faith": "Faith"
   },
+  "recurrenceOptions": {
+    "none": "None",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "biWeekly": "Bi-Weekly",
+    "monthly": "Monthly"
+  },
   "register": {
     "register": "Register",
     "validate": "Validate",
@@ -52,13 +67,38 @@
     "postalCode": "Postal Code",
     "administrator": "Administrator",
     "firstName": "First Name",
-    "lastName": "Last Name"
+    "lastName": "Last Name",
+    "btnCreate": "Create"
   },
   "event": {
-    "category": "Event category",
-    "name": "Event name",
-    "description": "Event Description",
+    "categories": "Categories",
+    "name": "Name",
+    "description": "Description",
+    "contactEmail": "Contact Email",
+    "location": "Location",
+    "startDate": "Start Date",
+    "endDate": "End Date",
     "startTime": "Start Time",
-    "endTime": "End Time"
+    "endTime": "End Time",
+    "recurrence": "Recurrence",
+    "endAfter": "End After",
+    "occurrences": "occurrences",
+    "dayOfWeek": "Day",
+    "weekOfMonth": "Week"
+  },
+  "eventDetails": {
+    "lblOrganization": "Organization: ",
+    "lblLocation": "Location: ",
+    "lblStartDate": "Start Date: ",
+    "lblStartTime": "Start Time: ",
+    "lblEndTime": "End Time: ",
+    "lblEndDate": "End Date: ",
+    "lblDescription": "Description: ",
+    "lblContact": "Contact: ",
+    "btnCancelEvent": "Cancel Event",
+    "lblConfirmCancel": "Confirm Cancel",
+    "lblCancelMessage": "Are you sure you want to cancel the event?",
+    "btnYes": "Yes",
+    "btnNo": "No"
   }
 }

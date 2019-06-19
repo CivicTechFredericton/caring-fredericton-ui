@@ -1,13 +1,18 @@
-import { validateOrgRegistration } from './queryValidation';
-import dev from '../aws/dev';
+import config from '../aws/dev';
 
-const base_api_url = dev.API_URL;
+const base_api_url = config.API_URL;
 
 /**
  * Guest user endpoints
  */
-export async function listEventsForGuestUser(start_date, end_date, categories) {
+export async function listEventsForGuestUser(
+  start_date,
+  end_date,
+  categoriesArray
+) {
   let url = new URL(base_api_url + '/guests/events');
+  //const categories = JSON.stringify(categoriesArray);
+  const categories = categoriesArray.join(',');
   url.search = new URLSearchParams({ start_date, end_date, categories });
 
   const headers = new Headers();
@@ -83,55 +88,30 @@ export async function getOrganizatonDetails(token, orgId) {
   return await fetch(url, requestData).then(response => response.json());
 }
 
-function massageOrgRegistration(orgDataObject) {
-  const obj = {
-    name: orgDataObject.orgName,
-    email: orgDataObject.email,
-    phone: orgDataObject.phoneNumber,
-    administrator_id: orgDataObject.adminId,
-    address: {
-      street: orgDataObject.address,
-      postal_code: orgDataObject.postalCode,
-      city: orgDataObject.city,
-      province: orgDataObject.province,
-      country: 'Canada',
-    },
-  };
-  return obj;
-}
-
 export async function registerOrganization(token, orgDataObject) {
-  const massagedOrgData = massageOrgRegistration(orgDataObject);
-  try {
-    validateOrgRegistration(massagedOrgData);
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
   const url = base_api_url + '/organizations/register';
+
   const requestData = {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: token.jwtToken,
-    },
-    body: JSON.stringify(massagedOrgData),
+    headers,
+    body: JSON.stringify(orgDataObject),
     method: 'POST',
   };
 
   return await fetch(url, requestData);
 }
 
-function verificationObj(reason) {
+function verificationObj() {
   const obj = {
     is_verified: true,
-    reason: reason,
   };
   return obj;
 }
 
-export async function validateOrganization(token, orgId, reason) {
-  const verificationData = verificationObj(reason);
+export async function verifyOrganization(token, orgId) {
+  const verificationData = verificationObj();
 
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
@@ -150,7 +130,7 @@ export async function validateOrganization(token, orgId, reason) {
 /**
  * Events endpoints
  */
-export async function createEvent(token, orgId, event) {
+export async function createEvent(token, orgId, eventPayload) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
@@ -158,8 +138,22 @@ export async function createEvent(token, orgId, event) {
 
   const requestData = {
     headers,
-    body: JSON.stringify(event),
+    body: JSON.stringify(eventPayload),
     method: 'POST',
+  };
+
+  return await fetch(url, requestData);
+}
+
+export async function cancelEvent(token, orgId, eventId) {
+  const headers = new Headers();
+  headers.append('Authorization', token.jwtToken);
+  headers.append('content-type', 'application/json');
+  const url = base_api_url + '/organizations/' + orgId + '/events/' + eventId;
+
+  const requestData = {
+    headers,
+    method: 'DELETE',
   };
 
   return await fetch(url, requestData);
