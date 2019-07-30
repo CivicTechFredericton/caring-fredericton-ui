@@ -120,7 +120,11 @@ class Login extends React.Component {
           {({ isSubmitting }) => (
             <Grid className={classes.loginDiv}>
               <Grid>
-                <img className={classes.image} src={logo} />
+                <img
+                  className={classes.image}
+                  src={logo}
+                  alt={t('authorize:login_icon')}
+                />
               </Grid>
               <Form>
                 <Grid

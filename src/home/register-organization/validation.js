@@ -1,4 +1,4 @@
-import { SimpleEmailRegex } from 'Utils/regex';
+import { SimpleEmailRegex } from '../../utils/regex';
 
 const validation = (t, values) => {
   let errors = {};

@@ -23,7 +23,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { createUser } from '../../api/endpoints';
-import { SimpleEmailRegex } from 'Utils/regex';
+import { SimpleEmailRegex } from '../../utils/regex';
 
 const styles = createStyles(theme => ({
   root: {

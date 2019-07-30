@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { SimpleEmailRegex } from 'Utils/regex';
+import { SimpleEmailRegex } from '../../utils/regex';
 
 import {
   IconButton,
@@ -279,9 +279,9 @@ class Event extends React.Component {
       };
 
       if (repeatOption === REPEAT_OPTION_MONTHLY) {
-        (recurrence_details.day_of_week = parseInt(event.day_of_week, 10)),
-          (recurrence_details.week_of_month = event.week_of_month),
-          (recurrence_details.eparation_count = 1); // default value
+        recurrence_details.day_of_week = parseInt(event.day_of_week, 10);
+        recurrence_details.week_of_month = event.week_of_month;
+        recurrence_details.eparation_count = 1; // default value
       }
 
       eventObj.recurrence_details = recurrence_details;
