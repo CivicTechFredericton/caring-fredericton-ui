@@ -1,3 +1,4 @@
+import { awsApiRequest } from '../../utils/func';
 import config from '../aws/dev';
 
 const base_api_url = config.API_URL;
@@ -57,7 +58,18 @@ export async function createUser(user) {
   return await fetch(url, requestData);
 }
 
-export async function getUserDetails(token, userId) {
+export async function getUserDetails(userId) {
+  try {
+    return await awsApiRequest({
+      method: 'GET',
+      path: `/users/${userId}`,
+    });
+  } catch (error) {
+    return error;
+  }
+}
+
+/*export async function getUserDetails(token, userId) {
   const headers = new Headers();
   headers.append('content-type', 'application/json');
   headers.append('Authorization', token.jwtToken);
@@ -69,7 +81,7 @@ export async function getUserDetails(token, userId) {
   };
 
   return await fetch(url, requestData).then(response => response.json());
-}
+}*/
 
 /**
  * Organization endpoints
