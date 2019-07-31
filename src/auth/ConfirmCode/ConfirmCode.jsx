@@ -19,7 +19,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import { confirmSignUp } from '../api/cognito/cognito';
+import { confirmCode } from '../../api/cognito';
 
 const styles = createStyles(theme => ({
   root: {
@@ -112,7 +112,7 @@ class ConfirmCode extends React.Component {
                   return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                  confirmSignUp(this.props.userName, values.code).then(() => {
+                  confirmCode(this.props.userName, values.code).then(() => {
                     setSubmitting(false);
 
                     this.props.handleClose();
