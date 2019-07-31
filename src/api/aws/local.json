@@ -1,7 +1,0 @@
-{
-  "COGNITO_POOL_DETAILS": {
-    "UserPoolId": "ca-central-1_UZIFZVPAG",
-    "ClientId": "2nkvk6njvd2spr5v3j9lnau9to"
-  },
-  "API_URL": "https://dev-api.caringfredericton.com"
-}
