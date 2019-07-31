@@ -19,7 +19,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
-//import { confirmCode } from '../../api/cognito';
 import { confirmSignUp } from '../api/cognito/cognito';
 
 const styles = createStyles(theme => ({
