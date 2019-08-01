@@ -7,20 +7,28 @@ import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
 
 import { getEnvVariable } from '../../utils/environmentVariables';
 
-//Login api call
-export const authenticateUser = (username, password, callback) => {
-  Auth.signIn({
-    username,
-    password,
-  })
-    .then(user => {
-      // Get the user details
-      getUserDetails(user.attributes.sub).then(result => {
-        setUserDetails(result.data);
-        callback(null, result);
-      });
-    })
-    .catch(err => callback(err));
+// Login api call
+export const signIn = async (username, password) => {
+  try {
+    const resp = await Auth.signIn(username, password);
+    if (resp.challengeName) {
+      return {
+        challenge: {
+          name: resp.challengeName,
+          param: resp.challengeParam,
+        },
+        user: resp,
+      };
+    }
+
+    await getUserDetails(resp.attributes.sub).then(result => {
+      setUserDetails(result.data);
+    });
+
+    return await currentAuthenticatedUser();
+  } catch (error) {
+    return { error };
+  }
 };
 
 // Confirm user registration code
