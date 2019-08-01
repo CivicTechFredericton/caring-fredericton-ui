@@ -71,8 +71,20 @@ export const getSession = callback => {
 };
 
 // check for validation
-//export const isValidSession = async () => {
-export const isValidSession = () => {
+export const isValidSession = async () => {
+  // TODO: Adjust downstream components to use async/await in order to use this function
+  return await Auth.currentAuthenticatedUser({
+    bypassCache: false,
+  })
+    .then(user => {
+      return true;
+    })
+    .catch(err => {
+      return false;
+    });
+};
+
+export const isValidUser = () => {
   let poolData = {
     UserPoolId: getEnvVariable('REACT_APP_USER_POOL_ID'),
     ClientId: getEnvVariable('REACT_APP_USER_POOL_WEB_CLIENT_ID'),
@@ -95,31 +107,4 @@ export const isValidSession = () => {
 
     return false;
   });
-
-  // TODO: Replace with Amplify version
-  /*let val;
-  Auth.currentAuthenticatedUser((err, session) => {
-        if (err) {
-          val = false;
-        }
-
-        if (session) {
-          val = true;
-        }
-
-        val = false;
-      });
-
-  return val;*/
-
-  /*Auth.currentAuthenticatedUser({
-      bypassCache: false
-    }).then(user => {return true;})
-      .catch(err => {return false;});*/
-};
-
-// Todo needs user privilages to add to valid session
-//export const isValidUser = async () => {
-export const isValidUser = () => {
-  return isValidSession();
 };
