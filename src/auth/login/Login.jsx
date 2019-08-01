@@ -86,12 +86,12 @@ class Login extends React.Component {
       values.username,
       values.password
     );
+
     if (challenge && challenge.name === 'NEW_PASSWORD_REQUIRED') {
       // User needs to set their new password
       console.log(user);
-    }
-    if (error) {
-      this.setState({ errorMsg: t('error.errorLogin') });
+    } else if (error) {
+      this.setState({ errorMsg: t('error.invalidCredentials') });
     } else {
       this.setState({ errorMsg: '' });
 

@@ -31,6 +31,15 @@ export const signIn = async (username, password) => {
   }
 };
 
+// User sign up
+export const signUp = async (username, password, attributes) => {
+  try {
+    return await Auth.signUp({ username, password, attributes });
+  } catch (error) {
+    return { error };
+  }
+};
+
 // Confirm user registration code
 export const confirmCode = (username, code, callback) => {
   Auth.confirmSignUp(username, code, {
