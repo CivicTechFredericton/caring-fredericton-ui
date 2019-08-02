@@ -42,13 +42,13 @@ export async function listRegisteredOrganizations() {
 /**
  * User endpoints
  */
-export async function signUp(bodyParams) {
+export async function createUser(userParams) {
   try {
     return await awsApiRequest({
       method: 'POST',
       path: '/users/signup',
       params: {
-        body: bodyParams,
+        body: userParams,
       },
     });
   } catch (error) {
@@ -56,7 +56,7 @@ export async function signUp(bodyParams) {
   }
 }
 
-export async function createUser(user) {
+/*export async function createUser(user) {
   const headers = new Headers();
   headers.append('content-type', 'application/json');
   const url = BASE_API_URL + '/users/signup';
@@ -68,7 +68,7 @@ export async function createUser(user) {
   };
 
   return await fetch(url, requestData);
-}
+}*/
 
 export async function getUserDetails(userId) {
   try {

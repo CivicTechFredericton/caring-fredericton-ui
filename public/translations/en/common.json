@@ -12,7 +12,7 @@
     "confirmCode": "Confirm Code",
     "btnCreate": "Create",
     "registerUser": "Don't have an account?  Click here to register.",
-    "lblConfirmCode": "Please enter the confirmation code sent to your email to proceed",
+    "lblConfirmCode": "Please enter the verification code sent to your email to proceed",
     "btnConfirmCode": "Confirm"
   },
   "dialogs": {

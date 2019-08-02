@@ -2,7 +2,7 @@ import { Auth } from 'aws-amplify';
 
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import history from '../../history';
-import { getUserDetails } from '../endpoints';
+import { createUser, getUserDetails } from '../endpoints';
 import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
 
 import { getEnvVariable } from '../../utils/environmentVariables';
@@ -34,9 +34,19 @@ export const signIn = async (username, password) => {
 // User sign up
 export const signUp = async (username, password, attributes) => {
   try {
+    // TODO: Implement Post Confirmation trigger on the user pool
     const result = await Auth.signUp({ username, password, attributes });
-    // TODO: Create the DynamoDB user record upon success
-    console.log(result.userSub);
+
+    // Create the DynamoDB user record upon success
+    let userParams = {
+      user_sub: result.userSub,
+      email: attributes.email,
+      first_name: attributes.given_name,
+      last_name: attributes.family_name,
+    };
+
+    await createUser(userParams);
+
     return result;
   } catch (error) {
     return { error };
