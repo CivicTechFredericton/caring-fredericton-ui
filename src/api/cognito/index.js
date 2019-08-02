@@ -32,19 +32,20 @@ export const signIn = async (username, password) => {
 };
 
 // User sign up
-export const signUp = async (username, password, attributes) => {
+export const signUp = async userParams => {
   try {
     // TODO: Implement Post Confirmation trigger on the user pool
-    const result = await Auth.signUp({ username, password, attributes });
+    let username = userParams.email;
+    let password = userParams.password;
+    const result = await Auth.signUp({
+      username,
+      password,
+      attributes: { email: username },
+    });
 
     // Create the DynamoDB user record upon success
-    let userParams = {
-      user_sub: result.userSub,
-      email: attributes.email,
-      first_name: attributes.given_name,
-      last_name: attributes.family_name,
-    };
-
+    userParams['user_sub'] = result.userSub;
+    delete userParams[password];
     await createUser(userParams);
 
     return result;

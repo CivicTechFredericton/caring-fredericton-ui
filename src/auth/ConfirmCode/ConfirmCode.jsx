@@ -154,10 +154,10 @@ class ConfirmCode extends React.Component {
                             component={TextField}
                             type='text'
                             name='code'
-                            label={t('authorize.confirmCode')}
+                            label={t('authorize.verificationCode')}
                             margin='normal'
                             variant='outlined'
-                            placeholder={t('authorize.confirmCode')}
+                            placeholder={t('authorize.verificationCode')}
                             className={classes.textField}
                             InputLabelProps={{
                               shrink: true,

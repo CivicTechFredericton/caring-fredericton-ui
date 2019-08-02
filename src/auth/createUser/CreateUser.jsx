@@ -87,14 +87,7 @@ class CreateUser extends React.Component {
     const { t } = this.props;
     setSubmitting(true);
 
-    // Set the additional attributes
-    const attributes = {
-      email: values.email,
-      given_name: values.first_name,
-      family_name: values.last_name,
-    };
-
-    const { error } = await signUp(values.email, values.password, attributes);
+    const { error } = await signUp(values);
     if (error) {
       if (error.code === 'UsernameExistsException') {
         this.setState({

@@ -9,10 +9,11 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
-    "confirmCode": "Confirm Code",
+    "verificationCode": "Verification Code",
     "btnCreate": "Create",
     "registerUser": "Don't have an account?  Click here to register.",
-    "lblConfirmCode": "Please enter the verification code sent to your email to proceed",
+    "resendCode": "Lost your code?  Click here to resend.",
+    "lblConfirmCode": "Please enter your verification code sent to you",
     "btnConfirmCode": "Confirm"
   },
   "dialogs": {

@@ -58,19 +58,19 @@ class Login extends React.Component {
     this.setState({ showPassword: !currFlag });
   };
 
-  openModel = () => {
+  openCreateUserModal = () => {
     this.setState({ open: true });
   };
 
-  closeModel = () => {
+  closeModal = () => {
     this.setState({ open: false });
   };
 
-  openConfirmModel = () => {
+  openConfirmModal = () => {
     this.setState({ confirmCode: true });
   };
 
-  closeConfirmModel = () => {
+  closeConfirmModal = () => {
     this.setState({ confirmCode: false, userName: '' });
   };
 
@@ -204,19 +204,19 @@ class Login extends React.Component {
                     <CreateUser
                       t={t}
                       show={this.state.open}
-                      handleClose={this.closeModel}
-                      toggleConfirm={this.openConfirmModel}
+                      handleClose={this.closeModal}
+                      toggleConfirm={this.openConfirmModal}
                       setUsername={this.setUserName}
                     />
                     <ConfirmCode
                       t={t}
                       show={this.state.confirmCode}
-                      handleClose={this.closeConfirmModel}
+                      handleClose={this.closeConfirmModal}
                       userName={this.state.userName}
                     />
                     <RegisterButton
                       className={classes.button}
-                      onClick={this.openModel}
+                      onClick={this.openCreateUserModal}
                     >
                       {t('authorize.registerUser')}
                     </RegisterButton>
