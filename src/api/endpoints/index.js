@@ -56,20 +56,6 @@ export async function createUser(userParams) {
   }
 }
 
-/*export async function createUser(user) {
-  const headers = new Headers();
-  headers.append('content-type', 'application/json');
-  const url = BASE_API_URL + '/users/signup';
-
-  const requestData = {
-    headers,
-    body: JSON.stringify(user),
-    method: 'POST',
-  };
-
-  return await fetch(url, requestData);
-}*/
-
 export async function getUserDetails(userId) {
   try {
     return await awsApiRequest({
