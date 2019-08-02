@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { Button, withStyles, Grid, Typography } from '@material-ui/core';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
-import { authenticateUser } from '../../api/cognito';
+import { signIn } from '../../api/cognito';
 
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -78,25 +78,32 @@ class Login extends React.Component {
     this.setState({ userName });
   };
 
-  submitAuth = (values, setSubmitting) => {
+  submitAuth = async (values, setSubmitting) => {
     const { t, history, match } = this.props;
     setSubmitting(true);
 
-    authenticateUser(values.username, values.password, response => {
-      setSubmitting(false);
-      if (!response) {
-        this.setState({ errorMsg: '' });
+    const { challenge, error, user } = await signIn(
+      values.username,
+      values.password
+    );
 
-        let orgId = match.params.orgId;
-        if (orgId) {
-          history.push('/validation/' + orgId);
-        } else {
-          history.push('/');
-        }
+    if (challenge && challenge.name === 'NEW_PASSWORD_REQUIRED') {
+      // User needs to set their new password
+      console.log(user);
+    } else if (error) {
+      this.setState({ errorMsg: t('error.invalidCredentials') });
+    } else {
+      this.setState({ errorMsg: '' });
+
+      let orgId = match.params.orgId;
+      if (orgId) {
+        history.push('/validation/' + orgId);
       } else {
-        this.setState({ errorMsg: t('error.errorLogin') });
+        history.push('/');
       }
-    });
+    }
+
+    setSubmitting(false);
   };
 
   render() {

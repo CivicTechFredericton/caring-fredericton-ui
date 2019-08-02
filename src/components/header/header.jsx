@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Button, Grid, Typography } from '@material-ui/core';
-import { signOut, isValidSession } from '../../api/cognito';
+import { signOut, isValidUser } from '../../api/cognito';
 import { getUserDetails } from '../../utils/localStorage';
 
 import history from '../../history';
@@ -10,6 +10,20 @@ import logo from '../../logo.png';
 import styles from './style';
 
 class Header extends React.Component {
+  // TODO: Code to allow async/await rendering of the component
+  /*constructor(props) {
+  super(props);
+
+  this.state = {
+    validSession: false,
+  };
+}
+
+async componentDidMount() {
+  let validSession = await isValidSession();
+  this.setState({ validSession: validSession });
+}*/
+
   authButtonGroup = validSession => {
     const { t, classes } = this.props;
 
@@ -55,7 +69,7 @@ class Header extends React.Component {
   render() {
     const { t, classes } = this.props;
 
-    let validSession = isValidSession();
+    let validSession = isValidUser();
 
     let orgName = '';
     if (validSession) {

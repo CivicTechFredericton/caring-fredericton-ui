@@ -2,34 +2,66 @@ import { Auth } from 'aws-amplify';
 
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import history from '../../history';
-import { getUserDetails } from '../endpoints';
+import { createUser, getUserDetails } from '../endpoints';
 import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
 
 import { getEnvVariable } from '../../utils/environmentVariables';
 
-//Login api call
-export const authenticateUser = (username, password, callback) => {
-  Auth.signIn({
-    username,
-    password,
-  })
-    .then(user => {
-      // Get the user details
-      getUserDetails(user.attributes.sub).then(result => {
-        setUserDetails(result.data);
-        callback(null, result);
-      });
-    })
-    .catch(err => callback(err));
+// Login api call
+export const signIn = async (username, password) => {
+  try {
+    const resp = await Auth.signIn(username, password);
+    if (resp.challengeName) {
+      return {
+        challenge: {
+          name: resp.challengeName,
+          param: resp.challengeParam,
+        },
+        user: resp,
+      };
+    }
+
+    await getUserDetails(resp.attributes.sub).then(result => {
+      setUserDetails(result.data);
+    });
+
+    return await currentAuthenticatedUser();
+  } catch (error) {
+    return { error };
+  }
+};
+
+// User sign up
+export const signUp = async (username, password, attributes) => {
+  try {
+    // TODO: Implement Post Confirmation trigger on the user pool
+    const result = await Auth.signUp({ username, password, attributes });
+
+    // Create the DynamoDB user record upon success
+    let userParams = {
+      user_sub: result.userSub,
+      email: attributes.email,
+      first_name: attributes.given_name,
+      last_name: attributes.family_name,
+    };
+
+    await createUser(userParams);
+
+    return result;
+  } catch (error) {
+    return { error };
+  }
 };
 
 // Confirm user registration code
-export const confirmCode = (username, code, callback) => {
-  Auth.confirmSignUp(username, code, {
-    forceAliasCreation: true,
-  })
-    .then(data => callback(null, data))
-    .catch(err => callback(err));
+export const confirmCode = async (username, code) => {
+  try {
+    return await Auth.confirmSignUp(username, code, {
+      forceAliasCreation: true,
+    });
+  } catch (error) {
+    return { error };
+  }
 };
 
 // Logout api call
@@ -63,8 +95,20 @@ export const getSession = callback => {
 };
 
 // check for validation
-//export const isValidSession = async () => {
-export const isValidSession = () => {
+export const isValidSession = async () => {
+  // TODO: Adjust downstream components to use async/await in order to use this function
+  return await Auth.currentAuthenticatedUser({
+    bypassCache: false,
+  })
+    .then(user => {
+      return true;
+    })
+    .catch(err => {
+      return false;
+    });
+};
+
+export const isValidUser = () => {
   let poolData = {
     UserPoolId: getEnvVariable('REACT_APP_USER_POOL_ID'),
     ClientId: getEnvVariable('REACT_APP_USER_POOL_WEB_CLIENT_ID'),
@@ -87,31 +131,4 @@ export const isValidSession = () => {
 
     return false;
   });
-
-  // TODO: Replace with Amplify version
-  /*let val;
-  Auth.currentAuthenticatedUser((err, session) => {
-        if (err) {
-          val = false;
-        }
-
-        if (session) {
-          val = true;
-        }
-
-        val = false;
-      });
-
-  return val;*/
-
-  /*Auth.currentAuthenticatedUser({
-      bypassCache: false
-    }).then(user => {return true;})
-      .catch(err => {return false;});*/
-};
-
-// Todo needs user privilages to add to valid session
-//export const isValidUser = async () => {
-export const isValidUser = () => {
-  return isValidSession();
 };
