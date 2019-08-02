@@ -4,6 +4,7 @@
     "username": "Username",
     "password": "Password",
     "login": "Login",
+    "login_icon": "Login Icon",
     "logout": "Log Out",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -11,7 +12,7 @@
     "confirmCode": "Confirm Code",
     "btnCreate": "Create",
     "registerUser": "Don't have an account?  Click here to register.",
-    "lblConfirmCode": "Please enter the confirmation code sent to your email to proceed",
+    "lblConfirmCode": "Please enter the verification code sent to your email to proceed",
     "btnConfirmCode": "Confirm"
   },
   "dialogs": {
@@ -20,13 +21,22 @@
     "registerOrganization": "Register Organization"
   },
   "common": {
+    "logo_icon": "Logo Icon",
     "required": "Required",
     "submit": "Submit"
   },
   "error": {
+    "defaultMessage": "Something went wrong, please try again later",
     "invalidEmail": "Invalid email address",
-    "errorLogin": "Incorrect username password combination",
-    "passwordsDoNotMatch": "Password does not match"
+    "invalidCredentials": "Incorrect username password combination",
+    "passwordsDoNotMatch": "Password does not match",
+    "userAlreadyExists": "User with email {{address}} already exists",
+    "passwordTooShort": "The password must to be at least 8 characters",
+    "passwordMissingNumber": "The password must include at least one number",
+    "passwordMissingLowercase": "The password must include at least one lower case character",
+    "passwordMissingUppercase": "The password must include at least one upper case character",
+    "passwordMissingSymbol": "The password must include at least one symbol",
+    "invalidVerificationCode": "Invalid verification code provided, please try again"
   },
   "home": {
     "filterTitle": "Event Category"

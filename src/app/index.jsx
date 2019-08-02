@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './index.scss';
+import '../config';
 import VerifyOrganization from '../verification';
 import Login from '../auth/login';
 import Home from '../home';

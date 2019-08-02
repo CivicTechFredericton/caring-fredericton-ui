@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Button, Grid, Typography } from '@material-ui/core';
-import { signOut, isValidSession } from '../../api/cognito';
+import { signOut, isValidUser } from '../../api/cognito';
 import { getUserDetails } from '../../utils/localStorage';
 
 import history from '../../history';
@@ -10,14 +10,23 @@ import logo from '../../logo.png';
 import styles from './style';
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // TODO: Code to allow async/await rendering of the component
+  /*constructor(props) {
+  super(props);
+
+  this.state = {
+    validSession: false,
+  };
+}
+
+async componentDidMount() {
+  let validSession = await isValidSession();
+  this.setState({ validSession: validSession });
+}*/
 
   authButtonGroup = validSession => {
     const { t, classes } = this.props;
 
-    // <Typography variant='h4'>{orgName}</Typography>
     return (
       <div>
         {validSession ? (
@@ -58,9 +67,9 @@ class Header extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { t, classes } = this.props;
 
-    let validSession = isValidSession();
+    let validSession = isValidUser();
 
     let orgName = '';
     if (validSession) {
@@ -85,7 +94,11 @@ class Header extends React.Component {
                   alignItems='center'
                 >
                   <Grid item>
-                    <img className={classes.image} src={logo} />
+                    <img
+                      className={classes.image}
+                      src={logo}
+                      alt={t('common:logo_icon')}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
