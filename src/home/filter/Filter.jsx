@@ -35,7 +35,6 @@ class Filter extends React.Component {
   // Handle category check box list events
   handleFilterChange = name => event => {
     let checked = event.target.checked;
-    // let value = event.target.value;
     let categoriesFilterSet = this.state.categoriesFilterSet;
     let categories = this.state.categories;
 
@@ -45,6 +44,8 @@ class Filter extends React.Component {
       if (categories[result]) {
         return result.toString;
       }
+
+      return '';
     });
 
     this.setState({

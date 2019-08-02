@@ -10,14 +10,9 @@ import logo from '../../logo.png';
 import styles from './style';
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   authButtonGroup = validSession => {
     const { t, classes } = this.props;
 
-    // <Typography variant='h4'>{orgName}</Typography>
     return (
       <div>
         {validSession ? (
@@ -58,7 +53,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { t, classes } = this.props;
 
     let validSession = isValidSession();
 
@@ -85,7 +80,11 @@ class Header extends React.Component {
                   alignItems='center'
                 >
                   <Grid item>
-                    <img className={classes.image} src={logo} />
+                    <img
+                      className={classes.image}
+                      src={logo}
+                      alt={t('common:logo_icon')}
+                    />
                   </Grid>
                 </Grid>
               </Grid>

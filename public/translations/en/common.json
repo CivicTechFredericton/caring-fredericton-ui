@@ -4,6 +4,7 @@
     "username": "Username",
     "password": "Password",
     "login": "Login",
+    "login_icon": "Login Icon",
     "logout": "Log Out",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -20,6 +21,7 @@
     "registerOrganization": "Register Organization"
   },
   "common": {
+    "logo_icon": "Logo Icon",
     "required": "Required",
     "submit": "Submit"
   },

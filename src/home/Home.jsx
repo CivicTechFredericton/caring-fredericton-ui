@@ -248,6 +248,7 @@ class Home extends React.Component {
   loadEvents = (start, end, categories) => {
     const filterCategories =
       categories || this.state.filters.categoriesFilterSet;
+
     listEventsForGuestUser(start, end, filterCategories).then(results => {
       if (results.length > 0) {
         let input = [];
@@ -280,6 +281,8 @@ class Home extends React.Component {
           );
 
           input.push(event);
+
+          return event;
         });
 
         this.setState({ events: input });
@@ -299,7 +302,11 @@ class Home extends React.Component {
         alignItems='flex-start'
       >
         <Grid item>
-          <img className={classes.image} src={logo} />
+          <img
+            className={classes.image}
+            src={logo}
+            alt={t('common:logo_icon')}
+          />
         </Grid>
         <Grid className={classes.filter} item>
           <Filter updateFilters={this.updateFilters} />
@@ -336,7 +343,7 @@ Home.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
   closeRegister: PropTypes.any,
-  registerState: PropTypes.boolean,
+  registerState: PropTypes.bool,
 };
 
 export default withStyles(styles, { withTheme: true })(Home);

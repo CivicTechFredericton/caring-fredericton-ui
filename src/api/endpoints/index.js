@@ -1,6 +1,6 @@
-import config from '../aws/dev';
-
-const base_api_url = config.API_URL;
+import { awsApiRequest } from '../../utils/func';
+import { getEnvVariable } from '../../utils/environmentVariables';
+const BASE_API_URL = getEnvVariable('REACT_APP_API_URL');
 
 /**
  * Guest user endpoints
@@ -10,8 +10,7 @@ export async function listEventsForGuestUser(
   end_date,
   categoriesArray
 ) {
-  let url = new URL(base_api_url + '/guests/events');
-  //const categories = JSON.stringify(categoriesArray);
+  let url = new URL(BASE_API_URL + '/guests/events');
   const categories = categoriesArray.join(',');
   url.search = new URLSearchParams({ start_date, end_date, categories });
 
@@ -27,7 +26,7 @@ export async function listEventsForGuestUser(
 }
 
 export async function listRegisteredOrganizations() {
-  let url = base_api_url + '/guests/organizations';
+  let url = BASE_API_URL + '/guests/organizations';
 
   const headers = new Headers();
   headers.append('content-type', 'application/json');
@@ -46,7 +45,7 @@ export async function listRegisteredOrganizations() {
 export async function createUser(user) {
   const headers = new Headers();
   headers.append('content-type', 'application/json');
-  const url = base_api_url + '/users/signup';
+  const url = BASE_API_URL + '/users/signup';
 
   const requestData = {
     headers,
@@ -57,18 +56,15 @@ export async function createUser(user) {
   return await fetch(url, requestData);
 }
 
-export async function getUserDetails(token, userId) {
-  const headers = new Headers();
-  headers.append('content-type', 'application/json');
-  headers.append('Authorization', token.jwtToken);
-  const url = base_api_url + '/users/' + userId;
-
-  const requestData = {
-    headers,
-    method: 'GET',
-  };
-
-  return await fetch(url, requestData).then(response => response.json());
+export async function getUserDetails(userId) {
+  try {
+    return await awsApiRequest({
+      method: 'GET',
+      path: `/users/${userId}`,
+    });
+  } catch (error) {
+    return error;
+  }
 }
 
 /**
@@ -78,7 +74,7 @@ export async function getOrganizatonDetails(token, orgId) {
   const headers = new Headers();
   headers.append('content-type', 'application/json');
   headers.append('Authorization', token.jwtToken);
-  const url = base_api_url + '/organizations/' + orgId;
+  const url = BASE_API_URL + '/organizations/' + orgId;
 
   const requestData = {
     headers,
@@ -92,7 +88,7 @@ export async function registerOrganization(token, orgDataObject) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
-  const url = base_api_url + '/organizations/register';
+  const url = BASE_API_URL + '/organizations/register';
 
   const requestData = {
     headers,
@@ -116,7 +112,7 @@ export async function verifyOrganization(token, orgId) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
-  const url = base_api_url + '/organizations/' + orgId + '/verify';
+  const url = BASE_API_URL + '/organizations/' + orgId + '/verify';
 
   const requestData = {
     headers,
@@ -134,7 +130,7 @@ export async function createEvent(token, orgId, eventPayload) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
-  const url = base_api_url + '/organizations/' + orgId + '/events';
+  const url = BASE_API_URL + '/organizations/' + orgId + '/events';
 
   const requestData = {
     headers,
@@ -149,7 +145,7 @@ export async function cancelEvent(token, orgId, eventId) {
   const headers = new Headers();
   headers.append('Authorization', token.jwtToken);
   headers.append('content-type', 'application/json');
-  const url = base_api_url + '/organizations/' + orgId + '/events/' + eventId;
+  const url = BASE_API_URL + '/organizations/' + orgId + '/events/' + eventId;
 
   const requestData = {
     headers,
