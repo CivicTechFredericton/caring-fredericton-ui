@@ -34,19 +34,24 @@ export const signIn = async (username, password) => {
 // User sign up
 export const signUp = async (username, password, attributes) => {
   try {
-    return await Auth.signUp({ username, password, attributes });
+    const result = await Auth.signUp({ username, password, attributes });
+    // TODO: Create the DynamoDB user record upon success
+    console.log(result.userSub);
+    return result;
   } catch (error) {
     return { error };
   }
 };
 
 // Confirm user registration code
-export const confirmCode = (username, code, callback) => {
-  Auth.confirmSignUp(username, code, {
-    forceAliasCreation: true,
-  })
-    .then(data => callback(null, data))
-    .catch(err => callback(err));
+export const confirmCode = async (username, code) => {
+  try {
+    return await Auth.confirmSignUp(username, code, {
+      forceAliasCreation: true,
+    });
+  } catch (error) {
+    return { error };
+  }
 };
 
 // Logout api call

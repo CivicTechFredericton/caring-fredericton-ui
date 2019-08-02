@@ -35,7 +35,8 @@
     "passwordMissingNumber": "The password must include at least one number",
     "passwordMissingLowercase": "The password must include at least one lower case character",
     "passwordMissingUppercase": "The password must include at least one upper case character",
-    "passwordMissingSymbol": "The password must include at least one symbol"
+    "passwordMissingSymbol": "The password must include at least one symbol",
+    "invalidVerificationCode": "Invalid verification code provided, please try again"
   },
   "home": {
     "filterTitle": "Event Category"

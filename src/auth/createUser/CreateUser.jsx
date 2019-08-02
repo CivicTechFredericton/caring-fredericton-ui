@@ -23,7 +23,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-//import { createUser } from '../../api/endpoints';
 import { signUp } from '../../api/cognito';
 import { SimpleEmailRegex } from '../../utils/regex';
 
@@ -88,13 +87,22 @@ class CreateUser extends React.Component {
     const { t } = this.props;
     setSubmitting(true);
 
-    const { error } = await signUp(values.email, values.password);
+    // Set the additional attributes
+    const attributes = {
+      email: values.email,
+      given_name: values.first_name,
+      family_name: values.last_name,
+    };
+
+    const { error } = await signUp(values.email, values.password, attributes);
     if (error) {
       if (error.code === 'UsernameExistsException') {
         this.setState({
           errorMsg: t('error.userAlreadyExists', { address: values.email }),
         });
       } else if (error.code === 'InvalidPasswordException') {
+        // TODO: Place this check in a common function that can be used by forgot password
+        // and set password
         let message = error.message;
         if (message.includes('long enough')) {
           this.setState({ errorMsg: t('error.passwordTooShort') });

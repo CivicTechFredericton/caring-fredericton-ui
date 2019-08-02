@@ -42,6 +42,20 @@ export async function listRegisteredOrganizations() {
 /**
  * User endpoints
  */
+export async function signUp(bodyParams) {
+  try {
+    return await awsApiRequest({
+      method: 'POST',
+      path: '/users/signup',
+      params: {
+        body: bodyParams,
+      },
+    });
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function createUser(user) {
   const headers = new Headers();
   headers.append('content-type', 'application/json');
