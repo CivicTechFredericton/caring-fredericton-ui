@@ -1,7 +1,0 @@
-{
-  "COGNITO_POOL_DETAILS": {
-    "UserPoolId": "ca-central-1_RTHaireha",
-    "ClientId": "33i149bcng6ggn2rf8lfpcm7kc"
-  },
-  "API_URL": "https://beta-api.caringfredericton.com"
-}
