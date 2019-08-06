@@ -166,7 +166,7 @@ class CreateUser extends React.Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <Grid item className={classes.flex}>
-                {t('dialogs.createUser')}
+                {t('dialogs.registerUser')}
               </Grid>
               <Grid item>
                 <Tooltip title={t('common.btnClose')}>

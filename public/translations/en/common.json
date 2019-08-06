@@ -17,7 +17,7 @@
     "btnConfirmCode": "Confirm"
   },
   "dialogs": {
-    "createUser": "Create User",
+    "registerUser": "Register User",
     "createEvent": "Create Event",
     "registerOrganization": "Register Organization"
   },
