@@ -177,10 +177,10 @@ class EventDialog extends React.Component {
                           eventId
                         )}
                       >
-                        {t('eventDetails.btnYes')}
+                        {t('common.btnYes')}
                       </Button>
                       <Button onClick={this.closeConfirmModel} autoFocus>
-                        {t('eventDetails.btnNo')}
+                        {t('common.btnNo')}
                       </Button>
                     </DialogActions>
                   </Dialog>

@@ -19,6 +19,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
@@ -61,18 +63,34 @@ const styles = createStyles(theme => ({
 }));
 
 class CreateUser extends React.Component {
+  defaultState = {
+    errorMsg: '',
+    open: false,
+    openCancel: false,
+    fullWidth: true,
+    maxWidth: 'md',
+    showPassword: false,
+    showConfirmPassword: false,
+  };
+
   constructor(props) {
     super(props);
 
-    this.state = {
-      errorMsg: '',
-      open: false,
-      fullWidth: true,
-      maxWidth: 'md',
-      showPassword: false,
-      showConfirmPassword: false,
-    };
+    this.state = this.defaultState;
   }
+
+  handleDialogClose = () => {
+    this.setState(this.defaultState);
+    this.props.handleClose();
+  };
+
+  openConfirmModel = () => {
+    this.setState({ openCancel: true });
+  };
+
+  closeConfirmModel = () => {
+    this.setState({ openCancel: false });
+  };
 
   handleClickShowPassword = () => {
     let currFlag = this.state.showPassword;
@@ -150,15 +168,32 @@ class CreateUser extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.createUser')}
               </Grid>
-              <Tooltip title={t('common.btnClose')}>
-                <IconButton
-                  color='inherit'
-                  onClick={this.props.handleClose}
-                  aria-label='Close'
+              <Grid item>
+                <Tooltip title={t('common.btnClose')}>
+                  <IconButton
+                    color='inherit'
+                    onClick={this.openConfirmModel}
+                    aria-label='Close'
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+                <Dialog
+                  open={this.state.openCancel}
+                  onClose={this.closeConfirmModel}
+                  aria-labelledby='form-dialog-title'
                 >
-                  <CloseIcon />
-                </IconButton>
-              </Tooltip>
+                  <DialogTitle>{t('register.confirmCancel')}</DialogTitle>
+                  <DialogActions>
+                    <Button onClick={this.handleDialogClose}>
+                      {t('common.btnYes')}
+                    </Button>
+                    <Button onClick={this.closeConfirmModel} autoFocus>
+                      {t('common.btnNo')}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Grid>
             </Toolbar>
           </AppBar>
           <DialogContent>

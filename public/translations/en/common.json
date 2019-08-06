@@ -22,10 +22,13 @@
     "registerOrganization": "Register Organization"
   },
   "common": {
+    "discardChanges": "Discard Changes",
     "logo_icon": "Logo Icon",
     "required": "Required",
     "submit": "Submit",
-    "btnClose": "Close"
+    "btnClose": "Close",
+    "btnYes": "Yes",
+    "btnNo": "No"
   },
   "error": {
     "defaultMessage": "Something went wrong, please try again later",
@@ -80,6 +83,7 @@
     "administrator": "Administrator",
     "firstName": "First Name",
     "lastName": "Last Name",
+    "confirmCancel": "All changes will be lost.  Are you sure you want to proceed?",
     "btnCreate": "Create"
   },
   "event": {
@@ -110,8 +114,6 @@
     "btnEditEvent": "Edit Event",
     "btnCancelEvent": "Cancel Event",
     "lblConfirmCancel": "Confirm Cancel",
-    "lblCancelMessage": "Are you sure you want to cancel the event?",
-    "btnYes": "Yes",
-    "btnNo": "No"
+    "lblCancelMessage": "Are you sure you want to cancel the event?"
   }
 }
