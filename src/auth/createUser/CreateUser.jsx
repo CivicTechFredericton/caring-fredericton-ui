@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -149,13 +150,15 @@ class CreateUser extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.createUser')}
               </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.props.handleClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
+              <Tooltip title={t('common.btnClose')}>
+                <IconButton
+                  color='inherit'
+                  onClick={this.props.handleClose}
+                  aria-label='Close'
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
             </Toolbar>
           </AppBar>
           <DialogContent>

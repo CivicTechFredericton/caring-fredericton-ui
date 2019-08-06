@@ -14,6 +14,7 @@ import { TextField } from 'formik-material-ui';
 import { registerOrganization } from '../../api/endpoints';
 import { getSession } from '../../api/cognito';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
@@ -266,13 +267,15 @@ class Organization extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.registerOrganization')}
               </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.props.handleClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
+              <Tooltip title={t('common.btnClose')}>
+                <IconButton
+                  color='inherit'
+                  onClick={this.props.handleClose}
+                  aria-label='Close'
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
             </Toolbar>
           </AppBar>
           <DialogContent>

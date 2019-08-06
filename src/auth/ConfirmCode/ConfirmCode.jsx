@@ -6,7 +6,6 @@ import { TextField } from 'formik-material-ui';
 
 import PropTypes from 'prop-types';
 import {
-  IconButton,
   AppBar,
   Toolbar,
   Grid,
@@ -16,7 +15,6 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
@@ -107,13 +105,6 @@ class ConfirmCode extends React.Component {
               <Grid item className={classes.flex}>
                 {t('authorize.lblConfirmCode')}
               </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.props.handleClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
             </Toolbar>
           </AppBar>
           <DialogContent>
