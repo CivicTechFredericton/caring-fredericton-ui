@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles } from '@material-ui/core';
 import Filter from './filter';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -43,16 +44,6 @@ const styles = () =>
       height: 'auto',
     },
   });
-
-// const RegisterButton = withStyles({
-//   root: {
-//     boxShadow: 'none',
-//     textTransform: 'none',
-//     fontSize: 16,
-//     padding: '6px 12px',
-//     lineHeight: 1.5,
-//   },
-// })(Button);
 
 class Home extends React.Component {
   constructor(props) {
@@ -127,14 +118,16 @@ class Home extends React.Component {
                 handleClose={this.hideEventModal}
                 userDetails={this.state.userDetails}
               />
-              <Fab
-                color='primary'
-                onClick={this.showEventModal}
-                aria-label='Add'
-                className={classes.fab}
-              >
-                <AddIcon />
-              </Fab>
+              <Tooltip title={t('dialogs.createEvent')}>
+                <Fab
+                  color='primary'
+                  onClick={this.showEventModal}
+                  aria-label='Add'
+                  className={classes.fab}
+                >
+                  <AddIcon />
+                </Fab>
+              </Tooltip>
             </Grid>
           </Grid>
         ) : (
@@ -145,14 +138,6 @@ class Home extends React.Component {
               handleClose={this.hideRegisterModal}
               userDetails={this.state.userDetails}
             />
-            {/* <RegisterButton
-              className={classes.button}
-              onClick={() => {
-                this.showRegisterModal();
-              }}
-            >
-              {t('dialogs.registerOrganization')}
-            </RegisterButton> */}
           </Grid>
         )}
       </>
@@ -184,7 +169,6 @@ class Home extends React.Component {
   hideRegisterModal = () => {
     this.hideModal();
     this.props.closeRegister();
-    //this.setState({ showRegister: false });
   };
 
   hideModal = () => {
@@ -241,8 +225,8 @@ class Home extends React.Component {
   };
 
   closeEventDialog = () => {
+    this.hideModal();
     this.setState({ showDialog: false, dialogEvent: null });
-    this.updateTimes(this.state.currentDate, this.state.currentView);
   };
 
   loadEvents = (start, end, categories) => {

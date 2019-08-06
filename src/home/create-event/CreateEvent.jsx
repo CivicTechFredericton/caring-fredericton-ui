@@ -32,9 +32,9 @@ import { createEvent } from '../../api/endpoints';
 import { getSession } from '../../api/cognito';
 
 import Select from '@material-ui/core/Select';
-//import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -306,13 +306,15 @@ class Event extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.createEvent')}
               </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.handleDialogClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
+              <Tooltip title={t('common.btnClose')}>
+                <IconButton
+                  color='inherit'
+                  onClick={this.handleDialogClose}
+                  aria-label='Close'
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
             </Toolbar>
           </AppBar>
           <DialogContent>

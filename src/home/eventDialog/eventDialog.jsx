@@ -13,7 +13,10 @@ import {
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Dialog from '@material-ui/core/Dialog';
+import Tooltip from '@material-ui/core/Tooltip';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -31,11 +34,6 @@ const styles = createStyles(theme => ({
   },
   spacer: {
     paddingRight: 20,
-  },
-  button: {
-    marginTop: 30,
-    color: 'white',
-    fontSize: '14px',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -82,6 +80,7 @@ class EventDialog extends React.Component {
     const { classes, t, eventObj } = this.props;
 
     let showCancelButton = false;
+    let showEditButton = true;
 
     let eventId = '';
     let orgId = '';
@@ -137,69 +136,26 @@ class EventDialog extends React.Component {
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <Grid item className={classes.flex}>
-                {name}
-              </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.props.handleClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <DialogContent>
-            <Grid
-              container
-              direction='column'
-              justify='flex-start'
-              alignItems='center'
-            >
-              <Grid
-                container
-                direction='row'
-                justify='flex-start'
-                alignItems='center'
-              >
-                <Grid className={classes.spacer} item>
-                  <Typography>
-                    {t('eventDetails.lblOrganization') + orgName}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblLocation') + location}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblStartDate') + startDate}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblStartTime') + startTime}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblEndTime') + endTime}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblEndDate') + endDate}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblDescription') + description}
-                  </Typography>
-                  <Typography>
-                    {t('eventDetails.lblContact') + contactEmail}
-                  </Typography>
-                </Grid>
-              </Grid>
+              <Grid item className={classes.flex}></Grid>
+              {showEditButton && (
+                <Tooltip title={t('eventDetails.btnEditEvent')}>
+                  <Button variant='text' color='inherit' disabled>
+                    <EditIcon />
+                  </Button>
+                </Tooltip>
+              )}
               {showCancelButton && (
                 <Grid item>
-                  <Button
-                    className={this.props.classes.button}
-                    variant='contained'
-                    color='secondary'
-                    type='submit'
-                    onClick={this.openConfirmModel}
-                  >
-                    {t('eventDetails.btnCancelEvent')}
-                  </Button>
+                  <Tooltip title={t('eventDetails.btnCancelEvent')}>
+                    <Button
+                      variant='text'
+                      color='inherit'
+                      onClick={this.openConfirmModel}
+                      aria-label='Delete'
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Tooltip>
                   <Dialog
                     open={this.state.openCancel}
                     onClose={this.closeConfirmModel}
@@ -215,7 +171,6 @@ class EventDialog extends React.Component {
                     </DialogContent>
                     <DialogActions>
                       <Button
-                        color='primary'
                         onClick={this.handleConfirmYes.bind(
                           this,
                           orgId,
@@ -224,17 +179,60 @@ class EventDialog extends React.Component {
                       >
                         {t('eventDetails.btnYes')}
                       </Button>
-                      <Button
-                        onClick={this.props.handleClose}
-                        color='primary'
-                        autoFocus
-                      >
+                      <Button onClick={this.closeConfirmModel} autoFocus>
                         {t('eventDetails.btnNo')}
                       </Button>
                     </DialogActions>
                   </Dialog>
                 </Grid>
               )}
+              <Tooltip title={t('common.btnClose')}>
+                <IconButton
+                  color='inherit'
+                  onClick={this.props.handleClose}
+                  aria-label='Close'
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
+            </Toolbar>
+          </AppBar>
+          <DialogContent>
+            <Grid item align='center'>
+              <Typography variant='h6'>{name}</Typography>
+            </Grid>
+            <Grid
+              container
+              direction='row'
+              justify='center'
+              alignItems='center'
+            >
+              <Grid className={classes.spacer} item>
+                <Typography>
+                  {t('eventDetails.lblOrganization') + orgName}
+                </Typography>
+                <Typography>
+                  {t('eventDetails.lblLocation') + location}
+                </Typography>
+                <Typography>
+                  {t('eventDetails.lblStartDate') + startDate}
+                </Typography>
+                <Typography>
+                  {t('eventDetails.lblStartTime') + startTime}
+                </Typography>
+                <Typography>
+                  {t('eventDetails.lblEndTime') + endTime}
+                </Typography>
+                <Typography>
+                  {t('eventDetails.lblEndDate') + endDate}
+                </Typography>
+                <Typography>
+                  {t('eventDetails.lblDescription') + description}
+                </Typography>
+                <Typography>
+                  {t('eventDetails.lblContact') + contactEmail}
+                </Typography>
+              </Grid>
             </Grid>
           </DialogContent>
         </Dialog>

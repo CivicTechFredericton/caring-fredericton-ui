@@ -24,7 +24,8 @@
   "common": {
     "logo_icon": "Logo Icon",
     "required": "Required",
-    "submit": "Submit"
+    "submit": "Submit",
+    "btnClose": "Close"
   },
   "error": {
     "defaultMessage": "Something went wrong, please try again later",
@@ -106,6 +107,7 @@
     "lblEndDate": "End Date: ",
     "lblDescription": "Description: ",
     "lblContact": "Contact: ",
+    "btnEditEvent": "Edit Event",
     "btnCancelEvent": "Cancel Event",
     "lblConfirmCancel": "Confirm Cancel",
     "lblCancelMessage": "Are you sure you want to cancel the event?",
