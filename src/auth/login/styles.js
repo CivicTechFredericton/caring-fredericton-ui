@@ -25,6 +25,17 @@ const styles = createStyles(theme => ({
     width: '100%',
     height: 'auto',
   },
+  formLabelLinkContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 48,
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+  },
+  formLabelMarginRight: {
+    marginRight: 12,
+  },
 }));
 
 export default styles;

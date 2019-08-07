@@ -54,12 +54,21 @@ export const signUp = async userParams => {
   }
 };
 
-// Confirm user registration code
+// Confirm user verification code
 export const confirmCode = async (username, code) => {
   try {
     return await Auth.confirmSignUp(username, code, {
       forceAliasCreation: true,
     });
+  } catch (error) {
+    return { error };
+  }
+};
+
+// Resend user verification code
+export const resendCode = async username => {
+  try {
+    return await Auth.resendSignUp(username);
   } catch (error) {
     return { error };
   }

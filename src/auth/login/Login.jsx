@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Button, withStyles, Grid, Typography } from '@material-ui/core';
+import Link from '@material-ui/core/Link';
 import { TextField } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 import { signIn } from '../../api/cognito';
@@ -15,16 +16,6 @@ import styles from './styles';
 
 import CreateUser from '../createUser';
 import ConfirmCode from '../ConfirmCode';
-
-const RegisterButton = withStyles({
-  root: {
-    boxShadow: 'none',
-    textTransform: 'none',
-    fontSize: 16,
-    padding: '6px 12px',
-    lineHeight: 1.5,
-  },
-})(Button);
 
 class Login extends React.Component {
   constructor(props) {
@@ -91,6 +82,10 @@ class Login extends React.Component {
       // User needs to set their new password
       console.log(user);
     } else if (error) {
+      if (error === 'UserNotConfirmedException') {
+        // Resend the confirmation code
+        // Show the confirm code screen
+      }
       this.setState({ errorMsg: t('error.invalidCredentials') });
     } else {
       this.setState({ errorMsg: '' });
@@ -144,11 +139,11 @@ class Login extends React.Component {
                     className={classes.textField}
                     type='text'
                     name='username'
-                    label={t('authorize.username')}
+                    label={t('authorize.userEmail')}
                     margin='normal'
                     variant='outlined'
                     component={TextField}
-                    placeholder={t('authorize.username')}
+                    placeholder={t('authorize.userEmail')}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -200,6 +195,25 @@ class Login extends React.Component {
                     {t('authorize.login')}
                   </Button>
 
+                  <div className={classes.formLabelLinkContainer}>
+                    <Typography
+                      className={classes.formLabelMarginRight}
+                      variant='body1'
+                      color='textSecondary'
+                    >
+                      {t('authorize.noAccount')}
+                    </Typography>
+                    <Link
+                      component='button'
+                      variant='button'
+                      color='textPrimary'
+                      underline='always'
+                      onClick={this.openCreateUserModal}
+                    >
+                      {t('authorize.signUp')}
+                    </Link>
+                  </div>
+
                   <Grid item>
                     <CreateUser
                       t={t}
@@ -214,12 +228,6 @@ class Login extends React.Component {
                       handleClose={this.closeConfirmModal}
                       userName={this.state.userName}
                     />
-                    <RegisterButton
-                      className={classes.button}
-                      onClick={this.openCreateUserModal}
-                    >
-                      {t('authorize.registerUser')}
-                    </RegisterButton>
                   </Grid>
                 </Grid>
               </Form>

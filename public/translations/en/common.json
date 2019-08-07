@@ -1,7 +1,6 @@
 {
   "authorize": {
     "userEmail": "Email",
-    "username": "Username",
     "password": "Password",
     "login": "Login",
     "login_icon": "Login Icon",
@@ -11,8 +10,8 @@
     "confirmPassword": "Confirm Password",
     "verificationCode": "Verification Code",
     "btnCreate": "Create",
-    "registerUser": "Don't have an account?  Click here to register.",
-    "resendCode": "Lost your code?  Click here to resend.",
+    "noAccount": "Don't have an account?",
+    "signUp": "SIGN UP",
     "lblConfirmCode": "Please enter your verification code sent to you",
     "btnConfirmCode": "Confirm"
   },
@@ -22,10 +21,11 @@
     "registerOrganization": "Register Organization"
   },
   "common": {
-    "discardChanges": "Discard Changes",
+    "discardChanges": "Discard unsaved changes?",
     "logo_icon": "Logo Icon",
     "required": "Required",
     "submit": "Submit",
+    "cancel": "Cancel",
     "btnClose": "Close",
     "btnYes": "Yes",
     "btnNo": "No"
@@ -83,7 +83,6 @@
     "administrator": "Administrator",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "confirmCancel": "All changes will be lost.  Are you sure you want to proceed?",
     "btnCreate": "Create"
   },
   "event": {

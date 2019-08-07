@@ -10,7 +10,6 @@ import {
   Toolbar,
   Grid,
   withStyles,
-  createStyles,
   Button,
   Typography,
 } from '@material-ui/core';
@@ -19,8 +18,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
@@ -28,47 +25,13 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { signUp } from '../../api/cognito';
 import { SimpleEmailRegex } from '../../utils/regex';
-
-const styles = createStyles(theme => ({
-  root: {
-    paddingTop: 25,
-  },
-  field: {
-    paddingBottom: 5,
-  },
-  textField: {
-    width: 350,
-  },
-  spacer: {
-    paddingRight: 20,
-  },
-  button: {
-    marginLeft: '40%',
-    marginTop: 30,
-    color: 'white',
-    fontSize: '14px',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  appBar: {
-    position: 'relative',
-  },
-  flex: {
-    flex: 1,
-  },
-  error: {
-    color: theme.palette.secondary.dark,
-  },
-}));
+import { RegisterButton } from '../../components/RegisterButton';
+import styles from './styles';
 
 class CreateUser extends React.Component {
   defaultState = {
     errorMsg: '',
     open: false,
-    openCancel: false,
-    fullWidth: true,
-    maxWidth: 'md',
     showPassword: false,
     showConfirmPassword: false,
   };
@@ -82,14 +45,6 @@ class CreateUser extends React.Component {
   handleDialogClose = () => {
     this.setState(this.defaultState);
     this.props.handleClose();
-  };
-
-  openConfirmModel = () => {
-    this.setState({ openCancel: true });
-  };
-
-  closeConfirmModel = () => {
-    this.setState({ openCancel: false });
   };
 
   handleClickShowPassword = () => {
@@ -168,32 +123,15 @@ class CreateUser extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.registerUser')}
               </Grid>
-              <Grid item>
-                <Tooltip title={t('common.btnClose')}>
-                  <IconButton
-                    color='inherit'
-                    onClick={this.openConfirmModel}
-                    aria-label='Close'
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
-                <Dialog
-                  open={this.state.openCancel}
-                  onClose={this.closeConfirmModel}
-                  aria-labelledby='form-dialog-title'
+              <Tooltip title={t('common.btnClose')}>
+                <IconButton
+                  color='inherit'
+                  onClick={this.props.handleClose}
+                  aria-label='Close'
                 >
-                  <DialogTitle>{t('register.confirmCancel')}</DialogTitle>
-                  <DialogActions>
-                    <Button onClick={this.handleDialogClose}>
-                      {t('common.btnYes')}
-                    </Button>
-                    <Button onClick={this.closeConfirmModel} autoFocus>
-                      {t('common.btnNo')}
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </Grid>
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
             </Toolbar>
           </AppBar>
           <DialogContent>
@@ -381,15 +319,24 @@ class CreateUser extends React.Component {
                       {this.state.errorMsg}
                     </Typography>
 
-                    <Button
-                      className={this.props.classes.button}
-                      variant='contained'
-                      color='secondary'
-                      type='submit'
-                      disabled={isSubmitting}
-                    >
-                      {t('authorize.btnCreate')}
-                    </Button>
+                    <Grid container direction='row' justify='center'>
+                      <Grid item>
+                        <RegisterButton onClick={this.props.handleClose}>
+                          {t('common.cancel')}
+                        </RegisterButton>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          className={this.props.classes.button}
+                          variant='contained'
+                          color='secondary'
+                          type='submit'
+                          disabled={isSubmitting}
+                        >
+                          {t('authorize.btnCreate')}
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </Form>
                 )}
               </Formik>
