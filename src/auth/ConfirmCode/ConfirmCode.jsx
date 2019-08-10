@@ -11,54 +11,17 @@ import {
   Toolbar,
   Grid,
   withStyles,
-  createStyles,
   Button,
   Typography,
+  Link,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import { confirmCode, resendCode } from '../../api/cognito';
 
-import { confirmCode } from '../../api/cognito';
-
-const styles = createStyles(theme => ({
-  root: {
-    paddingTop: 25,
-  },
-  field: {
-    paddingBottom: 5,
-  },
-  textField: {
-    width: 350,
-  },
-  spacer: {
-    paddingRight: 20,
-  },
-  button: {
-    marginLeft: '40%',
-    marginTop: 30,
-    color: 'white',
-    fontSize: '14px',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    width: 100,
-  },
-  appBar: {
-    position: 'relative',
-  },
-  flex: {
-    flex: 1,
-  },
-  error: {
-    color: theme.palette.secondary.dark,
-  },
-}));
+import styles from './styles';
 
 class ConfirmCode extends React.Component {
   constructor(props) {
@@ -66,9 +29,9 @@ class ConfirmCode extends React.Component {
 
     this.state = {
       errorMsg: '',
-      open: false,
+      isResendingCode: false,
       fullWidth: true,
-      maxWidth: 'md',
+      maxWidth: 'sm',
     };
   }
 
@@ -78,8 +41,11 @@ class ConfirmCode extends React.Component {
 
     const { error } = await confirmCode(this.props.userName, values.code);
     if (error) {
-      if (error.code === 'CodeMismatchException') {
+      let errorCode = error.code;
+      if (errorCode === 'CodeMismatchException') {
         this.setState({ errorMsg: t('error.invalidVerificationCode') });
+      } else if (errorCode === 'LimitExceededException') {
+        this.setState({ errorMsg: t('error.attemptLimitExceeded') });
       } else {
         this.setState({ errorMsg: t('error.defaultMessage') });
       }
@@ -89,6 +55,27 @@ class ConfirmCode extends React.Component {
     }
 
     setSubmitting(false);
+  };
+
+  /*resendCode = async (setSubmitting) => {
+    const { t } = this.props;
+    setIsResendingCode(true);
+    await authApi.resendSignUp(this.props.userName);
+    setIsResendingCode(false);
+  }*/
+
+  submitResendCode = async () => {
+    // const { t } = this.props;
+    this.setState({ isResendingCode: true });
+    await resendCode(this.props.userName);
+    /*const { error } = await resendCode(this.props.userName);
+    if (error) {
+      this.setState({ errorMsg: t('error.defaultMessage') });
+    } else {
+      this.setState({ errorMsg: '' });
+    }*/
+
+    this.setState({ isResendingCode: false });
   };
 
   render() {
@@ -180,6 +167,26 @@ class ConfirmCode extends React.Component {
                     >
                       {t('authorize.btnConfirmCode')}
                     </Button>
+
+                    <div className={classes.formLabelLinkContainer}>
+                      <Typography
+                        className={classes.formLabelMarginRight}
+                        variant='body1'
+                        color='textSecondary'
+                      >
+                        {t('authorize.lblResendCode')}
+                      </Typography>
+                      <Link
+                        component='button'
+                        variant='button'
+                        color='textPrimary'
+                        underline='always'
+                        onClick={this.submitResendCode}
+                        disabled={this.state.isResendingCode}
+                      >
+                        {t('authorize.btnResendCode')}
+                      </Link>
+                    </div>
                   </Form>
                 )}
               </Formik>

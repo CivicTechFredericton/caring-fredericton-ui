@@ -7,7 +7,6 @@ import {
   Toolbar,
   Grid,
   withStyles,
-  createStyles,
   Button,
   Typography,
 } from '@material-ui/core';
@@ -28,25 +27,7 @@ import { getUserDetails } from '../../utils/localStorage';
 import { cancelEvent } from '../../api/endpoints';
 import { getSession } from '../../api/cognito';
 
-const styles = createStyles(theme => ({
-  root: {
-    paddingTop: 25,
-  },
-  spacer: {
-    paddingRight: 20,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    width: 100,
-  },
-  appBar: {
-    position: 'relative',
-  },
-  flex: {
-    flex: 1,
-  },
-}));
+import styles from './styles';
 
 class EventDialog extends React.Component {
   constructor(props) {

@@ -12,8 +12,12 @@
     "btnCreate": "Create",
     "noAccount": "Don't have an account?",
     "signUp": "SIGN UP",
+    "lblResendCode": "Didn't receive the code?",
+    "btnResendCode": "RESEND",
     "lblConfirmCode": "Please enter your verification code sent to you",
-    "btnConfirmCode": "Confirm"
+    "btnConfirmCode": "Confirm",
+    "dialogTitleAccountNotConfirmedYet": "Account Not Confirmed",
+    "dialogMessageAccountNotConfirmedYet": "Please confirm your account to continue"
   },
   "dialogs": {
     "registerUser": "Register User",
@@ -24,9 +28,11 @@
     "discardChanges": "Discard unsaved changes?",
     "logo_icon": "Logo Icon",
     "required": "Required",
+    "invalidEmail": "Invalid Email",
     "submit": "Submit",
     "cancel": "Cancel",
     "btnClose": "Close",
+    "btnOk": "OK",
     "btnYes": "Yes",
     "btnNo": "No"
   },
@@ -41,7 +47,8 @@
     "passwordMissingLowercase": "The password must include at least one lower case character",
     "passwordMissingUppercase": "The password must include at least one upper case character",
     "passwordMissingSymbol": "The password must include at least one symbol",
-    "invalidVerificationCode": "Invalid verification code provided, please try again"
+    "invalidVerificationCode": "Invalid verification code provided, please try again",
+    "attemptLimitExceeded": "Attempt limit exceeded, please try again later"
   },
   "home": {
     "filterTitle": "Event Category"
