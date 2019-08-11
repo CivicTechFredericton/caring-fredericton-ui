@@ -7,7 +7,7 @@ import { getUserDetails } from '../../utils/localStorage';
 
 import history from '../../history';
 import logo from '../../logo.png';
-import styles from './style';
+import styles from './styles';
 
 class Header extends React.Component {
   // TODO: Code to allow async/await rendering of the component
@@ -24,14 +24,20 @@ async componentDidMount() {
   this.setState({ validSession: validSession });
 }*/
 
-  authButtonGroup = validSession => {
+  authButtonGroup = (validSession, organizationId) => {
     const { t, classes } = this.props;
+
+    let path = window.location.pathname;
+    let pathSegments = path.split('/');
+    let pathOne = pathSegments[1];
+    let showHomeButton = pathOne === 'Login';
+    console.log(showHomeButton);
 
     return (
       <div>
         {validSession ? (
           <div>
-            {!getUserDetails().organization_id && (
+            {!organizationId && (
               <Button
                 className={classes.button}
                 onClick={() => {
@@ -71,9 +77,10 @@ async componentDidMount() {
 
     let validSession = isValidUser();
 
-    let orgName = '';
+    let orgId = '';
     if (validSession) {
-      orgName = getUserDetails().organization_name;
+      let userDetails = getUserDetails();
+      orgId = userDetails.organization_id;
     }
 
     return (
@@ -97,17 +104,17 @@ async componentDidMount() {
                     <img
                       className={classes.image}
                       src={logo}
-                      alt={t('common:logo_icon')}
+                      alt={t('common:logoIcon')}
                     />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant='h6'>
+                      {t('common:lblCaringCalendar')}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              {orgName && (
-                <Grid item>
-                  <Typography variant='h6'>{orgName}</Typography>
-                </Grid>
-              )}
-              <Grid item>{this.authButtonGroup(validSession)}</Grid>
+              <Grid item>{this.authButtonGroup(validSession, orgId)}</Grid>
             </Grid>
           </Toolbar>
         </AppBar>

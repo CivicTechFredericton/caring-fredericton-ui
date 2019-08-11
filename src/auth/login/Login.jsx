@@ -85,7 +85,6 @@ class Login extends React.Component {
       // User needs to set their new password
       console.log(user);
     } else if (error) {
-      console.log(error);
       if (error.code === 'UserNotConfirmedException') {
         this.handleConfirmAccount(values.email);
       } else {
@@ -136,7 +135,7 @@ class Login extends React.Component {
                 <img
                   className={classes.image}
                   src={logo}
-                  alt={t('authorize:login_icon')}
+                  alt={t('authorize:loginIcon')}
                 />
               </Grid>
               <Form>

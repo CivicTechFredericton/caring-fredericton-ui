@@ -3,7 +3,7 @@
     "userEmail": "Email",
     "password": "Password",
     "login": "Login",
-    "login_icon": "Login Icon",
+    "loginIcon": "Login Icon",
     "logout": "Log Out",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -25,8 +25,9 @@
     "registerOrganization": "Register Organization"
   },
   "common": {
+    "lblCaringCalendar": "Caring Calendar",
     "discardChanges": "Discard unsaved changes?",
-    "logo_icon": "Logo Icon",
+    "logoIcon": "Logo Icon",
     "required": "Required",
     "invalidEmail": "Invalid Email",
     "submit": "Submit",

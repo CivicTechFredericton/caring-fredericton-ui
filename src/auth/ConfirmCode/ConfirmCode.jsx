@@ -57,24 +57,9 @@ class ConfirmCode extends React.Component {
     setSubmitting(false);
   };
 
-  /*resendCode = async (setSubmitting) => {
-    const { t } = this.props;
-    setIsResendingCode(true);
-    await authApi.resendSignUp(this.props.userName);
-    setIsResendingCode(false);
-  }*/
-
   submitResendCode = async () => {
-    // const { t } = this.props;
     this.setState({ isResendingCode: true });
     await resendCode(this.props.userName);
-    /*const { error } = await resendCode(this.props.userName);
-    if (error) {
-      this.setState({ errorMsg: t('error.defaultMessage') });
-    } else {
-      this.setState({ errorMsg: '' });
-    }*/
-
     this.setState({ isResendingCode: false });
   };
 

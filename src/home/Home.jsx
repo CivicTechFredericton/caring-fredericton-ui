@@ -289,7 +289,7 @@ class Home extends React.Component {
           <img
             className={classes.image}
             src={logo}
-            alt={t('common:logo_icon')}
+            alt={t('common:logoIcon')}
           />
         </Grid>
         <Grid className={classes.filter} item>
