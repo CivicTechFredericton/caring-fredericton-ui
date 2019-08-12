@@ -15,7 +15,9 @@ import { getSession } from '../../api/cognito';
 
 import Tooltip from '@material-ui/core/Tooltip';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 
 import validation from './validation';
@@ -27,6 +29,7 @@ class Organization extends React.Component {
 
     this.state = {
       open: false,
+      openCancel: false,
       fullWidth: true,
       maxWidth: 'md',
     };
@@ -67,6 +70,20 @@ class Organization extends React.Component {
     };
 
     return orgRequest;
+  };
+
+  // Handle confirmation close dialog
+  openConfirmModel = () => {
+    this.setState({ openCancel: true });
+  };
+
+  closeConfirmModel = () => {
+    this.setState({ openCancel: false });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ openCancel: false });
+    this.props.handleClose();
   };
 
   //create generic reusable input field
@@ -216,15 +233,32 @@ class Organization extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.registerOrganization')}
               </Grid>
-              <Tooltip title={t('common.btnClose')}>
-                <IconButton
-                  color='inherit'
-                  onClick={this.props.handleClose}
-                  aria-label='Close'
+              <Grid item>
+                <Tooltip title={t('common.btnClose')}>
+                  <IconButton
+                    color='inherit'
+                    onClick={this.openConfirmModel}
+                    aria-label='Close'
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+                <Dialog
+                  open={this.state.openCancel}
+                  onClose={this.closeConfirmModel}
+                  aria-labelledby='form-dialog-title'
                 >
-                  <CloseIcon />
-                </IconButton>
-              </Tooltip>
+                  <DialogTitle>{t('common.discardChanges')}</DialogTitle>
+                  <DialogActions>
+                    <Button onClick={this.handleDialogClose}>
+                      {t('common.btnYes')}
+                    </Button>
+                    <Button onClick={this.closeConfirmModel} autoFocus>
+                      {t('common.btnNo')}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Grid>
             </Toolbar>
           </AppBar>
           <DialogContent>

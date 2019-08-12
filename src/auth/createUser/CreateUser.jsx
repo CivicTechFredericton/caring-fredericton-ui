@@ -23,13 +23,14 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { signUp } from '../../api/cognito';
-import { RegisterButton } from '../../components/RegisterButton';
 import styles from './styles';
 
 class CreateUser extends React.Component {
   defaultState = {
     errorMsg: '',
     open: false,
+    fullWidth: true,
+    maxWidth: 'sm',
     showPassword: false,
     showConfirmPassword: false,
   };
@@ -108,7 +109,7 @@ class CreateUser extends React.Component {
   render() {
     const { t, classes } = this.props;
 
-    const requiredTranslated = t('common:required');
+    const requiredTranslated = t('common.required');
 
     const SignUpSchema = Yup.object().shape({
       email: Yup.string()
@@ -118,7 +119,7 @@ class CreateUser extends React.Component {
       last_name: Yup.string().required(requiredTranslated),
       password: Yup.string().required(requiredTranslated),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password')], t('error:passwordsDoNotMatch'))
+        .oneOf([Yup.ref('password')], t('error.passwordsDoNotMatch'))
         .required(requiredTranslated),
     });
 
@@ -299,24 +300,15 @@ class CreateUser extends React.Component {
                       {this.state.errorMsg}
                     </Typography>
 
-                    <Grid container direction='row' justify='center'>
-                      <Grid item>
-                        <RegisterButton onClick={this.props.handleClose}>
-                          {t('common.cancel')}
-                        </RegisterButton>
-                      </Grid>
-                      <Grid item>
-                        <Button
-                          className={this.props.classes.button}
-                          variant='contained'
-                          color='secondary'
-                          type='submit'
-                          disabled={isSubmitting}
-                        >
-                          {t('authorize.btnCreate')}
-                        </Button>
-                      </Grid>
-                    </Grid>
+                    <Button
+                      className={this.props.classes.button}
+                      variant='contained'
+                      color='secondary'
+                      type='submit'
+                      disabled={isSubmitting}
+                    >
+                      {t('authorize.btnCreate')}
+                    </Button>
                   </Form>
                 )}
               </Formik>

@@ -230,24 +230,22 @@ class Login extends React.Component {
                     aria-labelledby='confirm-account-dialog-title'
                     aria-describedby='confirm-account-dialog-description'
                   >
-                    <DialogTitle
-                      id='confirm-account-dialog-title'
-                      disableTypography={true}
-                    >
+                    <DialogTitle disableTypography={true}>
                       <Typography variant='h6' color='inherit'>
                         {t('authorize.dialogTitleAccountNotConfirmedYet')}
                       </Typography>
                     </DialogTitle>
                     <DialogContent>
-                      <DialogContentText id='confirm-account-dialog-description'>
+                      <DialogContentText>
                         {t('authorize.dialogMessageAccountNotConfirmedYet')}
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                       <Button
+                        className={classes.loginButton}
+                        variant='contained'
+                        color='secondary'
                         onClick={this.handleConfirmAccount}
-                        color='primary'
-                        autoFocus
                       >
                         {t('common.btnOk')}
                       </Button>

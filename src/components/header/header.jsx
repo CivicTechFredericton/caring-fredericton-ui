@@ -24,14 +24,21 @@ async componentDidMount() {
   this.setState({ validSession: validSession });
 }*/
 
-  authButtonGroup = (validSession, organizationId) => {
+  authButtonGroup = () => {
     const { t, classes } = this.props;
+
+    let validSession = isValidUser();
+
+    let organizationId = '';
+    if (validSession) {
+      let userDetails = getUserDetails();
+      organizationId = userDetails.organization_id;
+    }
 
     let path = window.location.pathname;
     let pathSegments = path.split('/');
     let pathOne = pathSegments[1];
     let showHomeButton = pathOne === 'Login';
-    console.log(showHomeButton);
 
     return (
       <div>
@@ -58,15 +65,30 @@ async componentDidMount() {
             </Button>
           </div>
         ) : (
-          <Button
-            className={classes.button}
-            onClick={() => {
-              history.push('/Login');
-            }}
-          >
-            {' '}
-            {t('authorize.login')}{' '}
-          </Button>
+          <div>
+            {!showHomeButton && (
+              <Button
+                className={classes.button}
+                onClick={() => {
+                  history.push('/Login');
+                }}
+              >
+                {' '}
+                {t('authorize.login')}{' '}
+              </Button>
+            )}
+            {showHomeButton && (
+              <Button
+                className={classes.button}
+                onClick={() => {
+                  history.push('/');
+                }}
+              >
+                {' '}
+                {t('common.lblHome')}{' '}
+              </Button>
+            )}
+          </div>
         )}
       </div>
     );
@@ -74,14 +96,6 @@ async componentDidMount() {
 
   render() {
     const { t, classes } = this.props;
-
-    let validSession = isValidUser();
-
-    let orgId = '';
-    if (validSession) {
-      let userDetails = getUserDetails();
-      orgId = userDetails.organization_id;
-    }
 
     return (
       <div className={classes.root}>
@@ -104,17 +118,17 @@ async componentDidMount() {
                     <img
                       className={classes.image}
                       src={logo}
-                      alt={t('common:logoIcon')}
+                      alt={t('common.logoIcon')}
                     />
                   </Grid>
                   <Grid item>
                     <Typography variant='h6'>
-                      {t('common:lblCaringCalendar')}
+                      {t('common.lblCaringCalendar')}
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item>{this.authButtonGroup(validSession, orgId)}</Grid>
+              <Grid item>{this.authButtonGroup()}</Grid>
             </Grid>
           </Toolbar>
         </AppBar>
