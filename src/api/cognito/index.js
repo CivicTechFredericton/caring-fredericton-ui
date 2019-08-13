@@ -2,7 +2,8 @@ import { Auth } from 'aws-amplify';
 
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import history from '../../history';
-import { createUser, getUserDetails } from '../endpoints';
+//import { createUser, getUserDetails } from '../endpoints';
+import { getUserDetails } from '../endpoints';
 import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
 
 import { getEnvVariable } from '../../utils/environmentVariables';
@@ -46,7 +47,7 @@ export const signUp = async userParams => {
     // Create the DynamoDB user record upon success
     userParams['user_sub'] = result.userSub;
     delete userParams[password];
-    await createUser(userParams);
+    //await createUser(userParams);
 
     return result;
   } catch (error) {
