@@ -276,9 +276,8 @@ class CreateUser extends React.Component {
                           <Typography>
                             {'Password Instructions: ' +
                               'Your password has to be at least 8 characters long. ' +
-                              'Must contain at least one lower case letter, ' +
-                              'one upper case letter, one digit' +
-                              'and one of these special characters ~!@#$%^&*()_+ '}
+                              'Must contain at least one upper case letter, one digit' +
+                              'and one special character'}
                           </Typography>
                         </Grid>
 
