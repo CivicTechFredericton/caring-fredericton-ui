@@ -271,6 +271,17 @@ class CreateUser extends React.Component {
                             }}
                           />
                         </Grid>
+
+                        <Grid className={classes.spacer} item>
+                          <Typography>
+                            {'Password Instructions: ' +
+                              'Your password has to be at least 8 characters long. ' +
+                              'Must contain at least one lower case letter, ' +
+                              'one upper case letter, one digit' +
+                              'and one of these special characters ~!@#$%^&*()_+ '}
+                          </Typography>
+                        </Grid>
+
                         <Grid className={classes.field} item>
                           <Field
                             className={classes.textField}
