@@ -279,7 +279,7 @@ class CreateUser extends React.Component {
 
                           <Typography>
                             {
-                              'Must contain at least one upper case letter, one digit. '
+                              'Must contain at least one lower case letter, one digit. '
                             }
                           </Typography>
                         </Grid>
