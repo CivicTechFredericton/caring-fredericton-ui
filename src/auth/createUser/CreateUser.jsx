@@ -273,7 +273,7 @@ class CreateUser extends React.Component {
                         </Grid>
 
                         <Grid className={classes.spacer} item>
-                          <Typography textAlign={'center'}>
+                          <Typography>
                             {'Password has to be at least 8 characters long.'}
                           </Typography>
 
