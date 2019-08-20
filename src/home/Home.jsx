@@ -4,6 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles } from '@material-ui/core';
 import Filter from './filter';
+import FilterOrganization from './filterOrganization';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -14,7 +15,10 @@ import logo from '../ctflogo.jpg';
 import CreateEvent from './create-event/CreateEvent';
 import RegisterOrganization from './register-organization/RegisterOrganization';
 import { isValidUser } from '../api/cognito';
-import { listEventsForGuestUser } from '../api/endpoints';
+import {
+  listEventsForGuestUser,
+  listEventsWithOrganizationForGuestUser,
+} from '../api/endpoints';
 import { getUserDetails } from '../utils/localStorage';
 
 import EventDialog from './eventDialog';
@@ -41,6 +45,9 @@ const styles = () =>
       width: '25%',
       height: 'auto',
     },
+    calender: {
+      paddingLeft: 15,
+    },
   });
 
 // const RegisterButton = withStyles({
@@ -65,6 +72,7 @@ class Home extends React.Component {
       userDetails: {},
       filters: {
         categoriesFilterSet: [],
+        organizationValue: null,
       },
       showDialog: false,
       dialogEvent: null,
@@ -94,14 +102,16 @@ class Home extends React.Component {
 
   updateFilters = filterObj => {
     const filters = Object.assign({}, this.state.filters, filterObj);
-    this.setState({ filters });
-    if (filters.categoriesFilterSet) {
+    this.setState({ filters }, () => {
+      this.updateTimes();
+    });
+    /*if (filters.categoriesFilterSet) {
       this.updateTimes(
         this.state.currentDate,
         this.state.currentView,
         filters.categoriesFilterSet
-      );
-    }
+      );*/
+    //}
   };
 
   organizationDetailsGroup = () => {
@@ -187,30 +197,39 @@ class Home extends React.Component {
   };
 
   hideModal = () => {
-    this.updateTimes(this.state.currentDate, this.state.currentView);
+    this.updateTimes();
   };
 
   /**
    * BigCalendar event handling
    */
   onView = view => {
-    this.setState({
-      currentView: view,
-    });
-
-    this.updateTimes(this.state.currentDate, view);
+    this.setState(
+      {
+        currentView: view,
+      },
+      () => {
+        this.updateTimes();
+      }
+    );
   };
 
   onNavigate = (date, view) => {
     const newDate = moment(date);
-    this.setState({
-      currentDate: newDate,
-    });
-
-    this.updateTimes(newDate, view);
+    this.setState(
+      {
+        currentDate: newDate,
+        currentView: view,
+      },
+      () => {
+        this.updateTimes();
+      }
+    );
   };
 
-  updateTimes = (date, view, categories) => {
+  updateTimes = () => {
+    const date = this.state.currentDate;
+    const view = this.state.currentView;
     let start, end;
 
     if (view === 'day') {
@@ -228,11 +247,7 @@ class Home extends React.Component {
         .add(7, 'days');
     }
 
-    this.loadEvents(
-      start.format(API_DATE_FORMAT),
-      end.format(API_DATE_FORMAT),
-      categories
-    );
+    this.loadEvents(start.format(API_DATE_FORMAT), end.format(API_DATE_FORMAT));
   };
 
   openEventDialog = event => {
@@ -241,49 +256,69 @@ class Home extends React.Component {
 
   closeEventDialog = () => {
     this.setState({ showDialog: false, dialogEvent: null });
-    this.updateTimes(this.state.currentDate, this.state.currentView);
+    this.updateTimes();
   };
 
-  loadEvents = (start, end, categories) => {
-    const filterCategories =
-      categories || this.state.filters.categoriesFilterSet;
-    listEventsForGuestUser(start, end, filterCategories).then(results => {
-      if (results.length > 0) {
-        let input = [];
-        results.map(result => {
-          const startDate = moment(result.start_date + ' ' + result.start_time)
-            .utc('YYYY-MM-DD HH:mm:ss')
-            .local();
+  TransformEvent = results => {
+    if (results.length > 0) {
+      let input = [];
+      results.map(result => {
+        const startDate = moment(result.start_date + ' ' + result.start_time)
+          .utc('YYYY-MM-DD HH:mm:ss')
+          .local();
 
-          const endDate = moment(result.end_date + ' ' + result.end_time)
-            .utc('YYYY-MM-DD HH:mm:ss')
-            .local();
+        const endDate = moment(result.end_date + ' ' + result.end_time)
+          .utc('YYYY-MM-DD HH:mm:ss')
+          .local();
 
-          const event = Object.assign(
-            {},
-            {
-              title: result.name,
-              allDay: false,
-              start: new Date(
-                startDate.format(API_DATE_FORMAT) +
-                  'T' +
-                  startDate.format(API_TIME_FORMAT)
-              ),
-              end: new Date(
-                endDate.format(API_DATE_FORMAT) +
-                  'T' +
-                  endDate.format(API_TIME_FORMAT)
-              ),
-            },
-            result
-          );
+        const event = Object.assign(
+          {},
+          {
+            title: result.name,
+            allDay: false,
+            start: new Date(
+              startDate.format(API_DATE_FORMAT) +
+                'T' +
+                startDate.format(API_TIME_FORMAT)
+            ),
+            end: new Date(
+              endDate.format(API_DATE_FORMAT) +
+                'T' +
+                endDate.format(API_TIME_FORMAT)
+            ),
+          },
+          result
+        );
 
-          input.push(event);
-        });
+        input.push(event);
+      });
 
-        this.setState({ events: input });
-      }
-    });
+      this.setState({ events: input });
+    } else {
+      this.setState({ events: [] });
+    }
+  };
+
+  loadEvents = (start, end) => {
+    console.log(this.state.filters.organizationValue);
+    if (!this.state.filters.organizationValue) {
+      listEventsForGuestUser(
+        start,
+        end,
+        this.state.filters.categoriesFilterSet
+      ).then(results => {
+        this.TransformEvent(results);
+      });
+    } else {
+      listEventsWithOrganizationForGuestUser(
+        start,
+        end,
+        this.state.filters.categoriesFilterSet,
+        this.state.filters.organizationValue
+      ).then(results => {
+        this.TransformEvent(results);
+      });
+    }
   };
 
   render() {
@@ -293,31 +328,42 @@ class Home extends React.Component {
       <Grid
         className={classes.root}
         container
-        direction='row'
-        justify='flex-start'
-        alignItems='flex-start'
+        direction='column'
+        justify='center'
+        alignItems='center'
       >
         <Grid item>
           <img className={classes.image} src={logo} />
         </Grid>
-        <Grid className={classes.filter} item>
-          <Filter updateFilters={this.updateFilters} />
-        </Grid>
-        <Grid item>
-          <BigCalendar
-            style={{ height: 500, width: 800 }}
-            localizer={localizer}
-            step={60}
-            events={this.state.events}
-            defaultView='week'
-            views={['day', 'week', 'month']}
-            date={this.state.currentDate.toDate()}
-            onView={this.onView}
-            onNavigate={this.onNavigate}
-            startAccessor='start'
-            endAccessor='end'
-            onSelectEvent={this.openEventDialog}
-          />
+        <Grid
+          item
+          container
+          direction='row'
+          justify='flex-start'
+          alignItems='flex-start'
+        >
+          <Grid className={classes.filter} item xs={2}>
+            <FilterOrganization
+              updateFiltersOrganization={this.updateFilters}
+            />
+            <Filter updateFilters={this.updateFilters} />
+          </Grid>
+          <Grid item className={classes.calender} xs={10}>
+            <BigCalendar
+              //style={{ height: 500, width: 800 }}
+              localizer={localizer}
+              step={60}
+              events={this.state.events}
+              defaultView='week'
+              views={['day', 'week', 'month']}
+              date={this.state.currentDate.toDate()}
+              onView={this.onView}
+              onNavigate={this.onNavigate}
+              startAccessor='start'
+              endAccessor='end'
+              onSelectEvent={this.openEventDialog}
+            />
+          </Grid>
         </Grid>
         {isValidUser() && <Grid item>{this.organizationDetailsGroup()}</Grid>}
         <EventDialog
