@@ -4,8 +4,12 @@
 backend.tf
 cloudformation/output
 cloudformation/playbook*
-settings_environment.json
 .DS_Store
+
+# Local env files
+.env
+.env.local
+.env.development.local
 
 # Logs
 logs
