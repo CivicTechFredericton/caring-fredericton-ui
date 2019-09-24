@@ -1,4 +1,4 @@
-#Must be CloudFormation stack compatible (Alphanumeric plus hyphens)
+# Must be CloudFormation stack compatible (Alphanumeric plus hyphens)
 project_code: caring-fred
 region: ca-central-1
 
