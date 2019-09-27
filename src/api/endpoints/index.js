@@ -25,6 +25,32 @@ export async function listEventsForGuestUser(
   return await fetch(url, requestData).then(response => response.json());
 }
 
+export async function listEventsWithOrganizationForGuestUser(
+  start_date,
+  end_date,
+  categoriesArray,
+  org_id
+) {
+  let url = new URL(BASE_API_URL + `/guests/organizations/${org_id}/events`);
+  const categories = categoriesArray.join(',');
+  url.search = new URLSearchParams({
+    start_date,
+    end_date,
+    categories,
+    org_id,
+  });
+
+  const headers = new Headers();
+  headers.append('content-type', 'application/json');
+
+  const requestData = {
+    headers,
+    method: 'GET',
+  };
+
+  return await fetch(url, requestData).then(response => response.json());
+}
+
 export async function listRegisteredOrganizations() {
   let url = BASE_API_URL + '/guests/organizations';
 

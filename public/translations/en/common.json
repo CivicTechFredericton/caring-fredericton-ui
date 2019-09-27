@@ -16,6 +16,10 @@
     "lblConfirmCode": "Please enter your verification code sent to you",
     "btnConfirmCode": "Confirm"
   },
+  "filters": {
+    "lblSelect": "Select",
+    "orgHelperText": "Organization Name"
+  },
   "dialogs": {
     "createUser": "Create User",
     "createEvent": "Create Event",
