@@ -5,7 +5,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import styles from './styles';
 import PropTypes from 'prop-types';
 import { listRegisteredOrganizations } from '../../api/endpoints';
-//import { conditionalExpression } from '@babel/types';
 
 class FilterOrganization extends React.Component {
   constructor(props) {
@@ -15,7 +14,6 @@ class FilterOrganization extends React.Component {
       value: '',
       organizations: [],
     };
-    //this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange = event => {
@@ -32,68 +30,42 @@ class FilterOrganization extends React.Component {
 
   GetOrganizationsList = () => {
     listRegisteredOrganizations().then(organizations => {
-      //console.log(options)
       organizations.push({ id: null, name: null });
       this.setState({ organizations });
     });
   };
 
-  GetOrfanizationMenu = options => {
-    {
-      return options.map(option => {
-        return (
-          <MenuItem key={option.id} value={option.name}>
-            {option.name || 'All'}
-          </MenuItem>
-        );
-      });
-    }
+  GetOrganizationMenu = options => {
+    return options.map(option => {
+      return (
+        <MenuItem key={option.id} value={option.name}>
+          {option.name || 'All'}
+        </MenuItem>
+      );
+    });
   };
 
   render() {
-    const { classes } = this.props;
-    /*const currencies = [
-          {
-            value: 'USD',
-            label: '$',
-          },
-          {
-            value: 'EUR',
-            label: '€',
-          },
-          {
-            value: 'BTC',
-            label: '฿',
-          },
-          {
-            value: 'JPY',
-            label: '¥',
-          },
-        ];*/
-
-    /*listRegisteredOrganizations().then(results => results.map(option => {
-          }))*/
+    const { classes, t } = this.props;
 
     return (
       <form className={classes.container} noValidate autoComplete='off'>
         <TextField
           id='standard-select-currency'
           select
-          label='Select'
+          label={t('filters.lblSelect')}
           className={classes.textField}
-          value={this.state.value} //'EUR'//{values.currency}
-          //onChange={handleChange('currency')}
+          value={this.state.value}
           onChange={this.handleChange}
-          //onChange={() => {}}
           SelectProps={{
             MenuProps: {
               className: classes.menu,
             },
           }}
-          helperText='Please select your organization'
+          helperText={t('filters.orgHelperText')}
           margin='normal'
         >
-          {this.GetOrfanizationMenu(this.state.organizations)}
+          {this.GetOrganizationMenu(this.state.organizations)}
         </TextField>
       </form>
     );
@@ -103,7 +75,7 @@ class FilterOrganization extends React.Component {
 FilterOrganization.propTypes = {
   classes: PropTypes.any,
   updateFiltersOrganization: PropTypes.func,
-  //t: PropTypes.any,
+  t: PropTypes.any,
 };
 
 export default withStyles(styles, { withTheme: true })(FilterOrganization);

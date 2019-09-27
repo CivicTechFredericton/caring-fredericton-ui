@@ -105,13 +105,6 @@ class Home extends React.Component {
     this.setState({ filters }, () => {
       this.updateTimes();
     });
-    /*if (filters.categoriesFilterSet) {
-      this.updateTimes(
-        this.state.currentDate,
-        this.state.currentView,
-        filters.categoriesFilterSet
-      );*/
-    //}
   };
 
   organizationDetailsGroup = () => {
@@ -193,7 +186,6 @@ class Home extends React.Component {
   hideRegisterModal = () => {
     this.hideModal();
     this.props.closeRegister();
-    //this.setState({ showRegister: false });
   };
 
   hideModal = () => {
