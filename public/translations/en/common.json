@@ -19,6 +19,10 @@
     "dialogTitleAccountNotConfirmedYet": "Account Not Confirmed",
     "dialogMessageAccountNotConfirmedYet": "Please confirm your account to continue"
   },
+  "filters": {
+    "lblSelect": "Select",
+    "orgHelperText": "Organization Name"
+  },
   "dialogs": {
     "registerUser": "Register User",
     "createEvent": "Create Event",
