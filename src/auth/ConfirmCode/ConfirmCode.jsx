@@ -13,6 +13,7 @@ import {
   withStyles,
   createStyles,
   Button,
+  Typography,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -54,17 +55,41 @@ const styles = createStyles(theme => ({
   flex: {
     flex: 1,
   },
+  error: {
+    color: theme.palette.secondary.dark,
+  },
 }));
 
 class ConfirmCode extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      errorMsg: '',
       open: false,
       fullWidth: true,
       maxWidth: 'md',
     };
   }
+
+  submitConfirmCode = async (values, setSubmitting) => {
+    const { t } = this.props;
+    setSubmitting(true);
+
+    const { error } = await confirmCode(this.props.userName, values.code);
+    if (error) {
+      if (error.code === 'CodeMismatchException') {
+        this.setState({ errorMsg: t('error.invalidVerificationCode') });
+      } else {
+        this.setState({ errorMsg: t('error.defaultMessage') });
+      }
+    } else {
+      this.setState({ errorMsg: '' });
+      this.props.handleClose();
+    }
+
+    setSubmitting(false);
+  };
 
   render() {
     const { t, classes } = this.props;
@@ -111,13 +136,9 @@ class ConfirmCode extends React.Component {
 
                   return errors;
                 }}
-                onSubmit={(values, { setSubmitting }) => {
-                  confirmCode(this.props.userName, values.code).then(() => {
-                    setSubmitting(false);
-
-                    this.props.handleClose();
-                  });
-                }}
+                onSubmit={(values, { setSubmitting }) =>
+                  this.submitConfirmCode(values, setSubmitting)
+                }
               >
                 {({ isSubmitting }) => (
                   <Form>
@@ -133,10 +154,10 @@ class ConfirmCode extends React.Component {
                             component={TextField}
                             type='text'
                             name='code'
-                            label={t('authorize.confirmCode')}
+                            label={t('authorize.verificationCode')}
                             margin='normal'
                             variant='outlined'
-                            placeholder={t('authorize.confirmCode')}
+                            placeholder={t('authorize.verificationCode')}
                             className={classes.textField}
                             InputLabelProps={{
                               shrink: true,
@@ -145,6 +166,11 @@ class ConfirmCode extends React.Component {
                         </Grid>
                       </Grid>
                     </Grid>
+
+                    <Typography className={classes.error}>
+                      {this.state.errorMsg}
+                    </Typography>
+
                     <Button
                       className={this.props.classes.button}
                       variant='contained'

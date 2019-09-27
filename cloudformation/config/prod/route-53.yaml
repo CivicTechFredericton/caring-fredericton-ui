@@ -1,0 +1,10 @@
+template_path: templates/route-53.j2
+
+stack_tags: { { environment_config.stack_tags } }
+
+sceptre_user_data:
+  cloudfront:
+    target: !stack_output cloudfront::CloudFrontDomainName
+    domain_name: www.{{ environment_config.domain }}
+  environment: { { environment_path.0 } }
+  project_code: { { environment_config.project_code } }

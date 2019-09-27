@@ -12,6 +12,7 @@ import {
   withStyles,
   createStyles,
   Button,
+  Typography,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -22,8 +23,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import { createUser } from '../../api/endpoints';
-import { SimpleEmailRegex } from 'Utils/regex';
+import { signUp } from '../../api/cognito';
+import { SimpleEmailRegex } from '../../utils/regex';
 
 const styles = createStyles(theme => ({
   root: {
@@ -53,6 +54,9 @@ const styles = createStyles(theme => ({
   flex: {
     flex: 1,
   },
+  error: {
+    color: theme.palette.secondary.dark,
+  },
 }));
 
 class CreateUser extends React.Component {
@@ -60,6 +64,7 @@ class CreateUser extends React.Component {
     super(props);
 
     this.state = {
+      errorMsg: '',
       open: false,
       fullWidth: true,
       maxWidth: 'md',
@@ -78,18 +83,55 @@ class CreateUser extends React.Component {
     this.setState({ showConfirmPassword: !currFlag });
   };
 
-  // TODO: Capture errors from the API calls
-  /*submitCreateUser = (values, setSubmitting) => {
-    const { t, history } = this.props;
+  submitCreateUser = async (values, setSubmitting) => {
+    const { t } = this.props;
     setSubmitting(true);
 
-    createUser(values).then(() => {
-      setSubmitting(false);
+    const { error } = await signUp(values);
+    if (error) {
+      if (error.code === 'UsernameExistsException') {
+        this.setState({
+          errorMsg: t('error.userAlreadyExists', { address: values.email }),
+        });
+      } else if (error.code === 'InvalidPasswordException') {
+        // TODO: Place this check in a common function that can be used by forgot password
+        // and set password
+        let message = error.message;
+        if (message.includes('long enough')) {
+          this.setState({ errorMsg: t('error.passwordTooShort') });
+        } else if (message.includes('numeric')) {
+          this.setState({ errorMsg: t('error.passwordMissingNumber') });
+        } else if (message.includes('lowercase')) {
+          this.setState({ errorMsg: t('error.passwordMissingLowercase') });
+        } else if (message.includes('uppercase')) {
+          this.setState({ errorMsg: t('error.passwordMissingUppercase') });
+        } else if (message.includes('symbol')) {
+          this.setState({ errorMsg: t('error.passwordMissingSymbol') });
+        } else {
+          this.setState({ errorMsg: t('error.defaultMessage') });
+        }
+      } else if (error.code === 'InvalidParameterException') {
+        if (
+          error.message.includes(
+            'member must have length greater than or equal to 6'
+          )
+        ) {
+          this.setState({ errorMsg: t('error.passwordTooShort') });
+        } else {
+          this.setState({ errorMsg: t('error.defaultMessage') });
+        }
+      } else {
+        console.log(error);
+      }
+    } else {
+      this.setState({ errorMsg: '' });
       this.props.setUsername(values.email);
       this.props.handleClose();
       this.props.toggleConfirm();
-    });
-  };*/
+    }
+
+    setSubmitting(false);
+  };
 
   render() {
     const { t, classes } = this.props;
@@ -164,14 +206,9 @@ class CreateUser extends React.Component {
 
                   return errors;
                 }}
-                onSubmit={(values, { setSubmitting }) => {
-                  createUser(values).then(() => {
-                    setSubmitting(false);
-                    this.props.setUsername(values.email);
-                    this.props.handleClose();
-                    this.props.toggleConfirm();
-                  });
-                }}
+                onSubmit={(values, { setSubmitting }) =>
+                  this.submitCreateUser(values, setSubmitting)
+                }
               >
                 {({ isSubmitting }) => (
                   <Form>
@@ -301,6 +338,11 @@ class CreateUser extends React.Component {
                         </Grid>
                       </Grid>
                     </Grid>
+
+                    <Typography className={classes.error}>
+                      {this.state.errorMsg}
+                    </Typography>
+
                     <Button
                       className={this.props.classes.button}
                       variant='contained'

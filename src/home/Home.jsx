@@ -1,5 +1,5 @@
 import React from 'react';
-import BigCalendar from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Grid, withStyles, createStyles } from '@material-ui/core';
@@ -23,7 +23,8 @@ import { getUserDetails } from '../utils/localStorage';
 
 import EventDialog from './eventDialog';
 
-const localizer = BigCalendar.momentLocalizer(moment);
+const localizer = momentLocalizer(moment);
+
 const DEFAULT_VIEW = 'week';
 const API_DATE_FORMAT = 'YYYY-MM-DD';
 const API_TIME_FORMAT = 'HH:mm:ss';
@@ -325,7 +326,11 @@ class Home extends React.Component {
         alignItems='center'
       >
         <Grid item>
-          <img className={classes.image} src={logo} />
+          <img
+            className={classes.image}
+            src={logo}
+            alt={t('common:logo_icon')}
+          />
         </Grid>
         <Grid
           item
@@ -341,7 +346,7 @@ class Home extends React.Component {
             <Filter updateFilters={this.updateFilters} />
           </Grid>
           <Grid item className={classes.calender} xs={10}>
-            <BigCalendar
+            <Calendar
               //style={{ height: 500, width: 800 }}
               localizer={localizer}
               step={60}
@@ -373,7 +378,7 @@ Home.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.object,
   closeRegister: PropTypes.any,
-  registerState: PropTypes.boolean,
+  registerState: PropTypes.bool,
 };
 
 export default withStyles(styles, { withTheme: true })(Home);

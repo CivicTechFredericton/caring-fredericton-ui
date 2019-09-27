@@ -1,82 +1,121 @@
-import {
-  CognitoUserPool,
-  CognitoUser,
-  AuthenticationDetails,
-} from 'amazon-cognito-identity-js';
-import config from '../aws/dev';
+import { Auth } from 'aws-amplify';
+
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import history from '../../history';
-import { getUserDetails } from '../endpoints';
+import { createUser, getUserDetails } from '../endpoints';
 import { setUserDetails, removeUserDetails } from '../../utils/localStorage';
 
-const userPool = new CognitoUserPool(config.COGNITO_POOL_DETAILS);
+import { getEnvVariable } from '../../utils/environmentVariables';
 
-//Login api call
-export const authenticateUser = (Username, Password, callback) => {
-  const authDetails = new AuthenticationDetails({
-    Username,
-    Password,
-  });
+// Login api call
+export const signIn = async (username, password) => {
+  try {
+    const resp = await Auth.signIn(username, password);
+    if (resp.challengeName) {
+      return {
+        challenge: {
+          name: resp.challengeName,
+          param: resp.challengeParam,
+        },
+        user: resp,
+      };
+    }
 
-  const cognitoUser = new CognitoUser({
-    Username,
-    Pool: userPool,
-  });
+    await getUserDetails(resp.attributes.sub).then(result => {
+      setUserDetails(result.data);
+    });
 
-  cognitoUser.authenticateUser(authDetails, {
-    onSuccess: result => {
-      // Get the user details
-      getUserDetails(result.idToken, result.idToken.payload.sub).then(
-        result => {
-          setUserDetails(result);
-          callback(null, result);
-        }
-      );
+    return await currentAuthenticatedUser();
+  } catch (error) {
+    return { error };
+  }
+};
 
-      // callback(null, result);
-    },
-    onFailure: err => {
-      callback(err);
-    },
-  });
+// User sign up
+export const signUp = async userParams => {
+  try {
+    // TODO: Implement Post Confirmation trigger on the user pool
+    let username = userParams.email;
+    let password = userParams.password;
+    const result = await Auth.signUp({
+      username,
+      password,
+      attributes: { email: username },
+    });
+
+    // Create the DynamoDB user record upon success
+    userParams['user_sub'] = result.userSub;
+    delete userParams[password];
+    await createUser(userParams);
+
+    return result;
+  } catch (error) {
+    return { error };
+  }
+};
+
+// Confirm user registration code
+export const confirmCode = async (username, code) => {
+  try {
+    return await Auth.confirmSignUp(username, code, {
+      forceAliasCreation: true,
+    });
+  } catch (error) {
+    return { error };
+  }
 };
 
 // Logout api call
 export const signOut = () => {
-  removeUserDetails();
-  userPool.getCurrentUser().signOut();
-  history.push('/');
+  Auth.signOut()
+    .then(data => {
+      removeUserDetails();
+      history.push('/');
+    })
+    .catch(err => console.log(err));
+};
+
+/**
+ * Returns current signed in user if exists
+ * @return {User}
+ */
+export const currentAuthenticatedUser = async () => {
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    return { name: user.username, email: user.attributes.email };
+  } catch (error) {
+    return { error };
+  }
 };
 
 // Session token
 export const getSession = callback => {
-  userPool.getCurrentUser().getSession((err, session) => {
-    if (err) {
-      callback(err);
-    }
-
-    callback(session);
-  });
+  Auth.currentSession()
+    .then(session => callback(session))
+    .catch(err => callback(err));
 };
 
-// Confirm user registration code
-export async function confirmCode(username, verificationCode, callback) {
-  const userData = {
-    Username: username,
-    Pool: userPool,
+// check for validation
+export const isValidSession = async () => {
+  // TODO: Adjust downstream components to use async/await in order to use this function
+  return await Auth.currentAuthenticatedUser({
+    bypassCache: false,
+  })
+    .then(user => {
+      return true;
+    })
+    .catch(err => {
+      return false;
+    });
+};
+
+export const isValidUser = () => {
+  let poolData = {
+    UserPoolId: getEnvVariable('REACT_APP_USER_POOL_ID'),
+    ClientId: getEnvVariable('REACT_APP_USER_POOL_WEB_CLIENT_ID'),
   };
 
-  const cognitoUser = new CognitoUser(userData);
-  // TODO: Handle the callback; console throws an error (uncaught (in promise) callback is not a function)
-  cognitoUser.confirmRegistration(verificationCode, true, callback);
-}
-
-// check for validation
-export const isValidSession = () => {
-  const dev = false;
-
-  if (dev) {
-    return true;
-  }
+  let userPool = new CognitoUserPool(poolData);
 
   if (!userPool.getCurrentUser()) {
     return false;
@@ -92,34 +131,5 @@ export const isValidSession = () => {
     }
 
     return false;
-  });
-};
-
-// Todo needs user privilages to add to valid session
-export const isValidUser = () => {
-  return isValidSession();
-};
-
-// Todo need organization end point to validate as well as use valid session
-export const getUserOrganization = () => {
-  if (isValidSession()) {
-    return false;
-  }
-
-  return false;
-};
-
-export const getCurrentUser = callback => {
-  const cognitoUser = userPool.getCurrentUser();
-  if (!cognitoUser) {
-    return false;
-  }
-
-  cognitoUser.getSession((err, session) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    callback(session);
   });
 };
