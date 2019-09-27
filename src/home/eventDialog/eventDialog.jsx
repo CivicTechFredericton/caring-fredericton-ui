@@ -61,7 +61,7 @@ class EventDialog extends React.Component {
     const { classes, t, eventObj } = this.props;
 
     let showCancelButton = false;
-    let showEditButton = true;
+    let showEditButton = false;
 
     let eventId = '';
     let orgId = '';
