@@ -30,7 +30,6 @@ class FilterOrganization extends React.Component {
 
   GetOrganizationsList = () => {
     listRegisteredOrganizations().then(organizations => {
-      console.log(organizations);
       organizations.push({ id: null, name: null });
       this.setState({ organizations });
     });
