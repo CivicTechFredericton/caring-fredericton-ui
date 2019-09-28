@@ -1,47 +1,60 @@
 {
   "authorize": {
     "userEmail": "Email",
-    "username": "Username",
     "password": "Password",
     "login": "Login",
-    "login_icon": "Login Icon",
+    "loginIcon": "Login Icon",
     "logout": "Log Out",
     "firstName": "First Name",
     "lastName": "Last Name",
     "confirmPassword": "Confirm Password",
     "verificationCode": "Verification Code",
     "btnCreate": "Create",
-    "registerUser": "Don't have an account?  Click here to register.",
-    "resendCode": "Lost your code?  Click here to resend.",
+    "noAccount": "Don't have an account?",
+    "signUp": "SIGN UP",
+    "lblResendCode": "Didn't receive the code?",
+    "btnResendCode": "RESEND",
     "lblConfirmCode": "Please enter your verification code sent to you",
-    "btnConfirmCode": "Confirm"
+    "btnConfirmCode": "Confirm",
+    "dialogTitleAccountNotConfirmedYet": "Account Not Confirmed",
+    "dialogMessageAccountNotConfirmedYet": "Please confirm your account to continue"
   },
   "filters": {
     "lblSelect": "Select",
     "orgHelperText": "Organization Name"
   },
   "dialogs": {
-    "createUser": "Create User",
+    "registerUser": "Register User",
     "createEvent": "Create Event",
     "registerOrganization": "Register Organization"
   },
   "common": {
-    "logo_icon": "Logo Icon",
+    "lblCaringCalendar": "Caring Calendar",
+    "discardChanges": "Discard unsaved changes?",
+    "logoIcon": "Logo Icon",
     "required": "Required",
-    "submit": "Submit"
+    "invalidEmail": "Invalid Email",
+    "lblHome": "Home",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "btnClose": "Close",
+    "btnOk": "OK",
+    "btnYes": "Yes",
+    "btnNo": "No"
   },
   "error": {
     "defaultMessage": "Something went wrong, please try again later",
     "invalidEmail": "Invalid email address",
     "invalidCredentials": "Incorrect username password combination",
     "passwordsDoNotMatch": "Password does not match",
-    "userAlreadyExists": "User with email {{address}} already exists",
+    "userAlreadyExists": "Email {{address}} already in use",
     "passwordTooShort": "The password must to be at least 8 characters",
     "passwordMissingNumber": "The password must include at least one number",
     "passwordMissingLowercase": "The password must include at least one lower case character",
     "passwordMissingUppercase": "The password must include at least one upper case character",
     "passwordMissingSymbol": "The password must include at least one symbol",
-    "invalidVerificationCode": "Invalid verification code provided, please try again"
+    "invalidVerificationCode": "Invalid verification code provided, please try again",
+    "attemptLimitExceeded": "Attempt limit exceeded, please try again later"
   },
   "home": {
     "filterTitle": "Event Category"
@@ -110,10 +123,9 @@
     "lblEndDate": "End Date: ",
     "lblDescription": "Description: ",
     "lblContact": "Contact: ",
+    "btnEditEvent": "Edit Event",
     "btnCancelEvent": "Cancel Event",
     "lblConfirmCancel": "Confirm Cancel",
-    "lblCancelMessage": "Are you sure you want to cancel the event?",
-    "btnYes": "Yes",
-    "btnNo": "No"
+    "lblCancelMessage": "Are you sure you want to cancel the event?"
   }
 }

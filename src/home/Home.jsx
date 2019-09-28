@@ -6,6 +6,7 @@ import { Grid, withStyles, createStyles } from '@material-ui/core';
 import Filter from './filter';
 import FilterOrganization from './filterOrganization';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -50,16 +51,6 @@ const styles = () =>
       paddingLeft: 15,
     },
   });
-
-// const RegisterButton = withStyles({
-//   root: {
-//     boxShadow: 'none',
-//     textTransform: 'none',
-//     fontSize: 16,
-//     padding: '6px 12px',
-//     lineHeight: 1.5,
-//   },
-// })(Button);
 
 class Home extends React.Component {
   constructor(props) {
@@ -130,14 +121,16 @@ class Home extends React.Component {
                 handleClose={this.hideEventModal}
                 userDetails={this.state.userDetails}
               />
-              <Fab
-                color='primary'
-                onClick={this.showEventModal}
-                aria-label='Add'
-                className={classes.fab}
-              >
-                <AddIcon />
-              </Fab>
+              <Tooltip title={t('dialogs.createEvent')}>
+                <Fab
+                  color='primary'
+                  onClick={this.showEventModal}
+                  aria-label='Add'
+                  className={classes.fab}
+                >
+                  <AddIcon />
+                </Fab>
+              </Tooltip>
             </Grid>
           </Grid>
         ) : (
@@ -148,14 +141,6 @@ class Home extends React.Component {
               handleClose={this.hideRegisterModal}
               userDetails={this.state.userDetails}
             />
-            {/* <RegisterButton
-              className={classes.button}
-              onClick={() => {
-                this.showRegisterModal();
-              }}
-            >
-              {t('dialogs.registerOrganization')}
-            </RegisterButton> */}
           </Grid>
         )}
       </>
@@ -248,13 +233,14 @@ class Home extends React.Component {
   };
 
   closeEventDialog = () => {
+    this.hideModal();
     this.setState({ showDialog: false, dialogEvent: null });
-    this.updateTimes();
   };
 
-  TransformEvent = results => {
+  transformEvent = results => {
     if (results.length > 0) {
       let input = [];
+
       results.map(result => {
         const startDate = moment(result.start_date + ' ' + result.start_time)
           .utc('YYYY-MM-DD HH:mm:ss')
@@ -284,6 +270,8 @@ class Home extends React.Component {
         );
 
         input.push(event);
+
+        return event;
       });
 
       this.setState({ events: input });
@@ -293,14 +281,13 @@ class Home extends React.Component {
   };
 
   loadEvents = (start, end) => {
-    console.log(this.state.filters.organizationValue);
     if (!this.state.filters.organizationValue) {
       listEventsForGuestUser(
         start,
         end,
         this.state.filters.categoriesFilterSet
       ).then(results => {
-        this.TransformEvent(results);
+        this.transformEvent(results);
       });
     } else {
       listEventsWithOrganizationForGuestUser(
@@ -309,7 +296,7 @@ class Home extends React.Component {
         this.state.filters.categoriesFilterSet,
         this.state.filters.organizationValue
       ).then(results => {
-        this.TransformEvent(results);
+        this.transformEvent(results);
       });
     }
   };
@@ -329,7 +316,7 @@ class Home extends React.Component {
           <img
             className={classes.image}
             src={logo}
-            alt={t('common:logo_icon')}
+            alt={t('common:logoIcon')}
           />
         </Grid>
         <Grid

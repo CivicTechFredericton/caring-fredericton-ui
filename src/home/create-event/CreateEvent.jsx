@@ -12,13 +12,14 @@ import {
   Toolbar,
   Grid,
   withStyles,
-  createStyles,
   Button,
 } from '@material-ui/core';
 
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import MomentUtils from '@date-io/moment';
@@ -32,15 +33,17 @@ import { createEvent } from '../../api/endpoints';
 import { getSession } from '../../api/cognito';
 
 import Select from '@material-ui/core/Select';
-//import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+import styles from './styles';
 
 // TODO: Make into constant values used with Home and CreateEvent
 const API_DATE_FORMAT = 'YYYY-MM-DD';
@@ -79,71 +82,10 @@ const dayNames = [
   },
 ];
 
-const styles = createStyles(theme => ({
-  root: {
-    paddingTop: 25,
-  },
-  field: {
-    paddingBottom: 5,
-  },
-  textField: {
-    width: 350,
-  },
-  longTextField: {
-    width: 700,
-  },
-  timeField: {
-    width: 150,
-  },
-  dateField: {
-    width: 200,
-  },
-  occurrenceTextField: {
-    width: 215,
-  },
-  dayOfWeekTextField: {
-    width: 130,
-  },
-  weekOfMonthTextField: {
-    width: 75,
-  },
-  checkBoxField: {
-    width: 120,
-  },
-  dateFieldsSpacer: {
-    paddingRight: 5,
-  },
-  spacer: {
-    paddingRight: 20,
-  },
-  button: {
-    marginLeft: '40%',
-    marginTop: 30,
-    color: 'white',
-    fontSize: '14px',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(2),
-    width: 100,
-  },
-  appBar: {
-    position: 'relative',
-  },
-  flex: {
-    flex: 1,
-  },
-  formControl: {
-    margin: theme.spacing(3),
-  },
-}));
-
 class Event extends React.Component {
-  default_state = {
+  defaultState = {
     open: false,
+    openCancel: false,
     fullWidth: true,
     maxWidth: 'md',
     repeat: REPEAT_OPTION_NONE,
@@ -170,12 +112,21 @@ class Event extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = this.default_state;
+    this.state = this.defaultState;
   }
 
   handleDialogClose = () => {
-    this.setState(this.default_state);
+    this.setState(this.defaultState);
     this.props.handleClose();
+  };
+
+  // Handle confirmation close dialog
+  openConfirmModel = () => {
+    this.setState({ openCancel: true });
+  };
+
+  closeConfirmModel = () => {
+    this.setState({ openCancel: false });
   };
 
   // Handle category check box list events
@@ -306,13 +257,32 @@ class Event extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.createEvent')}
               </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.handleDialogClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
+              <Grid item>
+                <Tooltip title={t('common.btnClose')}>
+                  <IconButton
+                    color='inherit'
+                    onClick={this.openConfirmModel}
+                    aria-label='Close'
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+                <Dialog
+                  open={this.state.openCancel}
+                  onClose={this.closeConfirmModel}
+                  aria-labelledby='form-dialog-title'
+                >
+                  <DialogTitle>{t('common.discardChanges')}</DialogTitle>
+                  <DialogActions>
+                    <Button onClick={this.handleDialogClose}>
+                      {t('common.btnYes')}
+                    </Button>
+                    <Button onClick={this.closeConfirmModel} autoFocus>
+                      {t('common.btnNo')}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Grid>
             </Toolbar>
           </AppBar>
           <DialogContent>
