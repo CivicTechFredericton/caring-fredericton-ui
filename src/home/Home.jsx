@@ -327,14 +327,16 @@ class Home extends React.Component {
           alignItems='flex-start'
         >
           <Grid className={classes.filter} item xs={2}>
-            <FilterOrganization
-              updateFiltersOrganization={this.updateFilters}
-            />
+            {isValidUser() && (
+              <FilterOrganization
+                updateFiltersOrganization={this.updateFilters}
+              />
+            )}
             <Filter updateFilters={this.updateFilters} />
           </Grid>
           <Grid item className={classes.calender} xs={10}>
             <Calendar
-              //style={{ height: 500, width: 800 }}
+              style={{ height: 500, width: 800 }}
               localizer={localizer}
               step={60}
               events={this.state.events}
