@@ -1,29 +1,39 @@
 import { createStyles } from '@material-ui/core';
 
 const styles = createStyles(theme => ({
-  loginButton: {
-    marginTop: 25,
-    color: 'white',
-    fontSize: '18px',
+  root: {
+    paddingTop: 25,
   },
-  loginDiv: {
-    width: '35%',
+  field: {
+    paddingBottom: 5,
   },
   textField: {
-    width: '100%',
+    width: 200,
+  },
+  spacer: {
+    paddingRight: 20,
+  },
+  button: {
+    marginLeft: '40%',
+    color: 'white',
+    fontSize: '14px',
   },
   title: {
     color: theme.palette.primary.dark,
   },
-  maingrid: {
-    height: '90vh',
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    width: 100,
+  },
+  appBar: {
+    position: 'relative',
+  },
+  flex: {
+    flex: 1,
   },
   error: {
     color: theme.palette.secondary.dark,
-  },
-  image: {
-    width: '100%',
-    height: 'auto',
   },
   formLabelLinkContainer: {
     display: 'flex',

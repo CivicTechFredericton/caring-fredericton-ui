@@ -1,20 +1,19 @@
 import React from 'react';
-
 import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 import { TextField } from 'formik-material-ui';
-
 import PropTypes from 'prop-types';
 import {
   AppBar,
   Toolbar,
   Grid,
   withStyles,
-  createStyles,
   Button,
   Typography,
 } from '@material-ui/core';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -24,54 +23,28 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { signUp } from '../../api/cognito';
-import { SimpleEmailRegex } from '../../utils/regex';
-
-const styles = createStyles(theme => ({
-  root: {
-    paddingTop: 25,
-  },
-  field: {
-    paddingBottom: 5,
-  },
-  textField: {
-    width: 350,
-  },
-  spacer: {
-    paddingRight: 20,
-  },
-  button: {
-    marginLeft: '40%',
-    marginTop: 30,
-    color: 'white',
-    fontSize: '14px',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  appBar: {
-    position: 'relative',
-  },
-  flex: {
-    flex: 1,
-  },
-  error: {
-    color: theme.palette.secondary.dark,
-  },
-}));
+import styles from './styles';
 
 class CreateUser extends React.Component {
+  defaultState = {
+    errorMsg: '',
+    open: false,
+    fullWidth: true,
+    maxWidth: 'sm',
+    showPassword: false,
+    showConfirmPassword: false,
+  };
+
   constructor(props) {
     super(props);
 
-    this.state = {
-      errorMsg: '',
-      open: false,
-      fullWidth: true,
-      maxWidth: 'md',
-      showPassword: false,
-      showConfirmPassword: false,
-    };
+    this.state = this.defaultState;
   }
+
+  handleDialogClose = () => {
+    this.setState(this.defaultState);
+    this.props.handleClose();
+  };
 
   handleClickShowPassword = () => {
     let currFlag = this.state.showPassword;
@@ -87,14 +60,7 @@ class CreateUser extends React.Component {
     const { t } = this.props;
     setSubmitting(true);
 
-    // Set the additional attributes
-    const attributes = {
-      email: values.email,
-      given_name: values.first_name,
-      family_name: values.last_name,
-    };
-
-    const { error } = await signUp(values.email, values.password, attributes);
+    const { error } = await signUp(values);
     if (error) {
       if (error.code === 'UsernameExistsException') {
         this.setState({
@@ -143,6 +109,20 @@ class CreateUser extends React.Component {
   render() {
     const { t, classes } = this.props;
 
+    const requiredTranslated = t('common.required');
+
+    const SignUpSchema = Yup.object().shape({
+      email: Yup.string()
+        .email(t('error:invalidEmail'))
+        .required(requiredTranslated),
+      first_name: Yup.string().required(requiredTranslated),
+      last_name: Yup.string().required(requiredTranslated),
+      password: Yup.string().required(requiredTranslated),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password')], t('error.passwordsDoNotMatch'))
+        .required(requiredTranslated),
+    });
+
     return (
       <div className={classes.root}>
         <Dialog
@@ -154,15 +134,17 @@ class CreateUser extends React.Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <Grid item className={classes.flex}>
-                {t('dialogs.createUser')}
+                {t('dialogs.registerUser')}
               </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.props.handleClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
+              <Tooltip title={t('common.btnClose')}>
+                <IconButton
+                  color='inherit'
+                  onClick={this.props.handleClose}
+                  aria-label='Close'
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
             </Toolbar>
           </AppBar>
           <DialogContent>
@@ -180,39 +162,7 @@ class CreateUser extends React.Component {
                   password: '',
                   confirmPassword: '',
                 }}
-                validate={values => {
-                  let errors = {};
-
-                  if (!values.email) {
-                    errors.email = t('common.required');
-                  } else if (!SimpleEmailRegex.test(values.email)) {
-                    errors.email = t('error.invalidEmail');
-                  }
-
-                  if (!values.first_name) {
-                    errors.first_name = t('common.required');
-                  }
-
-                  if (!values.last_name) {
-                    errors.last_name = t('common.required');
-                  }
-
-                  if (!values.password) {
-                    errors.password = t('common.required');
-                  }
-
-                  if (!values.confirmPassword) {
-                    errors.confirmPassword = t('common.required');
-                  }
-
-                  if (values.password !== values.confirmPassword) {
-                    errors.password = errors.confirmPassword = t(
-                      'error.passwordsDoNotMatch'
-                    );
-                  }
-
-                  return errors;
-                }}
+                validationSchema={SignUpSchema}
                 onSubmit={(values, { setSubmitting }) =>
                   this.submitCreateUser(values, setSubmitting)
                 }

@@ -6,7 +6,6 @@ import {
   AppBar,
   Toolbar,
   Grid,
-  createStyles,
   withStyles,
   Button,
 } from '@material-ui/core';
@@ -14,62 +13,15 @@ import { TextField } from 'formik-material-ui';
 import { registerOrganization } from '../../api/endpoints';
 import { getSession } from '../../api/cognito';
 
+import Tooltip from '@material-ui/core/Tooltip';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 
 import validation from './validation';
-
-const styles = createStyles(theme => ({
-  root: {
-    paddingTop: 25,
-  },
-  field: {
-    paddingBottom: 5,
-  },
-  textField: {
-    width: '100%',
-  },
-  mainGrid: {
-    width: '100%',
-  },
-  mainGrid2: {
-    paddingRight: 50,
-    paddingLeft: 50,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  spacer: {
-    paddingRight: 20,
-    paddingLeft: 20,
-    height: '60vh',
-    borderRight: '3px solid ',
-    borderRightColor: theme.palette.primary.dark,
-  },
-  button: {
-    marginLeft: '40%',
-    marginTop: 30,
-    color: 'white',
-    fontSize: '14px',
-  },
-  title: {
-    color: theme.palette.primary.dark,
-  },
-  columnTitle: {
-    marginTop: 3,
-    color: theme.palette.primary.dark,
-  },
-  lastColumn: {
-    height: '60vh',
-    paddingLeft: 20,
-  },
-  appBar: {
-    position: 'relative',
-  },
-  flex: {
-    flex: 1,
-  },
-}));
+import styles from './styles';
 
 class Organization extends React.Component {
   constructor(props) {
@@ -77,6 +29,7 @@ class Organization extends React.Component {
 
     this.state = {
       open: false,
+      openCancel: false,
       fullWidth: true,
       maxWidth: 'md',
     };
@@ -117,6 +70,20 @@ class Organization extends React.Component {
     };
 
     return orgRequest;
+  };
+
+  // Handle confirmation close dialog
+  openConfirmModel = () => {
+    this.setState({ openCancel: true });
+  };
+
+  closeConfirmModel = () => {
+    this.setState({ openCancel: false });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ openCancel: false });
+    this.props.handleClose();
   };
 
   //create generic reusable input field
@@ -266,13 +233,32 @@ class Organization extends React.Component {
               <Grid item className={classes.flex}>
                 {t('dialogs.registerOrganization')}
               </Grid>
-              <IconButton
-                color='inherit'
-                onClick={this.props.handleClose}
-                aria-label='Close'
-              >
-                <CloseIcon />
-              </IconButton>
+              <Grid item>
+                <Tooltip title={t('common.btnClose')}>
+                  <IconButton
+                    color='inherit'
+                    onClick={this.openConfirmModel}
+                    aria-label='Close'
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+                <Dialog
+                  open={this.state.openCancel}
+                  onClose={this.closeConfirmModel}
+                  aria-labelledby='form-dialog-title'
+                >
+                  <DialogTitle>{t('common.discardChanges')}</DialogTitle>
+                  <DialogActions>
+                    <Button onClick={this.handleDialogClose}>
+                      {t('common.btnYes')}
+                    </Button>
+                    <Button onClick={this.closeConfirmModel} autoFocus>
+                      {t('common.btnNo')}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Grid>
             </Toolbar>
           </AppBar>
           <DialogContent>

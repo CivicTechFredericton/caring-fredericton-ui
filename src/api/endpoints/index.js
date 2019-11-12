@@ -11,6 +11,20 @@ export async function listEventsForGuestUser(
   categoriesArray
 ) {
   let url = new URL(BASE_API_URL + '/guests/events');
+  return await listEvents(url, start_date, end_date, categoriesArray);
+}
+
+export async function listEventsWithOrganizationForGuestUser(
+  start_date,
+  end_date,
+  categoriesArray,
+  org_id
+) {
+  let url = new URL(BASE_API_URL + `/guests/organizations/${org_id}/events`);
+  return await listEvents(url, start_date, end_date, categoriesArray);
+}
+
+export async function listEvents(url, start_date, end_date, categoriesArray) {
   const categories = categoriesArray.join(',');
   url.search = new URLSearchParams({ start_date, end_date, categories });
 
