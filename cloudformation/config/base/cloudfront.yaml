@@ -4,9 +4,9 @@ stack_tags: {{ environment_config.stack_tags }}
 
 sceptre_user_data:
   aliases:
-    - {{ environment_path.0 }}-www.{{ environment_config.domain }}
+    - {{ environment_path.0 }}-t.www.{{ environment_config.domain }}
 
-  certificate_arn: !acm_resolver '*.{{ environment_config.domain }}'
+  certificate_arn: !acm_resolver '*.t.{{ environment_config.domain }}'
   environment: {{ environment_path.0 }}
   project_code: {{ environment_config.project_code }}
   tags: {{ environment_config.stack_tags }}
