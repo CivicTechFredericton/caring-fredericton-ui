@@ -10,7 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-import '../style/react-big-calendar.css';
+import '../styles/react-big-calendar.css';
 import logo from '../ctflogo.jpg';
 
 import CreateEvent from './create-event/CreateEvent';
@@ -92,7 +92,7 @@ class Home extends React.Component {
     }
   }
 
-  updateFilters = filterObj => {
+  updateFilters = (filterObj) => {
     const filters = Object.assign({}, this.state.filters, filterObj);
     this.setState({ filters }, () => {
       this.updateTimes();
@@ -181,7 +181,7 @@ class Home extends React.Component {
   /**
    * BigCalendar event handling
    */
-  onView = view => {
+  onView = (view) => {
     this.setState(
       {
         currentView: view,
@@ -217,18 +217,14 @@ class Home extends React.Component {
       start = moment(date).startOf('week');
       end = moment(date).endOf('week');
     } else if (view === 'month') {
-      start = moment(date)
-        .startOf('month')
-        .subtract(7, 'days');
-      end = moment(date)
-        .endOf('month')
-        .add(7, 'days');
+      start = moment(date).startOf('month').subtract(7, 'days');
+      end = moment(date).endOf('month').add(7, 'days');
     }
 
     this.loadEvents(start.format(API_DATE_FORMAT), end.format(API_DATE_FORMAT));
   };
 
-  openEventDialog = event => {
+  openEventDialog = (event) => {
     this.setState({ showDialog: true, dialogEvent: event });
   };
 
@@ -237,11 +233,11 @@ class Home extends React.Component {
     this.setState({ showDialog: false, dialogEvent: null });
   };
 
-  transformEvent = results => {
+  transformEvent = (results) => {
     if (results.length > 0) {
       let input = [];
 
-      results.map(result => {
+      results.map((result) => {
         const startDate = moment(result.start_date + ' ' + result.start_time)
           .utc('YYYY-MM-DD HH:mm:ss')
           .local();
@@ -286,7 +282,7 @@ class Home extends React.Component {
         start,
         end,
         this.state.filters.categoriesFilterSet
-      ).then(results => {
+      ).then((results) => {
         this.transformEvent(results);
       });
     } else {
@@ -295,7 +291,7 @@ class Home extends React.Component {
         end,
         this.state.filters.categoriesFilterSet,
         this.state.filters.organizationValue
-      ).then(results => {
+      ).then((results) => {
         this.transformEvent(results);
       });
     }
