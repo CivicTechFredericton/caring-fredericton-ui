@@ -21,7 +21,7 @@ export const signIn = async (username, password) => {
       };
     }
 
-    await getUserDetails(resp.attributes.sub).then(result => {
+    await getUserDetails(resp.attributes.sub).then((result) => {
       setUserDetails(result.data);
     });
 
@@ -32,11 +32,11 @@ export const signIn = async (username, password) => {
 };
 
 // User sign up
-export const signUp = async userParams => {
+export const signUp = async (userParams) => {
   try {
-    // TODO: Implement Post Confirmation trigger on the user pool
     let username = userParams.email;
     let password = userParams.password;
+
     const result = await Auth.signUp({
       username,
       password,
@@ -45,7 +45,8 @@ export const signUp = async userParams => {
 
     // Create the DynamoDB user record upon success
     userParams['user_sub'] = result.userSub;
-    delete userParams[password];
+    delete userParams['password'];
+    delete userParams['confirmPassword'];
     await createUser(userParams);
 
     return result;
@@ -66,7 +67,7 @@ export const confirmCode = async (username, code) => {
 };
 
 // Resend user verification code
-export const resendCode = async username => {
+export const resendCode = async (username) => {
   try {
     return await Auth.resendSignUp(username);
   } catch (error) {
@@ -77,11 +78,11 @@ export const resendCode = async username => {
 // Logout api call
 export const signOut = () => {
   Auth.signOut()
-    .then(data => {
+    .then((data) => {
       removeUserDetails();
       history.push('/');
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 /**
@@ -98,10 +99,10 @@ export const currentAuthenticatedUser = async () => {
 };
 
 // Session token
-export const getSession = callback => {
+export const getSession = (callback) => {
   Auth.currentSession()
-    .then(session => callback(session))
-    .catch(err => callback(err));
+    .then((session) => callback(session))
+    .catch((err) => callback(err));
 };
 
 // check for validation
@@ -110,10 +111,10 @@ export const isValidSession = async () => {
   return await Auth.currentAuthenticatedUser({
     bypassCache: false,
   })
-    .then(user => {
+    .then((user) => {
       return true;
     })
-    .catch(err => {
+    .catch((err) => {
       return false;
     });
 };
