@@ -572,9 +572,7 @@ function EventForm({
                               disabled={isEditMode}
                               margin='normal'
                               className={classes.dateField}
-                              minDate={
-                                isEditMode ? selectedStartDate : new Date()
-                              }
+                              minDate={selectedStartDate}
                               value={selectedStartDate}
                               onChange={(date) => handleStartDateChange(date)}
                               KeyboardButtonProps={{
