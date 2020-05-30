@@ -1,0 +1,22 @@
+{
+  "lblMeals": "Meals",
+  "lblSelectMeals": "Select meals checkbox",
+  "lblGrocery": "Grocery",
+  "lblSelectGrocery": "Select grocery checkbox",
+  "lblLaundry": "Laundry",
+  "lblSelectLaundry": "Select laundry checkbox",
+  "lblSocial": "Social",
+  "lblSelectSocial": "Select social checkbox",
+  "lblShowers": "Showers",
+  "lblSelectShowers": "Select showers checkbox",
+  "lblEducation": "Education",
+  "lblSelectEducation": "Select education checkbox",
+  "lblHealth": "Health",
+  "lblSelectHealth": "Select health checkbox",
+  "lblHairCuts": "Hair Cuts",
+  "lblSelectHairCuts": "Select hair cuts checkbox",
+  "lblTaxes": "Taxes",
+  "lblSelectTaxes": "Select taxes checkbox",
+  "lblFaith": "Faith",
+  "lblSelectFaith": "Select faith checkbox"
+}

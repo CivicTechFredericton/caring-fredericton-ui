@@ -1,0 +1,18 @@
+@import '../../styles/variables';
+
+.header {
+  padding: $size-sm $size-lg;
+  box-shadow: 0 0 $size-sm rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+}
+
+.image {
+  display: flex;
+  align-items: center;
+}
+
+.space {
+  width: 10px;
+  height: 10px;
+}

@@ -1,0 +1,72 @@
+@import '../../../../styles/variables';
+
+.textField {
+  text-align: left;
+  display: block;
+  margin-bottom: $size-lg;
+  position: relative;
+
+  input {
+    font-size: 1em;
+    padding: $size-xs 0;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid $primary-color;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  label {
+    color: $primary-light-color;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    top: $size-xs;
+    left: 0;
+    transition: 0.2s ease all;
+  }
+
+  input:focus ~ label,
+  input:not([value='']) ~ label {
+    top: -$size-md;
+    font-size: 0.8em;
+  }
+  input:focus ~ label {
+    color: $input-focus-color;
+  }
+
+  .bar {
+    position: relative;
+    display: block;
+    width: 100%;
+    &:before,
+    &:after {
+      content: '';
+      height: 2px;
+      width: 0;
+      bottom: 0;
+      position: absolute;
+      background: $input-focus-color;
+      transition: 0.2s ease all;
+    }
+    &:before {
+      left: 50%;
+    }
+    &:after {
+      right: 50%;
+    }
+  }
+
+  input:focus ~ .bar:before,
+  input:focus ~ .bar:after {
+    width: 50%;
+  }
+  &.error {
+    input {
+      border-color: $error-color;
+    }
+    color: $error-color;
+  }
+}

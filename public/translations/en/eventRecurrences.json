@@ -1,0 +1,20 @@
+{
+  "lblRecurrenceOptionNone": "None",
+  "lblRecurrenceOptionDaily": "Daily",
+  "lblRecurrenceOptionWeekly": "Weekly",
+  "lblRecurrenceOptionBiWeekly": "Bi-Weekly",
+  "lblRecurrenceOptionMonthly": "Monthly",
+  "lblEvery": "Every",
+  "lblFirst": "1st",
+  "lblSecond": "2nd",
+  "lblThird": "3rd",
+  "lblFourth": "4th",
+  "lblDay": "Day",
+  "lblDayMonday": "Monday",
+  "lblDayTuesday": "Tuesday",
+  "lblDayWednesday": "Wednesday",
+  "lblDayThursday": "Thursday",
+  "lblDayFriday": "Friday",
+  "lblDaySaturday": "Saturday",
+  "lblDaySunday": "Sunday"
+}
