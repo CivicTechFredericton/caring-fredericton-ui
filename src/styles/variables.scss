@@ -1,0 +1,15 @@
+@import 'colors';
+
+$size-xs: 0.25em;
+$size-sm: 0.5em;
+$size-md: 1em;
+$size-lg: 1.5em;
+$size-xl: 2em;
+
+:export {
+  sizeXs: $size-xs;
+  sizeSm: $size-sm;
+  sizeMd: $size-md;
+  sizeLg: $size-lg;
+  sizeXl: $size-xl;
+}

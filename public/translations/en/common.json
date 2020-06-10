@@ -1,131 +1,16 @@
 {
-  "authorize": {
-    "userEmail": "Email",
-    "password": "Password",
-    "login": "Login",
-    "loginIcon": "Login Icon",
-    "logout": "Log Out",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "confirmPassword": "Confirm Password",
-    "verificationCode": "Verification Code",
-    "btnCreate": "Create",
-    "noAccount": "Don't have an account?",
-    "signUp": "SIGN UP",
-    "lblResendCode": "Didn't receive the code?",
-    "btnResendCode": "RESEND",
-    "lblConfirmCode": "Please enter your verification code sent to you",
-    "btnConfirmCode": "Confirm",
-    "dialogTitleAccountNotConfirmedYet": "Account Not Confirmed",
-    "dialogMessageAccountNotConfirmedYet": "Please confirm your account to continue"
-  },
-  "filters": {
-    "lblSelect": "Select",
-    "orgHelperText": "Organization Name"
-  },
-  "dialogs": {
-    "registerUser": "Register User",
-    "createEvent": "Create Event",
-    "registerOrganization": "Register Organization"
-  },
-  "common": {
-    "lblCaringCalendar": "Caring Calendar",
-    "discardChanges": "Discard unsaved changes?",
-    "logoIcon": "Logo Icon",
-    "required": "Required",
-    "invalidEmail": "Invalid Email",
-    "lblHome": "Home",
-    "submit": "Submit",
-    "cancel": "Cancel",
-    "btnClose": "Close",
-    "btnOk": "OK",
-    "btnYes": "Yes",
-    "btnNo": "No"
-  },
-  "error": {
-    "defaultMessage": "Something went wrong, please try again later",
-    "invalidEmail": "Invalid email address",
-    "invalidCredentials": "Incorrect username password combination",
-    "passwordsDoNotMatch": "Password does not match",
-    "userAlreadyExists": "Email {{address}} already in use",
-    "passwordTooShort": "The password must to be at least 8 characters",
-    "passwordMissingNumber": "The password must include at least one number",
-    "passwordMissingLowercase": "The password must include at least one lower case character",
-    "passwordMissingUppercase": "The password must include at least one upper case character",
-    "passwordMissingSymbol": "The password must include at least one symbol",
-    "invalidVerificationCode": "Invalid verification code provided, please try again",
-    "attemptLimitExceeded": "Attempt limit exceeded, please try again later"
-  },
-  "home": {
-    "filterTitle": "Event Category"
-  },
-  "header": {
-    "title": "Caring Calendar"
-  },
-  "filter": {
-    "meals": "Meals",
-    "laundry": "Laundry",
-    "social": "Social",
-    "showers": "Showers",
-    "education": "Education",
-    "health": "Health",
-    "hairCuts": "Hair Cuts",
-    "taxes": "Taxes",
-    "faith": "Faith"
-  },
-  "recurrenceOptions": {
-    "none": "None",
-    "daily": "Daily",
-    "weekly": "Weekly",
-    "biWeekly": "Bi-Weekly",
-    "monthly": "Monthly"
-  },
-  "register": {
-    "register": "Register",
-    "validate": "Validate",
-    "validation": "Validation",
-    "registration": "Registration",
-    "orgName": "Organization Name",
-    "organization": "Organization",
-    "email": "Email",
-    "phoneNumber": "Phone Number",
-    "address": "Address",
-    "city": "City",
-    "province": "Province",
-    "postalCode": "Postal Code",
-    "administrator": "Administrator",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "btnCreate": "Create"
-  },
-  "event": {
-    "categories": "Categories",
-    "name": "Name",
-    "description": "Description",
-    "contactEmail": "Contact Email",
-    "location": "Location",
-    "startDate": "Start Date",
-    "endDate": "End Date",
-    "startTime": "Start Time",
-    "endTime": "End Time",
-    "recurrence": "Recurrence",
-    "endAfter": "End After",
-    "occurrences": "occurrences",
-    "dayOfWeek": "Day",
-    "weekOfMonth": "Week"
-  },
-  "eventDetails": {
-    "lblOrganization": "Organization: ",
-    "lblLocation": "Location: ",
-    "lblStartDate": "Start Date: ",
-    "lblStartTime": "Start Time: ",
-    "lblEndTime": "End Time: ",
-    "lblEndDate": "End Date: ",
-    "lblDescription": "Description: ",
-    "lblContact": "Contact: ",
-    "btnEditEvent": "Edit Event",
-    "btnCancelEvent": "Cancel Event",
-    "lblConfirmCancel": "Confirm Cancel",
-    "lblCancelMessage": "Are you sure you want to cancel the event?"
-  }
+  "ok": "OK",
+  "yes": "Yes",
+  "no": "No",
+  "home": "Home",
+  "btnRegisterOrganization": "Register Organization",
+  "lblSelect": "-- Select --",
+  "ctlLogoIcon": "Civic Tech Logo",
+  "ccLogoIcon": "Caring Calendar Logo",
+  "lblWelcome": "Welcome to the Caring Calendar!",
+  "lblCaringCalendar": "Caring Calendar",
+  "lblUpcomingEvents": "Upcoming Events",
+  "lblNoEventsScheduled": "No events scheduled",
+  "lnkAdditionalDetails": "Additional Details",
+  "lblFooterText": "Powered by Civic Tech Fredericton"
 }

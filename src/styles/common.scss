@@ -1,0 +1,19 @@
+@import 'variables';
+
+@mixin spinnerMixin($size) {
+  border: $size/8 solid rgba(0, 0, 0, 0.05);
+  border-top: $size/8 solid $secondary-light-color;
+  border-bottom: $size/8 solid $secondary-light-color;
+  border-radius: 50%;
+  width: $size;
+  height: $size;
+  animation: spin 1s linear infinite;
+}
+
+.spinner {
+  @include spinnerMixin($size-xl);
+}
+
+.spinner-sm {
+  @include spinnerMixin($size-md);
+}

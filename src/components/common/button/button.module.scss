@@ -1,0 +1,31 @@
+@import '../../../styles/variables';
+
+.button {
+  margin: $size-xs;
+  font-size: 1em;
+  padding: $size-sm $size-md;
+  border: none;
+  background-color: $secondary-color;
+  color: $text-contrast-color;
+  transition: all 0.3s;
+  width: fit-content;
+  &:focus {
+    outline: none;
+  }
+  &:not([disabled]):hover {
+    cursor: pointer;
+    background-color: $secondary-light-color;
+  }
+  &[disabled] {
+    opacity: 0.6;
+  }
+}
+
+.buttonLink {
+  background-color: $background-color;
+  color: $text-color;
+  &:not([disabled]):hover {
+    cursor: pointer;
+    background-color: darken($background-color, 0.1);
+  }
+}

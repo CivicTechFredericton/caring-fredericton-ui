@@ -1,0 +1,12 @@
+{
+  "lblOrganization": "Organization: ",
+  "lblLocation": "Location: ",
+  "lblStarts": "Starts: ",
+  "lblEnds": "Ends: ",
+  "lblDescription": "Description: ",
+  "lblContact": "Contact: ",
+  "lblCategories": "Categories: ",
+  "btnDelete": "Delete",
+  "lblConfirmDelete": "Confirm Delete",
+  "lblDeleteMessage": "Are you sure you want to delete the event?"
+}

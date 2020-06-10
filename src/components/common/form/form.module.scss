@@ -1,0 +1,47 @@
+@import '../../../styles/variables';
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: $surface-color;
+  height: 100vh;
+  .paper {
+    box-shadow: 0 0.2em 0.35em rgba(0, 0, 0, 0.3);
+    padding: $size-xl;
+    margin: $size-md;
+    background-color: $background-color;
+    .title {
+      text-align: left;
+      font-size: 1.5em;
+      margin-bottom: $size-md;
+      color: $text-color;
+    }
+    .actions {
+      padding-top: $size-md;
+    }
+  }
+
+  .paperSmall {
+    width: 90%;
+    max-width: 25em;
+  }
+
+  .errorBlock {
+    margin-bottom: $size-sm;
+    padding: $size-sm $size-md;
+    background-color: $error-color;
+    color: $text-contrast-color;
+    font-size: 0.8em;
+  }
+
+  a {
+    text-decoration: none;
+    color: $primary-light-color;
+    padding: $size-md;
+    transition: color 0.3s;
+    &:hover {
+      color: $primary-dark-color;
+    }
+  }
+}

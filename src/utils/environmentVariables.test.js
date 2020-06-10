@@ -2,7 +2,7 @@ import { fillInWithEnvVariables } from './environmentVariables';
 
 describe('Environment variables', () => {
   test('fillInWithEnvVariables should return correct object', async () => {
-    const resolver = jest.fn(key => {
+    const resolver = jest.fn((key) => {
       return {
         REACT_APP_USER_POOL_ID: 'asd123',
         REACT_APP_USER_POOL_WEB_CLIENT_ID: 'client321',
