@@ -1,0 +1,22 @@
+{
+  "defaultMessage": "Something went wrong, please try again later",
+  "invalidEmail": "Invalid email address",
+  "invalidCredentials": "Incorrect username password combination",
+  "passwordsDoNotMatch": "Password does not match",
+  "passwordTooShort": "The password must to be at least 8 characters",
+  "passwordMissingNumber": "The password must include at least one number",
+  "passwordMissingLowercase": "The password must include at least one lower case character",
+  "passwordMissingUppercase": "The password must include at least one upper case character",
+  "passwordMissingSymbol": "The password must include at least one symbol",
+  "authErrorUserNotFound": "The user does not exist",
+  "authErrorUserAlreadyExists": "The user already exists",
+  "authErrorCodeMismatch": "Invalid confirmation code provided, please try again",
+  "authErrorRequestLimitExceeded": "Attempt limit exceeded, please try again later",
+  "authErrorUserNotConfirmed": "User account is not confirmed",
+  "organizationDoesNotExist": "The requested organization does not exist",
+  "eventDoesNotExist": "The requested event does not exist",
+  "serverError401": "Your session has expired.  Please sign in again.",
+  "serverError4xx": "We are currently unable to fulfill the request. Please try again later or contact support if the problem persists.",
+  "serverError5xx": "The server is temporarily unavailable. Please try again later or contact support if the problem persists.",
+  "serverDefaultError": "Something went wrong. Please try again later or contact support if the problem persists."
+}

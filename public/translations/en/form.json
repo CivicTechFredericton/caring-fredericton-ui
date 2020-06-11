@@ -1,0 +1,14 @@
+{
+  "invalidEmail": "Invalid email",
+  "required": "Required",
+  "minimumLength": "Minimum {{value}} characters",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "invalidPhoneNumber": "Phone number is not valid",
+  "exactLength": "Must be exactly {{value}} characters",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "close": "Close",
+  "discardChanges": "Discard unsaved changes?",
+  "lblShowFilters": "Show Services",
+  "lblHideFilters": "Hide Services"
+}

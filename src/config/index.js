@@ -1,25 +1,28 @@
-import Amplify, { Auth } from 'aws-amplify';
+import API from '@aws-amplify/api';
+import Auth from '@aws-amplify/auth';
+
 import {
   fillInWithEnvVariables,
   getEnvVariable,
 } from '../utils/environmentVariables';
 
-const awsAmplifyConfig = fillInWithEnvVariables(
+Auth.configure({
+  Auth: {
+    region: getEnvVariable('REACT_APP_REGION'),
+    userPoolId: getEnvVariable('REACT_APP_USER_POOL_ID'),
+    userPoolWebClientId: getEnvVariable('REACT_APP_USER_POOL_WEB_CLIENT_ID'),
+  },
+});
+
+const apiConfig = fillInWithEnvVariables(
   {
-    Auth: {
-      userPoolId: '%REACT_APP_USER_POOL_ID%',
-      userPoolWebClientId: '%REACT_APP_USER_POOL_WEB_CLIENT_ID%',
-      region: '%REACT_APP_REGION%',
-    },
-    API: {
-      endpoints: [
-        {
-          name: '%REACT_APP_API_NAME%',
-          endpoint: '%REACT_APP_API_URL%',
-          region: '%REACT_APP_REGION%',
-        },
-      ],
-    },
+    endpoints: [
+      {
+        region: '%REACT_APP_REGION%',
+        name: '%REACT_APP_API_NAME%',
+        endpoint: '%REACT_APP_API_URL%',
+      },
+    ],
   },
   getEnvVariable
 );
@@ -32,6 +35,6 @@ const headers = async () => {
   }
 };
 
-awsAmplifyConfig.API.endpoints[0].custom_header = headers;
+apiConfig.endpoints[0].custom_header = headers;
 
-Amplify.configure(awsAmplifyConfig);
+API.configure(apiConfig);

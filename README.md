@@ -10,6 +10,60 @@ application.
 - Organization Management (Registration, Verification, Updates)
 - Scheduling Events
 
+## Project Layout
+
+- Entry component is `./src/App.js`
+- REST API endpoint integration are in `./src/api`
+- Auth related components are in `./src/auth`
+- Dialogs are added to `./src/components/dialogs`
+- Pages are added to `./src/components/pages`
+- Common styles are in `./src/styles`
+
+### Forms
+
+Use `Formik` + `Yup` for validation
+
+- https://github.com/jaredpalmer/formik
+- https://www.npmjs.com/package/yup
+
+### Material Design
+
+- Global theme: `./src/styles/materialAppTheme.js`
+- Local component styles: `./src/<component>/<component>.materialStyles.js`
+
+## Modules
+
+### Auth
+
+User authentication is being performed through AWS Cognito. The library used
+to  
+connect to the AWS services is AWS Amplify. There are two specific components
+being used - API and Auth.
+
+#### Components:
+
+`<AuthDataContext>` - Setup of the Authentication context using React Context
+API `<AuthDataProvider>` - authentication provider
+
+`./src/auth/hooks/useAuthDataContext` - hook component with AuthDataContext
+consumer which allows access to the following props:
+
+       `isSignedIn: boolean,
+       user: object | null,
+       signIn,
+       signOut,
+       signUp,
+       goToPage,
+       confirmSignUp,
+       resendSignUp,
+       resetPassword,
+       confirmResetPassword,
+       `
+
+`<PrivateRoute>` - redirect to sign in when unauthenticated
+
+`<PrivateLink>` - is hidden when unauthenticated
+
 ## Project Setup
 
 NPM is used to install the required React dependencies
@@ -20,7 +74,7 @@ Ensure the prerequisites are installed
 
 ```
 - OPTIONAL: Node Virtual Manager (nvm)
-- Node 8.15.x
+- Node (10.20.x or 12.16.x)
 ```
 
 Install the NPM dependencies
