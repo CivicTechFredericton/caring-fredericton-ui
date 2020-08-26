@@ -219,7 +219,7 @@ function RegisterOrganizationDialog({ show, handleClose, event }) {
                       variant='outlined'
                       label={t('organization:lblProvince')}
                       className={classes.textField}
-                      placeholder={t('organization:lblPostalCode')}
+                      placeholder={t('organization:lblProvince')}
                       SelectProps={{
                         native: true,
                         MenuProps: {
