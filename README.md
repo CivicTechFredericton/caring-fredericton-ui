@@ -4,7 +4,7 @@ This project contains the responsive web application for the Caring Calendar
 application. The project uses the React framework as the basis for the
 application.
 
-## Functionality:
+## Functionality
 
 - User Registration
 - Organization Management (Registration, Verification, Updates)
@@ -115,26 +115,20 @@ See the section about
 [deployment](https://facebook.github.io/create-react-app/docs/deployment) for
 more information.
 
-### Deployment Instructions
+## Deployment Instructions
 
-Install sceptre and the AWS cli if you haven't already done so:
+### Create Infrastructure
 
-```
-pip install sceptre==1.4.2 --upgrade --user
-pip install awscli --upgrade --user
-```
+The code is deployed as a collection of static files that are served up through
+a Content Delivery Network (CDN). Please ensure that the infrastructure scripts
+have been run prior to deployment of the code.
 
-Create infrastructure:
+The services required to run the application in production can be found
+[here](../cloudformation/README.md).
 
-```
-(cd cloudformation/config && ln -s base <env>)
-export AWS_PROFILE=<profile name>
-sceptre launch-env <env>
-```
+### Deploy code
 
-> Replace '<env>' with your environment name and replace your profile name
-
-Deploy code:
+Using the S3 bucket name and distribution ID publish the built code.
 
 ```
 export AWS_PROFILE=<profile name>
