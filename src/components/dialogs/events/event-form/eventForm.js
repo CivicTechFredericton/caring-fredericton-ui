@@ -350,6 +350,7 @@ function EventForm({
               isSubmitting,
               isValid,
               setFieldValue,
+              dirty,
             }) => (
               <Form>
                 <Field
@@ -658,8 +659,11 @@ function EventForm({
                             <Button
                               type='submit'
                               onClick={async () => {
-                                await setFieldValue('isCancelButton', true);
-                                onSubmit();
+                                values = {
+                                  isCancelButton: true,
+                                  isDirty: dirty,
+                                };
+                                onSubmit(values, {});
                               }}
                             >
                               {t('common:yes')}
@@ -675,6 +679,7 @@ function EventForm({
                         {userCanEditValues ? (
                           <>
                             <Button
+                              aria-label={t('event:btnUpdate')}
                               type='submit'
                               disabled={!isValid || isSubmitting}
                             >
@@ -684,7 +689,7 @@ function EventForm({
                               variant='text'
                               color='inherit'
                               onClick={openConfirmDeleteModel}
-                              aria-label='Delete'
+                              aria-label={t('event:btnDelete')}
                             >
                               {t('event:btnDelete')}
                             </Button>

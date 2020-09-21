@@ -131,6 +131,7 @@ function RegisterOrganizationDialog({ show, handleClose, event }) {
               handleChange,
               isSubmitting,
               isValid,
+              dirty,
               setFieldValue,
             }) => (
               <Form>
@@ -276,8 +277,11 @@ function RegisterOrganizationDialog({ show, handleClose, event }) {
                         <Button
                           type='submit'
                           onClick={async () => {
-                            await setFieldValue('isCancelButton', true);
-                            onSubmit();
+                            values = {
+                              isCancelButton: true,
+                              isDirty: dirty,
+                            };
+                            onSubmit(values, {});
                           }}
                         >
                           {t('common:yes')}
