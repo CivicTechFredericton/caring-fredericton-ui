@@ -2,6 +2,7 @@ from aws_cdk import aws_cloudfront, aws_route53, aws_route53_targets, aws_s3, aw
 
 from aws_cdk.core import Construct, CfnOutput, Duration, RemovalPolicy, Stack
 from aws_cdk.aws_cloudfront import AliasConfiguration, CloudFrontWebDistribution, LoggingConfiguration, SourceConfiguration
+from aws_cdk.aws_iam import PolicyStatement, CanonicalUserPrincipal
 from aws_cdk.aws_route53 import HostedZone
 from aws_cdk.aws_s3 import BucketAccessControl
 
@@ -35,7 +36,12 @@ class StaticWebsiteStack(Stack):
             removal_policy=RemovalPolicy.DESTROY)
 
         # Allow access from CloudFront
-        site_bucket.grant_read(origin_access_identity)
+        # site_bucket.grant_read(origin_access_identity)
+        site_bucket.add_to_resource_policy(PolicyStatement(
+            actions=["s3:GetObject"],
+            resources=[site_bucket.arn_for_objects("*")],
+            principals=[CanonicalUserPrincipal(origin_access_identity.cloud_front_origin_access_identity_s3_canonical_user_id)]
+        ))
 
         CfnOutput(self, "BucketArn", value=site_bucket.bucket_arn)
         CfnOutput(self, "BucketName", value=site_bucket.bucket_name)
@@ -80,6 +86,10 @@ class StaticWebsiteStack(Stack):
                     default_ttl=Duration.hours(1))
                 ]
             )])
+
+        # TODO: Adding origin_access_identity to the origin configs adds
+        #       extra permissions in the S3 bucket policy that must be removed
+        #       This needs to be fixed to remove manual intervention
 
         CfnOutput(self, "DistributionId", value=distr.distribution_id)
         CfnOutput(self, "SiteName", value=f"https://{site_name}")

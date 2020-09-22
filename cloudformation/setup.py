@@ -19,7 +19,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="static_website"),
 
     install_requires=[
-        "aws-cdk.core==1.60.0"
+        "aws-cdk.core==1.62.0"
     ],
 
     python_requires=">=3.6",
