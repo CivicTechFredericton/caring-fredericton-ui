@@ -40,10 +40,12 @@ const SignedInControls = ({ t, user, signOut }) => {
         </Button>
       ) : null}
       <Button onClick={signOut}>{t('authentication:signOut')}</Button>
-      <RegisterOrganizationDialog
-        show={showDialog}
-        handleClose={closeRegisterDialog}
-      />
+      <div hidden>
+        <RegisterOrganizationDialog
+          show={showDialog}
+          handleClose={closeRegisterDialog}
+        />
+      </div>
     </>
   );
 };
