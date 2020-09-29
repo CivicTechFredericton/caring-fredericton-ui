@@ -109,6 +109,7 @@ function EventForm({
     day_of_week: isEditMode
       ? getOptionalValue(editEventData.recurrence_details.day_of_week)
       : '1',
+    orgName: isEditMode ? editEventData.orgName : '',
   };
 
   // Set the recurrence option flags
@@ -198,6 +199,7 @@ function EventForm({
       .email(t('form:invalidEmail'))
       .required(requiredTranslated),
     location: Yup.string().required(requiredTranslated),
+    orgName: Yup.string(),
   });
 
   /**
@@ -362,6 +364,27 @@ function EventForm({
                   variant='outlined'
                   component={FormikTextField}
                   placeholder={t('event:lblTitle')}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <EditOutlinedIcon color='action' />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Field
+                  disabled={!userCanEditValues}
+                  className={classes.longTextField}
+                  type='text'
+                  name='orgName'
+                  label={'org NAME 1'}
+                  margin='normal'
+                  variant='outlined'
+                  component={FormikTextField}
+                  placeholder={'org name 2'}
                   InputLabelProps={{
                     shrink: true,
                   }}

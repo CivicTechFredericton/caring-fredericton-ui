@@ -59,6 +59,7 @@ export async function createEvent(orgId, values) {
       timezone: values.timezone,
       is_recurring: values.recurring,
       recurrence_details: values.recurrenceDetails,
+      orgName: values.orgName,
     };
 
     return await awsApiRequest({

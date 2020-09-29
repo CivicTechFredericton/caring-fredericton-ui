@@ -50,8 +50,15 @@ const EventListItemView = ({ event }) => {
         <ListItemIcon edge='start' className={classes.listItemIcon}>
           {start}
         </ListItemIcon>
+
         <ListItemText
-          primary={<Typography variant='h6'>{eventName}</Typography>}
+          primary={
+            <Typography variant='h6'>
+              {/* OrgName goes here */}
+              <br />
+              {eventName}
+            </Typography>
+          }
           secondary={
             <>
               <Typography
@@ -69,6 +76,7 @@ const EventListItemView = ({ event }) => {
                 }}
               >
                 {t('common:lnkAdditionalDetails')}
+                {/* EDIT THIS CARD SHOW ORN NAME */}
               </Link>
             </>
           }
