@@ -375,6 +375,7 @@ function EventForm({
                     ),
                   }}
                 />
+                {/* Org Name */}
                 <Field
                   disabled={!userCanEditValues}
                   className={classes.longTextField}
