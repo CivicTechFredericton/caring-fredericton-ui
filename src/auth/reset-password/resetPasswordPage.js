@@ -146,7 +146,7 @@ const ResetPasswordPage = ({ props, match }) => {
             <Field
               className={classes.textField}
               autoComplete='current-password'
-              type={showPassword ? 'text' : 'password'}
+              type={showConfirmPassword ? 'text' : 'password'}
               name='confirmPassword'
               label={t('authentication:confirmPassword')}
               margin='normal'
