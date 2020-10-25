@@ -56,9 +56,6 @@ const SignInPage = ({ history, location }) => {
       history.replace(from);
     } else if (challengeName === 'NEW_PASSWORD_REQUIRED') {
       // TODO: Handle 'NEW_PASSWORD_REQUIRED' scenario
-      //goToPage(`/set-password/${values.email}`);
-      console.log(challengeName);
-      actions.setStatus({ msg: t('error:invalidCredentials') });
     } else {
       if (awsErrorCode === 'UserNotConfirmedException') {
         setConfirmUsername(values.email);
