@@ -19,9 +19,6 @@ const useStyles = makeStyles((theme) => ({
   longTextField: {
     width: 700,
   },
-  dateFieldsSpacer: {
-    paddingRight: 3,
-  },
   timeField: {
     width: 125,
   },
