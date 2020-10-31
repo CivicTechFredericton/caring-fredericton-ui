@@ -27,6 +27,7 @@
     "lodash": "4.17.20",
     "moment": "2.29.1",
     "node-sass": "4.14.1",
+    "prop-types": "15.7.2",
     "query-string": "6.13.6",
     "react": "17.0.1",
     "react-big-calendar": "0.28.1",
@@ -35,7 +36,7 @@
     "react-i18next": "11.7.3",
     "react-input-mask": "2.0.4",
     "react-router-dom": "5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "4.0.0",
     "yup": "0.29.3"
   },
   "devDependencies": {
