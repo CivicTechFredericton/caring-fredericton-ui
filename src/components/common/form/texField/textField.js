@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import styles from './textField.module.scss';
 import classNames from 'classnames';
 
@@ -17,6 +19,18 @@ const TextField = ({ field, form: { touched, errors }, ...props }) => {
       </div>
     </div>
   );
+};
+
+TextField.propTypes = {
+  type: PropTypes.node,
+  placeholder: PropTypes.node,
+  field: PropTypes.shape({
+    name: PropTypes.string,
+  }),
+  form: PropTypes.shape({
+    touched: PropTypes.object,
+    errors: PropTypes.object,
+  }),
 };
 
 export default TextField;

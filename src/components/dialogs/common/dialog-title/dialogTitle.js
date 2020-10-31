@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
@@ -28,6 +29,11 @@ const DialogTitle = ({ children, onClose, ...other }) => {
       ) : null}
     </MuiDialogTitle>
   );
+};
+
+DialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func,
 };
 
 export default DialogTitle;

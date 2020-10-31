@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import EventForm from '../event-form';
 import moment from 'moment';
 
@@ -88,3 +90,10 @@ export default function EditEvent({
     />
   );
 }
+
+EditEvent.propTypes = {
+  show: PropTypes.boolean,
+  handleClose: PropTypes.func,
+  setLastUpdated: PropTypes.func,
+  event: PropTypes.object,
+};

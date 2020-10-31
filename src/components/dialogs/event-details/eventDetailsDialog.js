@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -203,5 +204,11 @@ function EventDetailsDialog({ show, handleClose, event }) {
     </div>
   );
 }
+
+EventDetailsDialog.propTypes = {
+  show: PropTypes.func,
+  handleClose: PropTypes.func,
+  event: PropTypes.object,
+};
 
 export default EventDetailsDialog;
