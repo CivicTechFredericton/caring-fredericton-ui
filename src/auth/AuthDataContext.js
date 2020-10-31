@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Route } from 'react-router';
 import AuthApi from './api';
 
@@ -50,6 +52,10 @@ const AuthDataProvider = (props) => {
       )}
     </AuthDataContext.Provider>
   );
+};
+
+AuthDataProvider.propTypes = {
+  children: PropTypes.node,
 };
 
 export { AuthDataContext, AuthDataProvider };

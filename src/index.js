@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -15,6 +17,10 @@ const AppWrapper = ({ children }) => (
     <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
   </MuiThemeProvider>
 );
+
+AppWrapper.propTypes = {
+  children: PropTypes.node,
+};
 
 ReactDOM.render(
   <AppWrapper>

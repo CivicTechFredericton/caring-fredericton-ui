@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const ForgotPasswordDetailsSentForm = ({ t }) => {
+export default function ForgotPasswordDetailsSentForm({ t }) {
   return (
     <form>
       <div>
@@ -12,6 +13,8 @@ const ForgotPasswordDetailsSentForm = ({ t }) => {
       </div>
     </form>
   );
-};
+}
 
-export default ForgotPasswordDetailsSentForm;
+ForgotPasswordDetailsSentForm.propTypes = {
+  t: PropTypes.object,
+};
