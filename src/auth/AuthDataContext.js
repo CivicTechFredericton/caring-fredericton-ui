@@ -6,6 +6,7 @@ import AuthApi from './api';
 
 import ForgotPasswordPage from './forgot-password';
 import ResetPasswordPage from './reset-password';
+import SetPasswordPage from './set-password';
 import SignInPage from './signin';
 import SignUpPage from './signup';
 
@@ -41,12 +42,16 @@ const AuthDataProvider = (props) => {
       {props.children}
       {!state.isSignedIn && (
         <>
-          <Route path='/signin' component={SignInPage} />
+          <Route path='/signin:email?' component={SignInPage} />
           <Route path='/signup/:confirmEmail?' component={SignUpPage} />
           <Route path='/forgot-password' component={ForgotPasswordPage} />
           <Route
             path='/reset-password/:confirmEmail?'
             component={ResetPasswordPage}
+          />
+          <Route
+            path='/set-password/:confirmEmail?'
+            component={SetPasswordPage}
           />
         </>
       )}

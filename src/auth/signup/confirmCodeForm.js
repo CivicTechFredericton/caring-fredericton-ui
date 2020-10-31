@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import Link from '@material-ui/core/Link';
+import PropTypes from 'prop-types';
+
 import formClasses from '../../components/common/form/form.module.scss';
 import classNames from 'classnames';
+
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 
 import useAuthDataContext from '../../auth/hooks/useAuthDataContext';
 import useStyles from './styles';
 
-const ConfirmCodeForm = ({ email, t }) => {
+export default function ConfirmCodeForm({ email, t }) {
   const { confirmSignUp, goToPage, resendSignUp } = useAuthDataContext();
   const classes = useStyles();
 
@@ -47,7 +50,7 @@ const ConfirmCodeForm = ({ email, t }) => {
         validationSchema={ConfirmCodeSchema}
         onSubmit={onSubmit}
       >
-        {({ errors, status, isSubmitting, isValid }) => (
+        {({ status, isSubmitting, isValid }) => (
           <Form
             className={classNames(formClasses.paper, formClasses.paperSmall)}
           >
@@ -77,9 +80,11 @@ const ConfirmCodeForm = ({ email, t }) => {
                 }}
               />
             </div>
+
             {status && status.msg && (
               <Typography className={classes.error}>{status.msg}</Typography>
             )}
+
             <Button
               className={classes.submitButton}
               variant='contained'
@@ -100,6 +105,9 @@ const ConfirmCodeForm = ({ email, t }) => {
       </div>
     </div>
   );
-};
+}
 
-export default ConfirmCodeForm;
+ConfirmCodeForm.propTypes = {
+  t: PropTypes.object.required,
+  email: PropTypes.string.required,
+};
