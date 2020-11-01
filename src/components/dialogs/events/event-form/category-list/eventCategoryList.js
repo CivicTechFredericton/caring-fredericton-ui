@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
@@ -176,3 +177,9 @@ export default function EventCategoryList(props) {
     </div>
   );
 }
+
+EventCategoryList.propTypes = {
+  categories: PropTypes.array,
+  onCategoryChange: PropTypes.func,
+  isDisabled: PropTypes.boolean,
+};

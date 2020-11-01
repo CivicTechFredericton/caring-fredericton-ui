@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
@@ -23,7 +25,7 @@ import ProvinceList from './province-list';
 
 import { registerOrganization } from '../../../api/organization';
 
-function RegisterOrganizationDialog({ show, handleClose, event }) {
+export default function RegisterOrganizationDialog({ show, handleClose }) {
   const [openCancel, setOpenCancel] = useState(false);
   const [fullWidth] = useState(true);
   const [maxWidth] = useState('sm');
@@ -123,17 +125,7 @@ function RegisterOrganizationDialog({ show, handleClose, event }) {
             validationSchema={RegisterOrganizationSchema}
             onSubmit={onSubmit}
           >
-            {({
-              errors,
-              touched,
-              values,
-              status,
-              handleChange,
-              isSubmitting,
-              isValid,
-              dirty,
-              setFieldValue,
-            }) => (
+            {({ values, status, isSubmitting, isValid, dirty }) => (
               <Form>
                 <Typography gutterBottom>
                   {t('organization:lblCompleteRequired')}
@@ -302,4 +294,7 @@ function RegisterOrganizationDialog({ show, handleClose, event }) {
   );
 }
 
-export default RegisterOrganizationDialog;
+RegisterOrganizationDialog.propTypes = {
+  show: PropTypes.boolean,
+  handleClose: PropTypes.func,
+};

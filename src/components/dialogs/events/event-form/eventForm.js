@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
@@ -48,7 +50,7 @@ import {
   VALUE_RECURRENCE_OPTION_MONTHLY,
 } from '../../../common/constants';
 
-function EventForm({
+export default function EventForm({
   mode,
   editEventData,
   start,
@@ -340,17 +342,7 @@ function EventForm({
             initialValues={initialValues}
             validationSchema={EventSchema}
           >
-            {({
-              errors,
-              touched,
-              values,
-              status,
-              handleChange,
-              isSubmitting,
-              isValid,
-              setFieldValue,
-              dirty,
-            }) => (
+            {({ values, status, isSubmitting, isValid, dirty }) => (
               <Form>
                 <Field
                   disabled={!userCanEditValues}
@@ -729,4 +721,12 @@ function EventForm({
   );
 }
 
-export default EventForm;
+EventForm.propTypes = {
+  mode: PropTypes.string,
+  editEventData: PropTypes.object,
+  start: PropTypes.object,
+  end: PropTypes.object,
+  show: PropTypes.boolean,
+  handleClose: PropTypes.func,
+  setLastUpdated: PropTypes.func,
+};
