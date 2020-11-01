@@ -295,6 +295,6 @@ export default function RegisterOrganizationDialog({ show, handleClose }) {
 }
 
 RegisterOrganizationDialog.propTypes = {
-  show: PropTypes.boolean,
+  show: PropTypes.any,
   handleClose: PropTypes.func,
 };

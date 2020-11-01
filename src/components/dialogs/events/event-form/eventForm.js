@@ -726,7 +726,7 @@ EventForm.propTypes = {
   editEventData: PropTypes.object,
   start: PropTypes.object,
   end: PropTypes.object,
-  show: PropTypes.boolean,
+  show: PropTypes.any,
   handleClose: PropTypes.func,
   setLastUpdated: PropTypes.func,
 };

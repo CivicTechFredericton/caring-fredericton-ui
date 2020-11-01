@@ -92,7 +92,7 @@ export default function EditEvent({
 }
 
 EditEvent.propTypes = {
-  show: PropTypes.boolean,
+  show: PropTypes.any,
   handleClose: PropTypes.func,
   setLastUpdated: PropTypes.func,
   event: PropTypes.object,

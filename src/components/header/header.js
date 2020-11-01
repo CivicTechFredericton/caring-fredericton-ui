@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { useHistory } from 'react-router-dom';
 import styles from './header.module.scss';
 
@@ -24,7 +26,7 @@ const SignedInControls = ({ t, user, signOut }) => {
   }
 
   // Register Organization Dialog Methods
-  const openRegisterDialog = (event) => {
+  const openRegisterDialog = () => {
     setShowDialog(true);
   };
 
@@ -48,6 +50,12 @@ const SignedInControls = ({ t, user, signOut }) => {
       </div>
     </>
   );
+};
+
+SignedInControls.propTypes = {
+  t: PropTypes.func,
+  user: PropTypes.object,
+  signOut: PropTypes.func,
 };
 
 function Header() {

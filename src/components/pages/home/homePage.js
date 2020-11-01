@@ -38,7 +38,7 @@ const useFetch = (startDate, endDate) => {
   return { data, error };
 };
 
-function HomePage() {
+export default function HomePage() {
   const { t, ready } = useTranslation(['common']);
   const classes = useStyles();
 
@@ -82,5 +82,3 @@ function HomePage() {
     </div>
   );
 }
-
-export default HomePage;

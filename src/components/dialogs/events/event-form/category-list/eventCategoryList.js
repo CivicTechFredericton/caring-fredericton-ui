@@ -179,7 +179,7 @@ export default function EventCategoryList(props) {
 }
 
 EventCategoryList.propTypes = {
-  categories: PropTypes.array,
+  categories: PropTypes.object,
   onCategoryChange: PropTypes.func,
-  isDisabled: PropTypes.boolean,
+  isDisabled: PropTypes.any,
 };

@@ -154,6 +154,6 @@ export default function EventCategoryFilter(props) {
 }
 
 EventCategoryFilter.propTypes = {
-  categories: PropTypes.array,
+  categories: PropTypes.object,
   onCategoryChange: PropTypes.func,
 };

@@ -74,7 +74,7 @@ export default function NewEvent({
 }
 
 NewEvent.propTypes = {
-  show: PropTypes.boolean,
+  show: PropTypes.any,
   handleClose: PropTypes.func,
   setLastUpdated: PropTypes.func,
   start: PropTypes.object,

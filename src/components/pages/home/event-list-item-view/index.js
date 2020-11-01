@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Divider from '@material-ui/core/Divider';
 import Link from '@material-ui/core/Link';
@@ -17,13 +18,13 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import useStyles from './styles';
 
-const EventListItemView = ({ event }) => {
+export default function EventListItemView({ event }) {
   const { t } = useTranslation('common');
   const classes = useStyles();
 
   const [showDialog, setShowDialog] = useState(false);
 
-  const openEventDialog = (event) => {
+  const openEventDialog = () => {
     setShowDialog(true);
   };
 
@@ -85,6 +86,8 @@ const EventListItemView = ({ event }) => {
       />
     </div>
   );
-};
+}
 
-export default EventListItemView;
+EventListItemView.propTypes = {
+  event: PropTypes.object,
+};

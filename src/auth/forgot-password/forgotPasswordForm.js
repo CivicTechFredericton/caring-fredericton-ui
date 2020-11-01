@@ -86,5 +86,5 @@ export default function ForgotPasswordForm({ t }) {
 }
 
 ForgotPasswordForm.propTypes = {
-  t: PropTypes.object,
+  t: PropTypes.func,
 };

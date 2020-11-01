@@ -15,7 +15,7 @@ import {
   verifyOrganization,
 } from '../../../api/organization';
 
-const useFetch = (orgId, options) => {
+const useFetch = (orgId) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -37,7 +37,7 @@ const useFetch = (orgId, options) => {
   return { data, error };
 };
 
-const ValidationPage = () => {
+export default function ValidationPage() {
   const { goToPage } = useAuthDataContext();
   const { t, ready } = useTranslation(['organization', 'error']);
   const classes = useStyles();
@@ -128,6 +128,4 @@ const ValidationPage = () => {
       <Button onClick={onSubmit}>{t('organization:btnValidate')}</Button>
     </div>
   );
-};
-
-export default ValidationPage;
+}

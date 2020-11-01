@@ -108,6 +108,6 @@ export default function ConfirmCodeForm({ email, t }) {
 }
 
 ConfirmCodeForm.propTypes = {
-  t: PropTypes.object.required,
+  t: PropTypes.func.required,
   email: PropTypes.string.required,
 };
