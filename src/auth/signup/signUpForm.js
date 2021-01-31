@@ -201,5 +201,5 @@ export default function SignUpForm({ t }) {
 }
 
 SignUpForm.propTypes = {
-  t: PropTypes.func.isRequired,
+  t: PropTypes.func,
 };
