@@ -6,10 +6,10 @@ with open("README.md") as fp:
 
 
 setuptools.setup(
-    name="servus-ui.static_website",
+    name="caring-fred-ui.static_website",
     version="0.0.1",
 
-    description="The deployment stack for the ServUs Navigate static web site",
+    description="The deployment stack for the Caring Calendar static web site",
     long_description=long_description,
     long_description_content_type="text/markdown",
 
@@ -19,7 +19,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="static_website"),
 
     install_requires=[
-        "aws-cdk.core==1.62.0"
+        "aws-cdk.core==1.86.0"
     ],
 
     python_requires=">=3.6",
