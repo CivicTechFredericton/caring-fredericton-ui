@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import formClasses from '../../components/common/form/form.module.scss';
 import SuspenseView from '../../components/suspense-view';
 
@@ -7,7 +9,7 @@ import ConfirmCodeForm from './confirmCodeForm';
 
 import { useTranslation } from 'react-i18next';
 
-const SignUpPage = ({ match }) => {
+export default function SignUpPage({ match }) {
   const { t, ready } = useTranslation([
     'authentication',
     'common',
@@ -29,6 +31,12 @@ const SignUpPage = ({ match }) => {
       {showConfirmEmailForm && <ConfirmCodeForm email={confirmEmail} t={t} />}
     </div>
   );
-};
+}
 
-export default SignUpPage;
+SignUpPage.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      confirmEmail: PropTypes.string,
+    }),
+  }),
+};

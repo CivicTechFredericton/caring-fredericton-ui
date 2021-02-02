@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +10,7 @@ import EventListItemView from '../event-list-item-view';
 import useStyles from './styles';
 import { useTranslation } from 'react-i18next';
 
-const EventListView = ({ events }) => {
+export default function EventListView({ events }) {
   const { t } = useTranslation('common');
   const classes = useStyles();
 
@@ -36,6 +37,8 @@ const EventListView = ({ events }) => {
       </div>
     </div>
   );
-};
+}
 
-export default EventListView;
+EventListView.propTypes = {
+  events: PropTypes.array,
+};

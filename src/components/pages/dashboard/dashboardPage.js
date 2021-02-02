@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import logo from '../../../logo.png';
 
-function DashboardPage() {
+export default function DashboardPage() {
   const { t, ready } = useTranslation(['common']);
   const classes = useStyles();
 
@@ -34,5 +34,3 @@ function DashboardPage() {
     </div>
   );
 }
-
-export default DashboardPage;

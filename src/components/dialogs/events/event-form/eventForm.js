@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
@@ -16,7 +18,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import AddLocationOutlinedIcon from '@material-ui/icons/AddLocationOutlined';
-import AccessTimeOutlinedIcon from '@material-ui/icons/AccessTimeOutlined';
 import ContactMailOutlinedIcon from '@material-ui/icons/ContactMailOutlined';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -28,12 +29,12 @@ import RecurrenceList from './recurrence-options';
 import WeekOfMonthList from './weeks-list';
 
 import moment from 'moment';
-import MomentUtils from '@date-io/moment';
+import MomentAdapter from '@material-ui/pickers/adapter/moment';
 
 import {
-  KeyboardDatePicker,
-  KeyboardTimePicker,
-  MuiPickersUtilsProvider,
+  DatePicker,
+  TimePicker,
+  LocalizationProvider,
 } from '@material-ui/pickers';
 
 import useStyles from './styles';
@@ -49,7 +50,7 @@ import {
   VALUE_RECURRENCE_OPTION_MONTHLY,
 } from '../../../common/constants';
 
-function EventForm({
+export default function EventForm({
   mode,
   editEventData,
   start,
@@ -341,17 +342,7 @@ function EventForm({
             initialValues={initialValues}
             validationSchema={EventSchema}
           >
-            {({
-              errors,
-              touched,
-              values,
-              status,
-              handleChange,
-              isSubmitting,
-              isValid,
-              setFieldValue,
-              dirty,
-            }) => (
+            {({ values, status, isSubmitting, isValid, dirty }) => (
               <Form>
                 <Field
                   disabled={!userCanEditValues}
@@ -561,67 +552,56 @@ function EventForm({
                   </Grid>
                 </div>
                 <div className={classes.margin}>
-                  <Grid container spacing={1} alignItems='flex-end'>
-                    <Grid item>
-                      <AccessTimeOutlinedIcon color='action' />
+                  <LocalizationProvider dateAdapter={MomentAdapter}>
+                    <Grid container spacing={1}>
+                      <Grid className={classes.dateField} item>
+                        <DatePicker
+                          disabled={isEditMode}
+                          margin='normal'
+                          label={t('event:lblStartDate')}
+                          renderInput={(props) => <TextField {...props} />}
+                          minDate={selectedStartDate}
+                          value={selectedStartDate}
+                          onChange={(date) => handleStartDateChange(date)}
+                        />
+                      </Grid>
+                      <Grid className={classes.timeField} item>
+                        <TimePicker
+                          disabled={isEditMode}
+                          margin='normal'
+                          renderInput={(props) => <TextField {...props} />}
+                          label={t('event:lblStartTime')}
+                          value={selectedStartDate}
+                          onChange={(newValue) =>
+                            handleStartDateChange(newValue)
+                          }
+                        />
+                      </Grid>
+                      <Grid className={classes.dateField} item>
+                        <DatePicker
+                          disabled={isEditMode}
+                          margin='normal'
+                          label={t('event:lblEndDate')}
+                          renderInput={(props) => <TextField {...props} />}
+                          minDate={selectedStartDate}
+                          value={selectedEndDate}
+                          onChange={(date) => handleEndDateChange(date)}
+                        />
+                      </Grid>
+                      <Grid className={classes.timeField} item>
+                        <TimePicker
+                          disabled={isEditMode}
+                          margin='normal'
+                          renderInput={(props) => <TextField {...props} />}
+                          label={t('event:lblEndTime')}
+                          value={selectedEndDate}
+                          onChange={(newValue) =>
+                            handleStartDateChange(newValue)
+                          }
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <MuiPickersUtilsProvider utils={MomentUtils}>
-                        <Grid container spacing={1}>
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <KeyboardDatePicker
-                              disabled={isEditMode}
-                              margin='normal'
-                              className={classes.dateField}
-                              minDate={selectedStartDate}
-                              value={selectedStartDate}
-                              onChange={(date) => handleStartDateChange(date)}
-                              KeyboardButtonProps={{
-                                'aria-label': t('event:lblChangeStartDate'),
-                              }}
-                            />
-                          </Grid>
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <KeyboardTimePicker
-                              disabled={isEditMode}
-                              margin='normal'
-                              className={classes.timeField}
-                              value={selectedStartDate}
-                              onChange={(date) => handleStartDateChange(date)}
-                              KeyboardButtonProps={{
-                                'aria-label': t('event:lblChangeStartTime'),
-                              }}
-                            />
-                          </Grid>
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <KeyboardDatePicker
-                              disabled={isEditMode}
-                              margin='normal'
-                              className={classes.dateField}
-                              minDate={selectedEndDate}
-                              value={selectedEndDate}
-                              onChange={(date) => handleEndDateChange(date)}
-                              KeyboardButtonProps={{
-                                'aria-label': t('event:lblChangeEndDate'),
-                              }}
-                            />
-                          </Grid>
-                          <Grid className={classes.dateFieldsSpacer} item>
-                            <KeyboardTimePicker
-                              disabled={isEditMode}
-                              margin='normal'
-                              className={classes.timeField}
-                              value={selectedEndDate}
-                              onChange={(date) => handleEndDateChange(date)}
-                              KeyboardButtonProps={{
-                                'aria-label': t('event:lblChangeEndTime'),
-                              }}
-                            />
-                          </Grid>
-                        </Grid>
-                      </MuiPickersUtilsProvider>
-                    </Grid>
-                  </Grid>
+                  </LocalizationProvider>
                 </div>
                 {status && status.msg && (
                   <Typography className={classes.error}>
@@ -741,4 +721,12 @@ function EventForm({
   );
 }
 
-export default EventForm;
+EventForm.propTypes = {
+  mode: PropTypes.string,
+  editEventData: PropTypes.object,
+  start: PropTypes.object,
+  end: PropTypes.object,
+  show: PropTypes.any,
+  handleClose: PropTypes.func,
+  setLastUpdated: PropTypes.func,
+};

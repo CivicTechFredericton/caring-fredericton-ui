@@ -10,7 +10,7 @@ WEBSITE_INDEX_FILE = 'index.html'
 CERT_ARN_SSM_KEY_NAME = 'base-certificate-arn'
 
 # TODO: Pass in the domain name or lookup based on environment
-DOMAIN_NAME = 'servushealthapp.com'
+DOMAIN_NAME = 'caringfredericton.com'
 
 class StaticWebsiteStack(Stack):
 
@@ -19,7 +19,10 @@ class StaticWebsiteStack(Stack):
 
         # TODO: Adjust the paths for production account
         bucket_name = f"{project_code}-{stage_name}-frontend"
-        site_name = f"{stage_name}-www.{DOMAIN_NAME}"
+        if stage_name == 'prod':
+            site_name = f"{stage_name}-www.{DOMAIN_NAME}"
+        else:
+            site_name = f"{stage_name}-www.t.{DOMAIN_NAME}"
         cloudfront_comment =f"{project_code}-{stage_name}-frontend"
 
         # Create Origin Access Identity to be use Canonical User Id in S3 bucket policy

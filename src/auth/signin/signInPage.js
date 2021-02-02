@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
 import formClasses from '../../components/common/form/form.module.scss';
 import classNames from 'classnames';
+
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
+
 import SuspenseView from '../../components/suspense-view';
 
 import Button from '@material-ui/core/Button';
@@ -23,7 +27,7 @@ import useStyles from './styles';
 import { useTranslation } from 'react-i18next';
 import useAuthDataContext from '../../auth/hooks/useAuthDataContext';
 
-const SignInPage = ({ history, location }) => {
+export default function SignInPage({ history, location }) {
   const { goToPage, resendSignUp, signIn } = useAuthDataContext();
   const { t, ready } = useTranslation([
     'authentication',
@@ -55,7 +59,7 @@ const SignInPage = ({ history, location }) => {
     if (success) {
       history.replace(from);
     } else if (challengeName === 'NEW_PASSWORD_REQUIRED') {
-      // TODO: Handle 'NEW_PASSWORD_REQUIRED' scenario
+      goToPage(`/set-password/${values.email}`);
     } else {
       if (awsErrorCode === 'UserNotConfirmedException') {
         setConfirmUsername(values.email);
@@ -81,7 +85,7 @@ const SignInPage = ({ history, location }) => {
         validationSchema={SignInSchema}
         onSubmit={onSubmit}
       >
-        {({ errors, status, isSubmitting, isValid }) => (
+        {({ status, isSubmitting, isValid }) => (
           <Form
             className={classNames(formClasses.paper, formClasses.paperSmall)}
           >
@@ -182,6 +186,13 @@ const SignInPage = ({ history, location }) => {
       </Dialog>
     </div>
   );
-};
+}
 
-export default SignInPage;
+SignInPage.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.object,
+  }),
+  history: PropTypes.shape({
+    replace: PropTypes.func,
+  }),
+};

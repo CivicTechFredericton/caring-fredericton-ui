@@ -4,7 +4,7 @@ import AuthApi from '../api';
 import { AuthDataContext } from '../AuthDataContext';
 import { getUserDetails } from '../../api/user';
 
-const useAuthDataContext = (props) => {
+const useAuthDataContext = () => {
   const [state, setState] = useContext(AuthDataContext);
   const history = useHistory();
 

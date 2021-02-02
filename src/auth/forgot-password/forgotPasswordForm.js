@@ -1,6 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import formClasses from '../../components/common/form/form.module.scss';
 import classNames from 'classnames';
+
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
@@ -11,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import useAuthDataContext from '../../auth/hooks/useAuthDataContext';
 import useStyles from './styles';
 
-const ForgotPasswordForm = ({ t }) => {
+export default function ForgotPasswordForm({ t }) {
   const { goToPage, resetPassword } = useAuthDataContext();
   const classes = useStyles();
 
@@ -40,7 +43,7 @@ const ForgotPasswordForm = ({ t }) => {
         validationSchema={ForgotPasswordSchema}
         onSubmit={onSubmit}
       >
-        {({ errors, status, isSubmitting, isValid }) => (
+        {({ status, isSubmitting, isValid }) => (
           <Form
             className={classNames(formClasses.paper, formClasses.paperSmall)}
           >
@@ -80,6 +83,8 @@ const ForgotPasswordForm = ({ t }) => {
       </Formik>
     </div>
   );
-};
+}
 
-export default ForgotPasswordForm;
+ForgotPasswordForm.propTypes = {
+  t: PropTypes.func,
+};

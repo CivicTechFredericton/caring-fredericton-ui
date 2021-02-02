@@ -175,7 +175,7 @@ function AppCalendar() {
     }));
   };
 
-  const setLastUpdated = (event) => {
+  const setLastUpdated = () => {
     setState((state) => ({
       ...state,
       lastUpdated: moment(),

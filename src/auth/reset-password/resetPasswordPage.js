@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import formClasses from '../../components/common/form/form.module.scss';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
+
 import SuspenseView from '../../components/suspense-view';
 
 import Button from '@material-ui/core/Button';
@@ -17,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import useAuthDataContext from '../../auth/hooks/useAuthDataContext';
 import useStyles from './styles';
 
-const ResetPasswordPage = ({ props, match }) => {
+export default function ResetPasswordPage({ match }) {
   const { confirmResetPassword, goToPage } = useAuthDataContext();
   const { t, ready } = useTranslation([
     'authentication',
@@ -81,7 +84,7 @@ const ResetPasswordPage = ({ props, match }) => {
         validationSchema={ConfirmResetPasswordSchema}
         onSubmit={onSubmit}
       >
-        {({ errors, status, isSubmitting, isValid }) => (
+        {({ status, isSubmitting, isValid }) => (
           <Form
             className={classNames(formClasses.paper, formClasses.paperSmall)}
           >
@@ -187,6 +190,12 @@ const ResetPasswordPage = ({ props, match }) => {
       </Formik>
     </div>
   );
-};
+}
 
-export default ResetPasswordPage;
+ResetPasswordPage.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      confirmEmail: PropTypes.string,
+    }),
+  }),
+};

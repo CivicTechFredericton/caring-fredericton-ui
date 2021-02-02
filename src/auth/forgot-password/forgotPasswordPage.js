@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import formClasses from '../../components/common/form/form.module.scss';
 import SuspenseView from '../../components/suspense-view';
 import * as QueryString from 'query-string';
@@ -8,7 +10,7 @@ import ForgotPasswordDetailsSentForm from './forgotPasswordDetailsSentForm';
 
 import { useTranslation } from 'react-i18next';
 
-const ForgotPasswordPage = ({ location }) => {
+export default function ForgotPasswordPage({ location }) {
   const { t, ready } = useTranslation([
     'common',
     'error',
@@ -31,6 +33,10 @@ const ForgotPasswordPage = ({ location }) => {
       {showMessage && <ForgotPasswordDetailsSentForm t={t} />}
     </div>
   );
-};
+}
 
-export default ForgotPasswordPage;
+ForgotPasswordPage.propTypes = {
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }),
+};

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import formClasses from '../../components/common/form/form.module.scss';
 import classNames from 'classnames';
+
 import { Field, Form, Formik } from 'formik';
 import { TextField as FormikTextField } from 'formik-material-ui';
 import * as Yup from 'yup';
@@ -15,7 +18,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import useAuthDataContext from '../../auth/hooks/useAuthDataContext';
 import useStyles from './styles';
 
-const SignUpForm = ({ t }) => {
+export default function SignUpForm({ t }) {
   const { goToPage, signUp } = useAuthDataContext();
   const classes = useStyles();
 
@@ -78,7 +81,7 @@ const SignUpForm = ({ t }) => {
         validationSchema={SignUpSchema}
         onSubmit={onSubmit}
       >
-        {({ errors, status, isSubmitting, isValid }) => (
+        {({ status, isSubmitting, isValid }) => (
           <Form
             className={classNames(formClasses.paper, formClasses.paperSmall)}
           >
@@ -195,6 +198,8 @@ const SignUpForm = ({ t }) => {
       </Formik>
     </div>
   );
-};
+}
 
-export default SignUpForm;
+SignUpForm.propTypes = {
+  t: PropTypes.func,
+};
