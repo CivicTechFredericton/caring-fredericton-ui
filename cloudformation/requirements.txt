@@ -1,7 +1,8 @@
 -e .
-aws-cdk.aws-iam==1.86.0
-aws-cdk.aws-cloudfront==1.86.0
-aws-cdk.aws-route53==1.86.0
-aws-cdk.aws-route53-targets==1.86.0
-aws-cdk.aws-s3==1.86.0
-aws-cdk.aws-ssm==1.86.0
+aws-cdk.aws-iam==1.94.1
+aws-cdk.aws-cloudfront==1.94.1
+aws-cdk.aws-route53==1.94.1
+aws-cdk.aws-route53-targets==1.94.1
+aws-cdk.aws-s3==1.94.1
+aws-cdk.aws-s3-deployment==1.94.1
+aws-cdk.aws-ssm==1.94.1

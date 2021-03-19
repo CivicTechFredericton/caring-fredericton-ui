@@ -1,16 +1,19 @@
-from aws_cdk import aws_cloudfront, aws_route53, aws_route53_targets, aws_s3, aws_ssm
+from aws_cdk import aws_cloudfront, aws_route53, aws_route53_targets, aws_s3, aws_s3_deployment, aws_ssm
 
 from aws_cdk.core import Construct, CfnOutput, Duration, RemovalPolicy, Stack
 from aws_cdk.aws_cloudfront import AliasConfiguration, CloudFrontWebDistribution, LoggingConfiguration, SourceConfiguration
 from aws_cdk.aws_iam import PolicyStatement, CanonicalUserPrincipal
 from aws_cdk.aws_route53 import HostedZone
 from aws_cdk.aws_s3 import BucketAccessControl
+from aws_cdk.aws_s3_deployment import Source
 
 WEBSITE_INDEX_FILE = 'index.html'
 CERT_ARN_SSM_KEY_NAME = 'base-certificate-arn'
 
 # TODO: Pass in the domain name or lookup based on environment
 DOMAIN_NAME = 'caringfredericton.com'
+
+STATIC_FILE_LOCATION="../build"
 
 class StaticWebsiteStack(Stack):
 
@@ -82,8 +85,8 @@ class StaticWebsiteStack(Stack):
             )],
             origin_configs=[SourceConfiguration(
                 s3_origin_source=aws_cloudfront.S3OriginConfig(
-                    s3_bucket_source=site_bucket,
-                    origin_access_identity=origin_access_identity),
+                    s3_bucket_source=site_bucket),
+                    # origin_access_identity=origin_access_identity),
                 behaviors=[aws_cloudfront.Behavior(
                     is_default_behavior=True,
                     default_ttl=Duration.hours(1))
@@ -106,3 +109,11 @@ class StaticWebsiteStack(Stack):
                             zone=hosted_zone,
                             target=aws_route53.AddressRecordTarget.from_alias(aws_route53_targets.CloudFrontTarget(distr)),
                             record_name=site_name)
+
+        # Deploy site contents to S3 bucket and invalidate the Cloudfront cache
+        aws_s3_deployment.BucketDeployment(self, "DeployWithInvalidation",
+            sources=[Source.asset(STATIC_FILE_LOCATION)],
+            destination_bucket=site_bucket,
+            distribution=distr,
+            distribution_paths=['/*'],
+        )
