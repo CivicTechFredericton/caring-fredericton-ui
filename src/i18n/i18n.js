@@ -27,7 +27,6 @@ i18n
       loadPath: '/translations/{{lng}}/{{ns}}.json',
     },
     react: {
-      wait: true,
       useSuspense: false, // using the react suspense functionality causes issues with the material ui components like tabs and drawers see related issues for reference:
     },
     cache: {
