@@ -1,52 +1,45 @@
-from aws_cdk import aws_cloudfront, aws_route53, aws_route53_targets, aws_s3, aws_s3_deployment, aws_ssm
+from aws_cdk import aws_cloudfront, aws_route53, aws_route53_targets, aws_s3, aws_ssm
 
 from aws_cdk.core import Construct, CfnOutput, Duration, RemovalPolicy, Stack
-from aws_cdk.aws_cloudfront import AliasConfiguration, CloudFrontWebDistribution, LoggingConfiguration, SourceConfiguration
+from aws_cdk.aws_certificatemanager import Certificate
+from aws_cdk.aws_cloudfront import CloudFrontWebDistribution, LoggingConfiguration, SourceConfiguration, \
+    ViewerCertificate
 from aws_cdk.aws_iam import PolicyStatement, CanonicalUserPrincipal
 from aws_cdk.aws_route53 import HostedZone
 from aws_cdk.aws_s3 import BucketAccessControl
-from aws_cdk.aws_s3_deployment import Source
 
 WEBSITE_INDEX_FILE = 'index.html'
 CERT_ARN_SSM_KEY_NAME = 'base-certificate-arn'
 
-# TODO: Pass in the domain name or lookup based on environment
-DOMAIN_NAME = 'caringfredericton.com'
-
-STATIC_FILE_LOCATION="../build"
 
 class StaticWebsiteStack(Stack):
 
-    def __init__(self, scope: Construct, id: str, project_code: str, stage_name: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, id: str, project_code: str, stage_name: str,
+                 domain_name: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # TODO: Adjust the paths for production account
-        bucket_name = f"{project_code}-{stage_name}-frontend"
-        if stage_name == 'prod':
-            site_name = f"{stage_name}-www.{DOMAIN_NAME}"
-        else:
-            site_name = f"{stage_name}-www.t.{DOMAIN_NAME}"
-        cloudfront_comment =f"{project_code}-{stage_name}-frontend"
+        cloud_front_comment = f"{project_code}-{stage_name}-frontend"
 
         # Create Origin Access Identity to be use Canonical User Id in S3 bucket policy
         origin_access_identity = aws_cloudfront.OriginAccessIdentity(
             self, "DefaultOrigin",
-            comment=cloudfront_comment
+            comment=cloud_front_comment
         )
 
         # Create the S3 bucket for the static files
+        bucket_name = f"{project_code}-{stage_name}-frontend"
         site_bucket = aws_s3.Bucket(self, "WebsiteBucket",
-            bucket_name=bucket_name,
-            access_control=BucketAccessControl.PRIVATE,
-            website_index_document=WEBSITE_INDEX_FILE,
-            removal_policy=RemovalPolicy.DESTROY)
+                                    bucket_name=bucket_name,
+                                    access_control=BucketAccessControl.PRIVATE,
+                                    website_index_document=WEBSITE_INDEX_FILE,
+                                    removal_policy=RemovalPolicy.DESTROY)
 
         # Allow access from CloudFront
-        # site_bucket.grant_read(origin_access_identity)
         site_bucket.add_to_resource_policy(PolicyStatement(
             actions=["s3:GetObject"],
             resources=[site_bucket.arn_for_objects("*")],
-            principals=[CanonicalUserPrincipal(origin_access_identity.cloud_front_origin_access_identity_s3_canonical_user_id)]
+            principals=[CanonicalUserPrincipal(
+                origin_access_identity.cloud_front_origin_access_identity_s3_canonical_user_id)]
         ))
 
         CfnOutput(self, "BucketArn", value=site_bucket.bucket_arn)
@@ -54,66 +47,60 @@ class StaticWebsiteStack(Stack):
 
         # Create the S3 for logging
         logging_bucket = aws_s3.Bucket(self, "LoggingBucket",
-            bucket_name=f"{bucket_name}-logging",
-            access_control=BucketAccessControl.PRIVATE,
-            versioned=True,
-            removal_policy=RemovalPolicy.DESTROY)
+                                       bucket_name=f"{bucket_name}-logging",
+                                       access_control=BucketAccessControl.PRIVATE,
+                                       versioned=True,
+                                       removal_policy=RemovalPolicy.DESTROY)
 
         # Lookup the certificate ARN - This must be the one in the us-east-1 region
         cert_arn = aws_ssm.StringParameter.value_for_string_parameter(
             self, CERT_ARN_SSM_KEY_NAME)
 
+        certificate = Certificate.from_certificate_arn(self, 'CertificateLookup', cert_arn)
+
         # Create the CloudFront distribution
-        distr = CloudFrontWebDistribution(self, "WebsiteDistribution",
-            default_root_object=WEBSITE_INDEX_FILE,
-            comment=cloudfront_comment,
-            alias_configuration=AliasConfiguration(
-                acm_cert_ref=cert_arn,
-                names=[site_name],
-                ssl_method=aws_cloudfront.SSLMethod.SNI,
-                security_policy=aws_cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
-            ),
-            logging_config=LoggingConfiguration(
-                bucket=logging_bucket
-            ),
-            price_class=aws_cloudfront.PriceClass.PRICE_CLASS_100,
-            error_configurations=[aws_cloudfront.CfnDistribution.CustomErrorResponseProperty(
-                error_code=403,
-                response_code=200,
-                response_page_path=f"/{WEBSITE_INDEX_FILE}",
-                error_caching_min_ttl=300
-            )],
-            origin_configs=[SourceConfiguration(
-                s3_origin_source=aws_cloudfront.S3OriginConfig(
-                    s3_bucket_source=site_bucket),
-                    # origin_access_identity=origin_access_identity),
-                behaviors=[aws_cloudfront.Behavior(
-                    is_default_behavior=True,
-                    default_ttl=Duration.hours(1))
-                ]
-            )])
+        site_name = f"{stage_name}-www.{domain_name}"
+        distribution = CloudFrontWebDistribution(self, "WebsiteDistribution",
+                                                 default_root_object=WEBSITE_INDEX_FILE,
+                                                 comment=cloud_front_comment,
+                                                 viewer_certificate=ViewerCertificate.from_acm_certificate(
+                                                     certificate=certificate,
+                                                     aliases=[site_name],
+                                                     ssl_method=aws_cloudfront.SSLMethod.SNI,
+                                                     security_policy=aws_cloudfront.SecurityPolicyProtocol.TLS_V1_2_2019,
+                                                 ),
+                                                 logging_config=LoggingConfiguration(
+                                                    bucket=logging_bucket
+                                                 ),
+                                                 price_class=aws_cloudfront.PriceClass.PRICE_CLASS_100,
+                                                 error_configurations=[
+                                                     aws_cloudfront.CfnDistribution.CustomErrorResponseProperty(
+                                                         error_code=403,
+                                                         response_code=200,
+                                                         response_page_path=f"/{WEBSITE_INDEX_FILE}",
+                                                         error_caching_min_ttl=300)
+                                                 ],
+                                                 origin_configs=[SourceConfiguration(
+                                                    s3_origin_source=aws_cloudfront.S3OriginConfig(
+                                                        s3_bucket_source=site_bucket,
+                                                        origin_access_identity=origin_access_identity),
+                                                    behaviors=[aws_cloudfront.Behavior(
+                                                        is_default_behavior=True,
+                                                        default_ttl=Duration.hours(1))
+                                                    ])
+                                                 ])
 
-        # TODO: Adding origin_access_identity to the origin configs adds
-        #       extra permissions in the S3 bucket policy that must be removed
-        #       This needs to be fixed to remove manual intervention
-
-        CfnOutput(self, "DistributionId", value=distr.distribution_id)
+        # Set the output values
+        CfnOutput(self, "DistributionId", value=distribution.distribution_id)
         CfnOutput(self, "SiteName", value=f"https://{site_name}")
 
-        # Update Route 53 alias record for the cloudfront distribution
+        # Update Route 53 alias record for the CloudFront distribution
         hosted_zone = HostedZone.from_lookup(self, "HostedZone",
-                                      domain_name=DOMAIN_NAME,
-                                      private_zone=False)
+                                             domain_name=domain_name,
+                                             private_zone=False)
 
         aws_route53.ARecord(self, "SiteAliasRecord",
                             zone=hosted_zone,
-                            target=aws_route53.AddressRecordTarget.from_alias(aws_route53_targets.CloudFrontTarget(distr)),
+                            target=aws_route53.RecordTarget.from_alias(
+                                aws_route53_targets.CloudFrontTarget(distribution)),
                             record_name=site_name)
-
-        # Deploy site contents to S3 bucket and invalidate the Cloudfront cache
-        aws_s3_deployment.BucketDeployment(self, "DeployWithInvalidation",
-            sources=[Source.asset(STATIC_FILE_LOCATION)],
-            destination_bucket=site_bucket,
-            distribution=distr,
-            distribution_paths=['/*'],
-        )

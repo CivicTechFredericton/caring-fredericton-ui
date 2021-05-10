@@ -2,13 +2,8 @@
 set -e
 cd $(dirname $0)
 
-if [ -z $AWS_ACCOUNT ] ; then
-  echo 'Please set the environment variable AWS_ACCOUNT before running this script'
-  exit 1
-fi
-
-if [ -z $AWS_REGION ] ; then
-  echo 'Please set the environment variable AWS_REGION before running this script'
+if [ -z $AWS_PROFILE ] ; then
+  echo 'Please set the environment variable AWS_PROFILE before running this script'
   exit 1
 fi
 
@@ -18,6 +13,13 @@ if [ -z "$1" ]
     exit 1
 fi
 
-env=$1
+if [ -z "$2" ]
+  then
+    echo 'Please supply a domain name'
+    exit 1
+fi
 
-npx cdk deploy -c stage_name=$env
+env=$1
+domain=$2
+
+npx cdk deploy -c stage_name=$env -c domain_name=$domain

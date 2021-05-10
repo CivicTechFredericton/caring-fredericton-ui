@@ -13,5 +13,5 @@ if (-Not $args[0]) {
 
 env=$1
 
-npx cdk deploy -c stage_name=$env
+npx cdk destroy -c stage_name=$env
 exit $lastExitCode
