@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useHistory } from 'react-router-dom';
-import styles from './header.module.scss';
 
 import Button from '@material-ui/core/Button';
 
 import RegisterOrganizationDialog from '../dialogs/register-organization';
 
 import useAuthDataContext from '../../auth/hooks/useAuthDataContext';
+import useStyles from './styles';
 import { useTranslation } from 'react-i18next';
 
 import ctlogo from '../../civic-tech-logo.png';
@@ -62,6 +62,7 @@ function Header() {
   const { isSignedIn, user, signOut } = useAuthDataContext();
   const { t } = useTranslation(['common', 'authentication']);
   const history = useHistory();
+  const styles = useStyles();
 
   return (
     <div className={styles.header}>
