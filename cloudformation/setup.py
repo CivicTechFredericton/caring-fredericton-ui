@@ -18,9 +18,7 @@ setuptools.setup(
     package_dir={"": "static_website"},
     packages=setuptools.find_packages(where="static_website"),
 
-    install_requires=[
-        "aws-cdk.core==1.102.0"
-    ],
+    install_requires=[],
 
     python_requires=">=3.6",
 
