@@ -1,10 +1,10 @@
 -e .
-aws-cdk.core==1.109.0
-aws-cdk.aws-iam==1.109.0
-aws-cdk.aws-certificatemanager==1.109.0
-aws-cdk.aws-cloudfront==1.109.0
-aws-cdk.aws-route53==1.109.0
-aws-cdk.aws-route53-targets==1.109.0
-aws-cdk.aws-s3==1.109.0
-aws-cdk.aws-s3-deployment==1.109.0
-aws-cdk.aws-ssm==1.109.0
+aws-cdk.core==1.116.0
+aws-cdk.aws-iam==1.116.0
+aws-cdk.aws-certificatemanager==1.116.0
+aws-cdk.aws-cloudfront==1.116.0
+aws-cdk.aws-route53==1.116.0
+aws-cdk.aws-route53-targets==1.116.0
+aws-cdk.aws-s3==1.116.0
+aws-cdk.aws-s3-deployment==1.116.0
+aws-cdk.aws-ssm==1.116.0
