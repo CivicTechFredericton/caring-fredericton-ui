@@ -65,7 +65,7 @@ export default function HomePage() {
 
   return (
     <div className={classes.root}>
-      <Grid container justify='center'>
+      <Grid container justifyContent='center'>
         <Grid item xs={9} lg={4}>
           <h2>{t('common:lblWelcome')}</h2>
           <EventListView events={responseData} />

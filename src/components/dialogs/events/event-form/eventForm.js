@@ -609,7 +609,7 @@ export default function EventForm({
                   </Typography>
                 )}
                 <Divider />
-                <Grid container justify='flex-end'>
+                <Grid container justifyContent='flex-end'>
                   <Grid item>
                     {!isEditMode ? (
                       <>

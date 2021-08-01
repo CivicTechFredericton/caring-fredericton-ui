@@ -246,7 +246,7 @@ export default function RegisterOrganizationDialog({ show, handleClose }) {
                   </Typography>
                 )}
                 <Divider />
-                <Grid container justify='flex-end'>
+                <Grid container justifyContent='flex-end'>
                   <Grid item>
                     <Button type='submit' disabled={!isValid || isSubmitting}>
                       {t('organization:btnRegister')}
