@@ -11,7 +11,7 @@ i18n
   .init({
     fallbackLng: 'en',
     lng: 'en',
-    whitelist: ['en'],
+    supportedLngs: ['en'],
     ns: 'common',
     backend: {
       loadPath: '/translations/{{lng}}/{{ns}}.json',
